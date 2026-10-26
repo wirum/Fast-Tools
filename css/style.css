@@ -1,0 +1,265 @@
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&display=swap');
+
+:root{
+    --background: #0c1220;
+    --surface: #131b2e;
+    --text: #edf1ff;
+
+    --accent: #74d9d0;
+    --secondary: #b5a2fc;
+    --border: #293553;
+
+    scrollbar-gutter: auto;
+}
+
+body{
+    background-color: var(--background);
+    color: var(--text);
+
+    font-family: "Bricolage Grotesque", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 200;
+    font-style: normal;
+    font-variation-settings: "wdth" 100;
+}
+
+header{
+    color: var(--text);
+
+    font-family: "Bricolage Grotesque", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 200;
+    font-style: normal;
+    font-variation-settings: "wdth" 100;
+}
+
+.hero{
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+    margin: 2rem;
+}
+
+.main-hero {
+    background-color: #121a2c;
+}
+
+.hero h1{
+    font-size: clamp(3rem, 7vw, 6rem);
+    font-weight: 700;
+}
+
+.hero-description{
+    color: #aab3c5;
+    max-width: 500px;
+    font-size: 1.2rem;
+}
+
+.tools-section{
+    padding: 100px 0;
+}
+
+.tools-section h2 {
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 700;
+}
+
+.tool-card {
+    height: 100%;
+    padding: 28px;
+
+    background-color: var(--surface);
+
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    transition: 0.2s ease;
+
+    position: relative;
+    overflow: hidden;
+}
+
+.tool-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--accent);
+}
+
+.tool-card h3 {
+    margin-top: 18px;
+    font-weight: 600;
+}
+
+.tool-card p {
+    opacity: 0.7;
+}
+
+.tool-card a {
+    display: inline-block;
+    color: var(--accent);
+    text-decoration: none;
+    transition: 0.2s ease;
+}
+
+.tool-card a:hover {
+    transform: translateX(8px);
+    font-weight: 500;
+    color:#caf5f1;
+}
+
+.tool-content {
+    position: relative;
+    overflow: hidden;
+}
+
+.calcify-art, .terra-art {
+    position: absolute;
+    right: 55px;
+    top: 50%;
+
+    display: flex;
+    align-items: center;
+    gap:28px;
+
+    transform: translateY(-50%);
+
+    font-size: 4.8rem;
+    font-weight: bold;
+
+    color: var(--accent);
+    opacity: 0.09;
+
+    pointer-events: none;
+
+    transition: 0.25 ease;
+}
+
+.calcify-art span , .terra-art span {
+    display: inline-block;
+    transition: 0.25 ease;
+}
+
+.tool-card:hover .calcify-art , .tool-card:hover .terra-art {
+    opacity: 0.16;
+}
+
+.plus {
+    transform:
+        rotate(-20deg)
+        translate(-8px, -14px);
+}
+
+.minus {
+    transform:
+        rotate(9deg)
+        translate(4px, 35px)
+        scale(1.15);
+}
+
+.multiply {
+    transform:
+        rotate(-22deg)
+        translate(5px, -30px);
+}
+
+.divide {
+    transform:
+        rotate(16deg)
+        translate(-4px, 20px)
+        scale(0.95);
+}
+
+.parenthesis {
+    transform:
+        rotate(-12deg)
+        translate(12px, -40px)
+        scale(1.2);
+}
+
+.bi-stopwatch-icon{
+    transform:
+        rotate(-12deg)
+        translate(12px, -28px)
+        scale(1.2);
+}
+
+.bi-calendar-icon{
+    transform:
+        rotate(16deg)
+        translate(-4px, 32px)
+        scale(0.95);
+}
+
+.odd-art {
+    position: absolute;
+
+    right: 70px;
+    top: 50px;
+
+    transform: translateY(-50%);
+
+    font-size: 7rem;
+    color: var(--accent);
+    opacity: 0.09;
+
+    pointer-events: none;
+
+    transition: 0.25s ease;
+}
+
+.sign-icon {
+    display: inline-block;
+
+    transform: rotate(-13deg) translate(10px, 60px) scale(1.5);
+
+    transition: 0.25s ease;
+}
+
+.tool-card:hover .odd-art {
+    opacity: 0.16;
+}
+
+.tool-card:hover .sign-icon {
+    transform: rotate(-8deg) translate(10px, 2px), scale(1.17);
+}
+
+.about-section h2 {
+    font-weight: 700;
+}
+
+.about-section h3 {
+    font-size: 1.2rem;
+    font-weight: 200;
+}
+
+footer {
+    margin-top: 5rem;
+}
+
+footer a {
+    color: var(--text);
+}
+
+footer .border-bottom {
+    border-color: var(--text);
+}
+
+.nav-link:hover {
+    color: var(--accent);
+    font-weight: 500;
+}
+
+.nav-link{
+    color: var(--text);
+    transition: 0.2s ease;
+}
+
+.navbar .bi::before {
+    margin-top: 3.5px;
+}
+
+.cmsoon {
+    background-color: #333333;
+}
+
+.cmsoon h3, .cmsoon h2, .cmsoon h1, .cmsoon span {
+    color: #9498a1;
+}

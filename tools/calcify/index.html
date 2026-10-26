@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="stylesheet" href="css/style.css" />
+  <script src="js/script.js" defer></script>
+
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16x16.png">
+  <link rel="manifest" href="assets/favicon/site.webmanifest">
+
+  <title>Calcify V3</title>
+</head>
+
+<body>
+  <header>
+    <h1>
+        Calcify
+        <span class="badge">V3</span>
+    </h1>
+    <h3>Renewed with a whole new logic!</h3>
+  </header>
+
+  <main>
+    <div class="Calculator">
+      <h1>Welcome to Calcify</h1>
+      <p>Write down your expression</p>
+
+      <div class="input-row">
+        <input type="text" id="Input" name="Input" aria-label="Calculator expression">
+
+        <div class="operators">
+          <button class="calcify-button" onclick="calculate()"> Calcify </button>
+        </div>
+      </div>
+
+
+      <div class="mobile-keypad">
+        <button class="key" data-value="7">7</button>
+        <button class="key" data-value="8">8</button>
+        <button class="key" data-value="9">9</button>
+        <button class="key" data-value="/" aria-label="divide">÷</button>
+
+        <button class="key" data-value="4">4</button>
+        <button class="key" data-value="5">5</button>
+        <button class="key" data-value="6">6</button>  <!--holy buttons 😭 -->
+        <button class="key" data-value="*" aria-label="multiply">×</button>
+
+        <button class="key" data-value="1">1</button>
+        <button class="key" data-value="2">2</button>
+        <button class="key" data-value="3">3</button>
+        <button class="key" data-value="-" aria-label="minus">-</button>
+
+        <button class="key" data-value="0">0</button>
+        <button class="key" data-value="." aria-label="Decimal point">.</button>
+        <button class="key" data-value="(" aria-label="Open parenthesis">(</button>
+        <button class="key" data-value=")" aria-label="Close parenthesis">)</button>
+
+        <button class="key" data-value="^" aria-label="power">^</button>
+        <button class="key" data-value="%">mod</button>
+        <button class="key" data-value="+" aria-label="plus">+</button>
+
+        <button class="key delete-key">DEL</button>
+      </div>
+
+
+      <button class="clear-button" onclick="clearAll()">Clear</button>
+
+      <div class="result" aria-live="polite">
+        <h2 id="result">Result: 0</h2>
+        <button id="copyResult" onclick="copyResult()">Copy</button>
+      </div>
+      
+      <div class="HowTo">
+          <h2>How can I calculate this?</h2>
+          <button onclick="showMe()">Show Me!</button>
+          <p id="howTo"></p>
+      </div>
+
+    </div>
+    <div class="History">
+      <h2>History</h2>
+      <p id="calcHistory"></p>
+      <button onclick="clearHistory()">Clear</button>
+      <button id="copyHistory"onclick="copyHistory()">Copy</button>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 Calcify - Made by Lucas</p>
+  </footer>
+</body>
+
+</html>

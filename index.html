@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@6.0.0-alpha.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-B/GM4XqrwHnWXNOWMbloTmrYXZg10cakYGmpfsR/bbzQ6JAJI4ihuyADKLnBgrCe" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/style.css" />
+
+
+    <script src="js/script.js"></script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/bootstrap@6.0.0-alpha.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-1a/pXj49ZQ1aHEmrJ+gMw1otqoVsYwlEnlD8mIfY2TV03r20Y0CN7uqx1tQogjPL"
+        crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <title> Fast Tools! </title>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-md">
+            <div class="container">
+                <a class="navbar-brand" href="#">Fast Tools</a>
+                <div class="navbar-nav flex-row gap-4">
+                    <a class="nav-link bi bi-tools" href="#tools">Tools</a>
+                    <a class="nav-link bi bi-question-lg" href="#about">About</a>
+                    <a class="nav-link bi bi-github" href="https://github.com/wirum">Github</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+
+    <main>
+    <div class="main-hero">
+        <section class="hero">
+            <div class="container">
+                <h1> Useful tools. <br> Without the commercial headache</h1>
+
+                <p class="hero-description"> Small utilities built to solve stuff quickly</p>
+
+                <a href="#tools" class="btn btn-primary">Explore tools</a>
+            </div>
+        </section>
+    </div>
+        <section id="tools" class="tools-section">
+            <div class="container">
+                <p class="section-label"> Tools </p>
+                <h2> Pick what you need </h2>
+
+                <div class="row g-4 mt-4">
+                    <div class="col-md-6 col-lg-4">
+                        <article class="tool-card">
+                            <div class="tool-content">
+                                <span class="tool-status ready">Ready</span>
+
+                                <h3> Calcify </h3>
+
+                                <p>A custom expression calculator with step-by-step explanations</p>
+
+                                <a href="../index.html">Open tool →</a>
+                            </div>
+                            <div class="calcify-art" aria-hidden="true">
+                                <span class="plus">+</span>
+                                <span class="minus">-</span>
+                                <span class="multiply">×</span>
+                                <span class="divide">÷</span>
+                                <span class="parenthesis">( )</span>
+                            </div>
+
+                        </article>
+                    </div>
+                    <div class="col-md-6 col-lg-4">
+                        <article class="tool-card">
+                            <div class="tool-content">
+                                <span class="tool-status ready"> Ready </span>
+
+                                <h3> Odd or Even</h3>
+
+                                <p>Quickly check if a number is odd or even</p>
+
+                                <a href="tools/odd/index.html">Open tool →</a>
+                            </div>
+                        <div class="odd-art" aria-hidden="true">
+                            <i class="bi bi-signpost-split sign-icon"></i>
+                        </div>
+                        </article>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <article class="tool-card cmsoon">
+                        <div class="tool-content">
+                            <span class="tool-status soon">Coming soon</span>
+                        
+                            <h3>Terra Tracker</h3>
+
+                            <p> Plan weekly coding goals and keep track of your progress</p>
+
+                        </div>
+                    <div class="terra-art">
+                        <i class="bi bi-stopwatch bi bi-stopwatch-icon"></i>
+                        <i class="bi bi-calendar bi bi-calendar-icon"></i>
+                    </div>
+                    </article>
+                </div>
+
+            </div>
+            </div>
+        </section>
+
+        <section id="about" class="about-section">
+            <div class="container">
+                <p class="section-label"> How did this start? </p>
+
+
+                <div class="row g-4 mt-4">
+                    <div class="col-md-6 col-lg-4">
+                        <article class="tool-card">
+                            <div class="tool-content">
+                                <h2>About</h2>
+                                <h3>This idea started during Terra, but I kind of took it a bit too far, so I decided to make it a whole 
+                                    system of tools built around the Calcify engine.
+                                </h3>
+                                <p class="muted">Big thanks to Terra motivating me to learn JavaScript.</p>
+                            </div>
+                        </article>
+                    </div>
+                </div>                        
+            </div>
+        </section>    
+    </main>
+
+    <footer class="py-3 my-4">
+        <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+            <li class="nav-item">
+                <a href="#" class="nav-link px-2 bi bi-house-door-fill"> Home </a>
+            </li>
+
+            <li class="nav-item">
+                <a href="#tools" class="nav-link px-2 bi bi-tools"> Tools </a>
+            </li>
+
+            <li class="nav-item">
+                <a href="#about" class="nav-link px-2 bi bi-question-lg"> About </a>
+            </li>
+
+            <li class="nav-item">
+                <a href="https://github.com/wirum" class="nav-link px-2 bi bi-github"> Github </a>
+            </li>
+        </ul>
+    </footer>
+
+</body>
+
+</html>

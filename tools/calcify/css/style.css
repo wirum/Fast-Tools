@@ -1,0 +1,276 @@
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&display=swap');
+
+:root {
+    --background: #101231;
+    --surface: #181C46;
+
+    --text: #E8ECFF;
+    --muted: #A7AEC9;
+
+    --accent: #b5a2fc;
+    --border: #E8ECFF;
+
+    --secondary: #E6D36A;
+}
+
+
+main{
+    display: flex;
+    gap: 20px;
+}
+
+body{
+    background-color: var(--background);
+    color: var(--text);
+    font-family: "Bricolage Grotesque", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 200;
+    font-style: normal;
+    font-variation-settings: "wdth" 100;
+}
+
+.badge {
+    color: var(--secondary);
+}
+
+.active-step {
+    color: var(--accent);
+}
+
+.result
+{
+    border: 2px solid var(--border);
+    border-radius: 5px;
+    margin-top: 0.5rem;
+    width: fit-content;
+    padding: 5px;
+    min-width: 120px;
+}
+
+.Calculator , 
+.History
+{
+    border: 2px solid var(--border);
+    padding: 24px;
+    border-radius: 18px;
+    margin-bottom: 2rem;
+}
+
+.Calculator
+{
+    flex: 2;
+    position: relative;
+}
+
+#howTo {
+    display: none;
+    overflow-wrap: anywhere;
+}
+
+.HowTo
+{
+    display: none;
+    position: absolute;
+    top: 75px;
+    left: 35%;
+    right: auto;
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 2rem;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.History
+{
+    flex: 1;
+    max-height: 665px;
+    overflow-y: auto;
+
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent) transparent;
+}
+
+.History::-webkit-scrollbar {
+    width: 6px;
+}
+.History::-webkit-scrollbar-track {
+    background: transparent;
+    margin-block: 12px;
+}
+.History::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 999px;
+}
+.History::-webkit-scrollbar-thumb:hover{
+    background: var(--accent);
+}
+
+input, button
+{
+    font-family: "Bricolage Grotesque", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 200;
+    font-style: normal;
+    font-variation-settings: "wdth" 100;
+    color: var(--text);
+    background-color: var(--background);
+    border: 2px solid var(--border);
+    border-radius: 5px;
+    padding: 10px 14px;
+}
+
+button, input
+{
+    transition: 0.2s ease;
+}
+
+button:hover, input:hover
+{
+    color: var(--background);
+    background-color: var(--border);
+    font-weight: 500;
+}
+
+button:hover
+{
+    cursor: pointer;
+}
+
+button:active
+{
+    color: var(--accent);
+    font-weight: 500;
+}
+
+input:focus
+{
+    cursor:text;
+}
+
+button:focus-visible,
+input:focus-visible,
+a:focus-visible{
+    outline: 3px solid var(--secondary);
+    outline-offset: 3px;
+}
+
+
+.operators
+{
+    margin: 0.2rem auto;
+}
+
+.mobile-keypad{
+    display:none;   
+}
+
+
+@media (max-width: 600px) 
+{
+    main
+    {
+        display: block;
+    }
+    .result
+    {
+        width: 90%;
+    }
+    input
+    {
+        margin-bottom: 0.5rem;
+    }
+    .operators
+    {
+        align-items: center;
+    }
+    .mobile-keypad {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+
+        width: 100%;
+        margin-top: 10px;
+        margin-bottom: 12px;
+
+        transition: 0.1s;
+    }
+
+    .mobile-keypad button {
+        min-height: 48px;
+    }
+
+    .HowTo {
+        position: static;
+        box-sizing: border-box;
+        border: 2px solid var(--border);
+        border-radius: 16px;
+        padding: 20px;
+        margin-top: 20px;
+        width: 100%;
+    }
+    
+    .key[data-value="+"],
+    .key[data-value="-"],
+    .key[data-value="/"],
+    .key[data-value="%"],
+    .key[data-value="^"],
+    .key[data-value="*"],
+    .key[data-value="."],
+    .key[data-value=")"],
+    .key[data-value="("]{
+        font-size: 1.4rem
+    }
+
+    .key[data-value="0"],
+    .key[data-value="1"],
+    .key[data-value="2"],
+    .key[data-value="3"],
+    .key[data-value="4"],
+    .key[data-value="5"],
+    .key[data-value="6"],
+    .key[data-value="7"],
+    .key[data-value="8"],
+    .key[data-value="9"]{
+        font-weight: 400;
+        font-size: large;
+    }
+
+    .clear-button{
+        font-weight: 400;
+        font-size: large;
+    }
+
+    .delete-key{
+        font-weight: 400;
+    }
+
+    .calcify-button{
+        font-size: medium;
+    }    
+    .key:active {
+        transform: scale(0.96);
+    }
+
+    .input-row {
+        display: flex;
+        gap:8px;
+    }
+
+    .input-row input {
+        flex: 1;
+        min-width: 0;
+        margin-bottom: 0;
+    }
+
+    .input-row .operators {
+        margin: 0;
+    }
+
+    .clear-main {
+        display: block;
+        margin-left: auto;
+        margin-top: 8px;
+    }
+}
