@@ -9,7 +9,7 @@ function updateTime()
     const locale = navigator.language;
 
     console.log("Fuso Horário:", timeZone);
-    console.log("Horário:", now.toLocaleTimeString());
+    console.log("Horário:", now.toLocaleTimeString(locale, {hourCycle: "h23"}));
     console.log("Data atual:", now.toLocaleDateString());
 
     const formatter = new Intl.DateTimeFormat(locale, {timeZone: timeZone, timeZoneName: "longGeneric"});
@@ -20,7 +20,7 @@ function updateTime()
 
     const timeZoneLabel = zonePart ? zonePart.value : timeZone;
 
-    document.getElementById("clock-time").innerText = now.toLocaleTimeString();
-    document.getElementById("date").innerText = now.toLocaleDateString(locale, {hour12: false});
+    document.getElementById("clock-time").innerText = now.toLocaleTimeString(locale, {hourCycle: "h23"});
+    document.getElementById("date").innerText = now.toLocaleDateString(locale);
     document.getElementById("timezone").innerText = timeZoneLabel;
 }
