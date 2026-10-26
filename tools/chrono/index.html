@@ -8,15 +8,12 @@
   <link rel="stylesheet" href="css/style.css" />
   <script src="js/script.js" defer></script>
 
-  <link rel="stylesheet" href="..\calcify\css\style.css" />
-  <script src="..\calcify\js\script.js"></script>
-
   <title>Chrono</title>
 </head>
 
 <body>
   <header>
-    <h1>
+    <h1 class="main-title">
         Chrono
         <span class="badge">Timer</span>
     </h1>
@@ -25,8 +22,10 @@
   <main>
     <section class="clock">
         <p id="clock-time">00:00:00</p>
-        <p id="date">Loading date..</p>
-        <p id="timezone">Loading timezone..</p>
+        <div class="clock-info">
+          <p id="date">Loading date..</p>
+          <p id="timezone">Loading timezone..</p>
+        </div>
     </section>
   </main>
 
