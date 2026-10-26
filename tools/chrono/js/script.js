@@ -1,11 +1,20 @@
 const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
 const now = new Date();
+const locale = navigator.language;
 
 console.log("Fuso Horário:", timeZone);
 console.log("Horário:", now.toLocaleTimeString());
 console.log("Data atual:", now.toLocaleDateString());
 
 document.getElementById("clock-time").innerText = now.toLocaleTimeString();
-document.getElementById("date").innerText = now.toLocaleDateString();
+document.getElementById("date").innerText = now.toLocaleDateString(locale, {hour12: false});
 document.getElementById("timezone").innerText = timeZone;
+
+const formatter = new Intl.DateTimeFormat(locale, {timeZone: timeZone, timeZoneName: "longGeneric"});
+
+const parts = formatter.formatToParts(now);
+
+const zonePart = parts.find(part => part.type === "timeZoneName");
+
+const timeZoneLabel = zonePart ? zonePart.value : timeZone;
