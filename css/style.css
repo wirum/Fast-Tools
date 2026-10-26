@@ -242,6 +242,18 @@ footer .border-bottom {
     border-color: var(--text);
 }
 
+
+
+footer img {
+    width: 35px;
+    height: auto;
+}
+
+footer p {
+    margin: 0;
+}
+
+
 .nav-link:hover {
     color: var(--accent);
     font-weight: 500;
