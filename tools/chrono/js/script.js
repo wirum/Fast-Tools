@@ -24,3 +24,5 @@ function updateTime()
     document.getElementById("date").innerText = now.toLocaleDateString(locale);
     document.getElementById("timezone").innerText = timeZoneLabel;
 }
+
+lucide.createIcons();

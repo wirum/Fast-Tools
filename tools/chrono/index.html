@@ -6,6 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <link rel="stylesheet" href="css/style.css" />
+  
+  <script src="https://unpkg.com/lucide@latest"></script>
   <script src="js/script.js" defer></script>
 
   <title>Chrono</title>
@@ -33,9 +35,15 @@
       <h1 class="secondary-title">Stopwatch</h1>
       <p id="time-display">00:00.0</p>
       <div class="stopwatch-buttons">
-        <button id="start"></button>
-        <button id="restart"></button>
-        <button id="lap"></button>
+        <button id="start">
+          <i data-lucide="play"></i>
+        </button>
+        <button id="restart">
+          <i data-lucide="rotate-ccw"></i>
+        </button>
+        <button id="lap">
+          <i data-lucide="flag"></i>
+        </button>
       </div>
     </section>
   </main>
