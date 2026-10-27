@@ -40,7 +40,7 @@ body{
     margin-bottom: 1rem;
 }
 
-#clock-time, #time-display
+#clock-time, #timeDisplay
 {
     margin-top: 0px;
     font-weight: 700;

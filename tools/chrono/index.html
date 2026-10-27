@@ -7,7 +7,7 @@
 
   <link rel="stylesheet" href="css/style.css" />
   
-  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://unpkg.com/lucide@latest" defer></script>
   <script src="js/script.js" defer></script>
 
   <title>Chrono</title>
@@ -33,9 +33,9 @@
 
     <section class="stopwatch">
       <h1 class="secondary-title">Stopwatch</h1>
-      <p id="time-display">00:00.0</p>
+      <p id="timeDisplay">00:00.0</p>
       <div class="stopwatch-buttons">
-        <button id="start">
+        <button id="start" onclick="toggleStopwatch()">
           <i data-lucide="play"></i>
         </button>
         <button id="restart">
