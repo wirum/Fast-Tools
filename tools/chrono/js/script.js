@@ -129,8 +129,12 @@ function markLap()
     resetLapTime();
     console.log(lap);
     lapCount++;
-    lapHistory.push(`Lap ${lapCount}: ${formatTime(lap)}`);
-    let historytext = lapHistory.join("\n");
+    lapHistory.push({
+        number: lapCount,
+        time: lap,
+        totalTime: lapTotal
+    });
+    let historytext = lapHistory.map(lap => `Lap ${lap.number}: ${formatTime(lap.time)} | Total: ${formatTime(lap.totalTime)}`).join("\n");
     document.getElementById("laps").innerText = historytext;
     document.querySelector("#lapTimeDisplay").style.display = "flex";
     document.querySelector(".lapDisplay").style.display = "flex";
