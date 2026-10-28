@@ -124,6 +124,8 @@ function markLap()
         return;
     }
     let lap = currentLapTime;
+    let lapTotal =  elapsed + (Date.now() - startTime); 
+    console.log(lapTotal);
     resetLapTime();
     console.log(lap);
     lapCount++;
