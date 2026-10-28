@@ -1,4 +1,4 @@
-# Calcify. — Terra Tools Roadmap
+# Fast tools Roadmap
 
 ## Main objective: V3 — Calcify V2 wrap up
 - [x] Review current engine
@@ -36,11 +36,11 @@
 - [x] Final visual consistency pass
 
 ### Calcify integration
-- [ ] Review Calcify link/integration
-- [ ] Separate reusable engine logic
-- [ ] Prepare shared JS structure
+- [x] Review Calcify link/integration
+- [x] Separate reusable engine logic
+- [x] Prepare shared JS structure
 - [x] Move Odd or Even into Fast Tools
-- [ ] Reuse Calcify logic where possible
+- [x] Reuse Calcify logic where possible
 - [x] Test shared scripts
 
 ## Graph (integrated with terra tracker also)
@@ -76,7 +76,7 @@
 - [ ] Handle API errors
 
 ## Chrono / Timer (integrate with terra tracker(i think))
-- [ ] Stopwatch
+- [-] Stopwatch (working on it)
 - [ ] Timer
 - [ ] Pomodoro
 - [ ] Local persistence
