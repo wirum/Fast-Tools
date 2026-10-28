@@ -34,6 +34,7 @@ let intervalId = null;
 
 let lapHistory = [];
 let lapCount = 0;
+let fastestLap = null;
 
 let lapElapsed = 0;
 let lapStartTime= 0;
@@ -146,4 +147,19 @@ function resetLapTime()
     currentLapTime = 0;
     lapStartTime = Date.now();
     lapTimeDisplay.textContent = '00:00:00.00';
+}
+
+function checkLap(lap)
+{
+    if (fastestLap == null)
+    {
+        fastestLap = lap;
+    }
+    else
+    {
+        if( lap < fastestLap )
+        {
+            fastestLap = lap;
+        }
+    }
 }
