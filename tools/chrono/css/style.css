@@ -127,6 +127,15 @@ footer p {
     font-size: 1rem;
 }
 
+#lapTimeDisplay 
+{
+    align-items: center;
+    gap: 16px;
+    font-weight: 500;
+    font-style: oblique;
+    font-size: 2rem;
+}
+
 .stopwatch
 {
     width: 70%;

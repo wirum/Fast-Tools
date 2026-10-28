@@ -37,6 +37,7 @@ let lapCount = 0;
 
 let lapElapsed = 0;
 let lapStartTime= 0;
+let currentLapTime = 0;
 
 const lapTimeDisplay = document.getElementById("lapTimeDisplay");
 const timeDisplay = document.getElementById("timeDisplay");
@@ -77,6 +78,7 @@ function updateStopwatch()
     {
         total = elapsed;
     }
+    currentLapTime = lapTotal;
     timeDisplay.textContent = formatTime(total);
     lapTimeDisplay.textContent = formatTime(lapTotal);
 }
@@ -97,23 +99,45 @@ function resetStopwatch()
     {
         clearInterval(intervalId);
     }
+    isRunning = false;
+    lapElapsed = 0;
+    currentLapTime = 0;
+    lapStartTime = 0;
+    lapHistory = [];
+    lapCount = 0;   
     timeDisplay.textContent = '00:00:00.00';
+    lapTimeDisplay.textContent = '00:00:00.00';
     elapsed = 0;
     startTime = 0;
     intervalId = null;
     startButton.innerHTML = '<i data-lucide="play"></i>';        
+    document.getElementById("laps").innerText = "";
+    document.querySelector("#lapTimeDisplay").style.display = "none";
+    document.querySelector(".lapDisplay").style.display = "none";
     lucide.createIcons();
-    isRunning = false;
 }
 
 function markLap()
 {
-    let lap = timeDisplay.textContent;
+    if (!isRunning)
+    {
+        return;
+    }
+    let lap = currentLapTime;
+    resetLapTime();
     console.log(lap);
     lapCount++;
-    lapHistory.push(`Lap ${lapCount}: ${lap}`);
+    lapHistory.push(`Lap ${lapCount}: ${formatTime(lap)}`);
     let historytext = lapHistory.join("\n");
     document.getElementById("laps").innerText = historytext;
     document.querySelector("#lapTimeDisplay").style.display = "flex";
     document.querySelector(".lapDisplay").style.display = "flex";
+}
+
+function resetLapTime()
+{
+    lapElapsed = 0;
+    currentLapTime = 0;
+    lapStartTime = Date.now();
+    lapTimeDisplay.textContent = '00:00:00.00';
 }
