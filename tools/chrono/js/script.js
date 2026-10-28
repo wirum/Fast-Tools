@@ -32,7 +32,10 @@ let startTime = 0;
 let elapsed = 0;
 let intervalId = null;
 
+let lapHistory = [];
+
 const timeDisplay = document.getElementById("timeDisplay");
+const startButton = document.getElementById("start");
 
 function toggleStopwatch() 
 {
@@ -41,12 +44,16 @@ function toggleStopwatch()
         elapsed += Date.now() - startTime;
         isRunning = false;
         clearInterval(intervalId);
+        startButton.innerHTML = '<i data-lucide="play"></i>';        
+        lucide.createIcons();
     }
     else
     {
         startTime = Date.now();
         isRunning = true;
         intervalId = setInterval(updateStopwatch, 50);
+        startButton.innerHTML = '<i data-lucide="pause"></i>';
+        lucide.createIcons();
     }
 }
 
@@ -69,6 +76,28 @@ function formatTime(ms)
     const formattedHours = String(Math.floor(ms/3600000)).padStart(2,"0"); //calcula a hora formata colocando zero onde falta e guarda (esse tá sem módulo pq deixei passar de 24 horas)
     const formattedMinutes = String((Math.floor(ms/60000)) % 60).padStart(2,"0"); //mesmo pra minutos e segundos
     const formattedSeconds = String((Math.floor(ms/1000)) % 60).padStart(2, "0"); //segundos
+    const formattedCent = String(Math.floor(ms / 10) % 100).padStart(2, "0"); //centesimo
 
-    return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+    return `${formattedHours}:${formattedMinutes}:${formattedSeconds}.${formattedCent}`;
+}
+
+function resetStopwatch()
+{
+    if (isRunning)
+    {
+        clearInterval(intervalId);
+    }
+    timeDisplay.textContent = '00:00:00.00';
+    elapsed = 0;
+    startTime = 0;
+    intervalId = null;
+    startButton.innerHTML = '<i data-lucide="play"></i>';        
+    lucide.createIcons();
+    isRunning = false;
+}
+
+function markLap()
+{
+    let lap = timeDisplay.textContent;
+    console.log(lap);
 }

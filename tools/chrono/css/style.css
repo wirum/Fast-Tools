@@ -40,12 +40,22 @@ body{
     margin-bottom: 1rem;
 }
 
-#clock-time, #timeDisplay
+#clock-time
 {
     margin-top: 0px;
     font-weight: 700;
     font-size: 7.5rem;
     border: 2px solid var(--border);
+    padding: 24px;
+    border-radius: 10px;
+    margin-bottom: 0rem;
+}   
+
+#timeDisplay
+{
+    margin-top: 0px;
+    font-weight: 700;
+    font-size: 7.5rem;
     padding: 24px;
     border-radius: 10px;
     margin-bottom: 0rem;

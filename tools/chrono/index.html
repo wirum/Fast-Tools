@@ -33,15 +33,15 @@
 
     <section class="stopwatch">
       <h1 class="secondary-title">Stopwatch</h1>
-      <p id="timeDisplay">00:00.0</p>
+      <p id="timeDisplay">00:00:00.00</p>
       <div class="stopwatch-buttons">
         <button id="start" onclick="toggleStopwatch()">
           <i data-lucide="play"></i>
         </button>
-        <button id="restart">
+        <button id="restart" onclick="resetStopwatch()">
           <i data-lucide="rotate-ccw"></i>
         </button>
-        <button id="lap">
+        <button id="lap" onclick="markLap()">
           <i data-lucide="flag"></i>
         </button>
       </div>
@@ -49,7 +49,7 @@
   </main>
 
   <footer>
-    <p>&copy; 2026 Calcify - Made by Lucas</p>
+    <p>&copy; 2026 Chrono - Made by Lucas</p>
     <img src="../../assets/images/Brasil.svg">
   </footer>
 </body>
