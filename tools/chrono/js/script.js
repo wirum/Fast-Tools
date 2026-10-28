@@ -35,6 +35,10 @@ let intervalId = null;
 let lapHistory = [];
 let lapCount = 0;
 
+let lapElapsed = 0;
+let lapStartTime= 0;
+
+const lapTimeDisplay = document.getElementById("lapTimeDisplay");
 const timeDisplay = document.getElementById("timeDisplay");
 const startButton = document.getElementById("start");
 
@@ -43,14 +47,16 @@ function toggleStopwatch()
     if (isRunning) 
     {
         elapsed += Date.now() - startTime;
+        lapElapsed += Date.now() - lapStartTime;
         isRunning = false;
         clearInterval(intervalId);
         startButton.innerHTML = '<i data-lucide="play"></i>';        
         lucide.createIcons();
     }
-    else
+    else    
     {
         startTime = Date.now();
+        lapStartTime = Date.now();
         isRunning = true;
         intervalId = setInterval(updateStopwatch, 50);
         startButton.innerHTML = '<i data-lucide="pause"></i>';
@@ -60,16 +66,19 @@ function toggleStopwatch()
 
 function updateStopwatch()
 {
-    let total = 0;
+    let total =0 ;
+    let lapTotal = lapElapsed;
     if (isRunning)
     {
         total = elapsed + (Date.now() - startTime);
+        lapTotal += Date.now() - lapStartTime;
     }
     else
     {
         total = elapsed;
     }
     timeDisplay.textContent = formatTime(total);
+    lapTimeDisplay.textContent = formatTime(lapTotal);
 }
 
 function formatTime(ms)
@@ -105,4 +114,6 @@ function markLap()
     lapHistory.push(`Lap ${lapCount}: ${lap}`);
     let historytext = lapHistory.join("\n");
     document.getElementById("laps").innerText = historytext;
+    document.querySelector("#lapTimeDisplay").style.display = "flex";
+    document.querySelector(".lapDisplay").style.display = "flex";
 }
