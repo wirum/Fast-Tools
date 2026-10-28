@@ -33,6 +33,7 @@ let elapsed = 0;
 let intervalId = null;
 
 let lapHistory = [];
+let lapCount = 0;
 
 const timeDisplay = document.getElementById("timeDisplay");
 const startButton = document.getElementById("start");
@@ -100,4 +101,8 @@ function markLap()
 {
     let lap = timeDisplay.textContent;
     console.log(lap);
+    lapCount++;
+    lapHistory.push(`Lap ${lapCount}: ${lap}`);
+    let historytext = lapHistory.join("\n");
+    document.getElementById("laps").innerText = historytext;
 }
