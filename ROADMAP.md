@@ -76,7 +76,7 @@
 - [ ] Handle API errors
 
 ## Chrono / Timer (integrate with terra tracker(i think))
-- [-] Stopwatch (working on it)
+- [x] Stopwatch
 - [ ] Timer
 - [ ] Pomodoro
 - [ ] Local persistence

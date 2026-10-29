@@ -4,10 +4,9 @@ A Simple tools hub with a big use on a daily routine!
 
 ## Features
 
-- Timer and chronometer on Chrono
+- Timer and chronometer on Chrono, with lap times and real time clock (based on your UTC time)
 - Step-by-step calculation on Calcify with **HowTo**
 - Odd/even checker
-- Responsive layout
 
 ## Technologies
 
@@ -19,7 +18,7 @@ Uses Bootstrap for the icons and some other styling.
 
 ## How to use
 
-Open the first index or open the website ![coming-soon!]()
+Open the first index or open the website ![Here!](https://wirum.github.io/Fast-Tools/)
 
 ## Screenshots
 
@@ -27,19 +26,6 @@ Open the first index or open the website ![coming-soon!]()
 
 ![Current FastTools]()
 ![CalcifyV3 screenshot](assets/images/Current.png)
-
-
-## Versions
-
-## Fast Tools Visual Identity
-
-- Dark navy background
-- Cyan primary accent
-- Lavender secondary accent
-- Bricolage Grotesque
-- Rounded cards
-- Low-opacity thematic background art
-- Subtle hover movement
 
 ## License
 
