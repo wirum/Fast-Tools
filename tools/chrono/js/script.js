@@ -47,6 +47,22 @@ const lapTimeDisplay = document.getElementById("lapTimeDisplay");
 const timeDisplay = document.getElementById("timeDisplay");
 const startButton = document.getElementById("start");
 
+const savedLaps = localStorage.getItem("chronoLapHistory");
+
+if (savedLaps)
+{
+    lapHistory = JSON.parse(savedLaps);
+    lapCount = lapHistory.length;
+    if (lapHistory.length > 0)
+    {
+        fastestLap = Math.min(...lapHistory.map(lap => lap.time));
+        slowestLap = Math.max(...lapHistory.map(lap => lap.time));
+    }
+    renderLapHistory();
+    document.querySelector(".lapDisplay").classList.add("collapsed");
+    document.getElementById("toggleLaps").setAttribute("aria-expanded", "false");
+}
+
 function toggleStopwatch() 
 {
     if (isRunning) 
@@ -113,6 +129,7 @@ function resetStopwatch()
     slowestLap = null;
     timeDisplay.textContent = '00:00:00.00';
     lapTimeDisplay.textContent = '00:00:00.00';
+    localStorage.removeItem("chronoLapHistory");
     elapsed = 0;
     startTime = 0;
     intervalId = null;
@@ -140,35 +157,12 @@ function markLap()
         time: lap,
         totalTime: lapTotal
     });
+    localStorage.setItem("chronoLapHistory", JSON.stringify(lapHistory));
     checkLap(lap);
     checkSlowestLap(lap);
     console.log("Volta mais rápida: ", formatTime(fastestLap));
     let historytext //= lapHistory.map(lap => `Lap ${lap.number}: ${formatTime(lap.time)} | Total: ${formatTime(lap.totalTime)}`).join("\n");
-    document.getElementById("laps").innerHTML =
-        lapHistory.map(lap => {
-            let lapClass = "";
-
-            if (lap.time === fastestLap) {
-                lapClass = "fastest-lap";
-                lapIcon = "↑ | ";
-            }
-            else if(lap.time === slowestLap)
-            {
-                lapClass = "slowest-lap";
-                lapIcon = "↓ | ";
-            }
-            else
-            {
-                lapIcon = ""
-            }
-
-            return `
-                <div class="lap-row ${lapClass}">
-                    ${lapIcon}Lap ${lap.number}: ${formatTime(lap.time)}
-                    | Total: ${formatTime(lap.totalTime)}
-                </div>
-            `;
-        }).join("");    
+    renderLapHistory();
     document.querySelector("#lapTimeDisplay").style.display = "flex";
     document.querySelector(".lapDisplay").style.display = "flex";
 }
@@ -208,5 +202,32 @@ function toggleLapHistory()
 {
     document.querySelector(".lapDisplay").classList.toggle("collapsed");
 
-    document.getElementById("toggleLaps").setAttribute("aria-expanded"), !document.querySelector(".lapDisplay").classList.contains("collapsed");
+    document.getElementById("toggleLaps").setAttribute("aria-expanded", !document.querySelector(".lapDisplay").classList.contains("collapsed"));
+}
+
+function renderLapHistory()
+{
+    document.getElementById("laps").innerHTML = lapHistory.map(
+        lap => {
+            let lapClass = "";
+            let lapIcon = "";
+
+            if(lap.time === fastestLap)
+            {
+                lapClass = "fastest-lap";
+                lapIcon = "↑ | ";
+            }
+            else if (lap.time === slowestLap)
+            {
+                lapClass = "slowest-lap";
+                lapIcon = "↓ | ";
+            }
+
+            return `
+                <div class="lap-row ${lapClass}">
+                    ${lapIcon}Lap ${lap.number}: ${formatTime(lap.time)}
+                    | Total: ${formatTime(lap.totalTime)}
+                </div>
+            `;
+        }).join("");
 }
