@@ -15,8 +15,7 @@
 
 <body>
   <header>
-    <h1 class="main-title">
-        Chrono
+    <h1 class="main-title"> Chrono
         <span class="badge">Timer</span>
     </h1>
   </header>
@@ -37,18 +36,27 @@
         <p id="timeDisplay">00:00:00.00</p>
         <p id="lapTimeDisplay">00:00:00.00</p>
       </div>
+
       <div class="stopwatch-buttons">
         <button id="start" onclick="toggleStopwatch()">
           <i data-lucide="play"></i>
         </button>
+
         <button id="restart" onclick="resetStopwatch()">
           <i data-lucide="rotate-ccw"></i>
         </button>
+
         <button id="lap" onclick="markLap()">
           <i data-lucide="flag"></i>
         </button>
       </div>
+
       <div class="lapDisplay">
+        <button id="toggleLaps" onclick="toggleLapHistory()" aria-expanded="true">
+          <span>Histórico de Voltas</span>
+          <i data-lucide="chevron-down"></i>
+        </button> 
+
         <div id="laps"></div>
       </div>
     </section>

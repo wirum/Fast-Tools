@@ -203,3 +203,10 @@ function checkSlowestLap(lap)
         slowestLap = lap;
     }
 }
+
+function toggleLapHistory()
+{
+    document.querySelector(".lapDisplay").classList.toggle("collapsed");
+
+    document.getElementById("toggleLaps").setAttribute("aria-expanded"), !document.querySelector(".lapDisplay").classList.contains("collapsed");
+}

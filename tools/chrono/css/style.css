@@ -214,6 +214,21 @@ footer p {
     animation: lapEntry 0.3s ease-out;
 }
 
+.lapDisplay.collapsed #laps
+{
+    display: none;
+}
+
+#toggleLaps svg
+{
+    transition: transform 0.2 ease;
+}
+
+.lapDisplay:not(.collapsed) #toggleLaps svg
+{
+    transform: rotate(180deg);
+}
+
 @keyframes lapEntry {
     from {
         opacity: 0.8;
