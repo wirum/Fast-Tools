@@ -109,7 +109,7 @@ footer p {
 
 .lapDisplay 
 {
-    border: 1.5px solid var(--border);
+    border: 2px solid var(--border);
     border-radius: 7px;
     display: flex;
     flex-direction: column;
@@ -118,7 +118,14 @@ footer p {
 
 .lap-row {
     padding: 8px;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 2px solid var(--border);
+}
+
+.button-text
+{
+    font-weight: 500;
+    font-size: 1rem;
+    gap: 0.5rem;
 }
 
 .fastest-lap
