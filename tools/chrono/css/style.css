@@ -114,12 +114,26 @@ footer p {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 40%;
+}
+
+.lap-row {
+    padding: 8px;
+    border-bottom: 1px solid var(--border);
+}
+
+.fastest-lap
+{
+    color: var(--secondary);
+    font-weight: 700;
+}
+
+.slowest-lap
+{
+    color: var(--muted)
 }
 
 .lapDisplay #laps
 {
-    display: flex;
     align-items: right;
     gap: 16px;
     font-weight: 500;

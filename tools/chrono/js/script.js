@@ -35,6 +35,7 @@ let intervalId = null;
 let lapHistory = [];
 let lapCount = 0;
 let fastestLap = null;
+let slowestLap = null;
 
 let lapElapsed = 0;
 let lapStartTime= 0;
@@ -106,6 +107,8 @@ function resetStopwatch()
     lapStartTime = 0;
     lapHistory = [];
     lapCount = 0;   
+    fastestLap = null;
+    slowestLap = null;
     timeDisplay.textContent = '00:00:00.00';
     lapTimeDisplay.textContent = '00:00:00.00';
     elapsed = 0;
@@ -135,8 +138,29 @@ function markLap()
         time: lap,
         totalTime: lapTotal
     });
-    let historytext = lapHistory.map(lap => `Lap ${lap.number}: ${formatTime(lap.time)} | Total: ${formatTime(lap.totalTime)}`).join("\n");
-    document.getElementById("laps").innerText = historytext;
+    checkLap(lap);
+    checkSlowestLap(lap);
+    console.log("Volta mais rápida: ", formatTime(fastestLap));
+    let historytext //= lapHistory.map(lap => `Lap ${lap.number}: ${formatTime(lap.time)} | Total: ${formatTime(lap.totalTime)}`).join("\n");
+    document.getElementById("laps").innerHTML =
+        lapHistory.map(lap => {
+            let lapClass = "";
+
+            if (lap.time === fastestLap) {
+                lapClass = "fastest-lap";
+            }
+            else if(lap.time === slowestLap)
+            {
+                lapClass = "slowest-lap";
+            }
+
+            return `
+                <div class="lap-row ${lapClass}">
+                    Lap ${lap.number}: ${formatTime(lap.time)}
+                    | Total: ${formatTime(lap.totalTime)}
+                </div>
+            `;
+        }).join("");    
     document.querySelector("#lapTimeDisplay").style.display = "flex";
     document.querySelector(".lapDisplay").style.display = "flex";
 }
@@ -161,5 +185,13 @@ function checkLap(lap)
         {
             fastestLap = lap;
         }
+    }
+}
+
+function checkSlowestLap(lap)
+{
+    if (slowestLap == null || lap > slowestLap)
+    {
+        slowestLap = lap;
     }
 }
