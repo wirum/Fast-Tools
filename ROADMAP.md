@@ -79,7 +79,7 @@
 - [x] Stopwatch
 - [ ] Timer
 - [ ] Pomodoro
-- [ ] Local persistence
+- [x] Local persistence
 
 ## Future
 - [ ] Personal project portfolio (maybe)
