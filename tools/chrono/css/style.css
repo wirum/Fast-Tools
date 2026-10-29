@@ -139,6 +139,10 @@ footer p {
     font-weight: 500;
     font-style: oblique;
     font-size: 1rem;
+    max-height: 1000px;
+    opacity: 1;
+    overflow: hidden;
+    transition: max-height 0.35s ease-in-out, opacity 0.25s ease;
 }
 
 #lapTimeDisplay 
@@ -204,7 +208,7 @@ footer p {
     align-items: center;
 }
 
-#lapTimeDisplay, .lapDisplay
+#lapTimeDisplay
 {
     display: none;
 }
@@ -217,16 +221,67 @@ footer p {
 .lapDisplay.collapsed #laps
 {
     display: none;
+    max-height: 0;
+    opacity: 0;
 }
 
 #toggleLaps svg
 {
-    transition: transform 0.2 ease;
+    transition: transform 0.2s ease;
 }
 
 .lapDisplay:not(.collapsed) #toggleLaps svg
 {
     transform: rotate(180deg);
+}
+
+input, button
+{
+    font-family: "Bricolage Grotesque", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 200;
+    font-style: normal;
+    font-variation-settings: "wdth" 100;
+    color: var(--text);
+    background-color: var(--background);
+    border: 2px solid var(--background);
+    border-radius: 5px;
+    padding: 10px 14px;
+}
+
+button, input
+{
+    transition: 0.2s ease;
+}
+
+button:hover, input:hover
+{
+    color: var(--background);
+    background-color: var(--border);
+    font-weight: 500;
+}
+
+button:hover
+{
+    cursor: pointer;
+}
+
+button:active
+{
+    color: var(--accent);
+    font-weight: 500;
+}
+
+input:focus
+{
+    cursor:text;
+}
+
+button:focus-visible,
+input:focus-visible,
+a:focus-visible{
+    outline: 3px solid var(--secondary);
+    outline-offset: 3px;
 }
 
 @keyframes lapEntry {
