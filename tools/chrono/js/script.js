@@ -51,16 +51,28 @@ const savedLaps = localStorage.getItem("chronoLapHistory");
 
 if (savedLaps)
 {
-    lapHistory = JSON.parse(savedLaps);
-    lapCount = lapHistory.length;
-    if (lapHistory.length > 0)
+    try
     {
-        fastestLap = Math.min(...lapHistory.map(lap => lap.time));
-        slowestLap = Math.max(...lapHistory.map(lap => lap.time));
+        const parsed = JSON.parse(savedLaps);
+
+        if (Array.isArray(parsed) && parsed.length > 0)
+        {
+            lapHistory = parsed;
+            lapCount = lapHistory.length;
+            fastestLap = Math.min(...lapHistory.map(lap => lap.time));
+            slowestLap = Math.max(...lapHistory.map(lap => lap.time));
+            renderLapHistory();
+
+            document.querySelector(".lapDisplay").style.display = "flex";
+            document.querySelector(".lapDisplay").classList.add("collapsed");
+            document.getElementById("toggleLaps").setAttribute("aria-expanded", "false");
+        }
     }
-    renderLapHistory();
-    document.querySelector(".lapDisplay").classList.add("collapsed");
-    document.getElementById("toggleLaps").setAttribute("aria-expanded", "false");
+    catch
+    {
+        console.error("savedLaps inválido");
+    }
+
 }
 
 function toggleStopwatch() 
