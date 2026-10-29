@@ -37,6 +37,8 @@ let lapCount = 0;
 let fastestLap = null;
 let slowestLap = null;
 
+let lapIcon = "";
+
 let lapElapsed = 0;
 let lapStartTime= 0;
 let currentLapTime = 0;
@@ -148,15 +150,21 @@ function markLap()
 
             if (lap.time === fastestLap) {
                 lapClass = "fastest-lap";
+                lapIcon = "↑ | ";
             }
             else if(lap.time === slowestLap)
             {
                 lapClass = "slowest-lap";
+                lapIcon = "↓ | ";
+            }
+            else
+            {
+                lapIcon = ""
             }
 
             return `
                 <div class="lap-row ${lapClass}">
-                    Lap ${lap.number}: ${formatTime(lap.time)}
+                    ${lapIcon}Lap ${lap.number}: ${formatTime(lap.time)}
                     | Total: ${formatTime(lap.totalTime)}
                 </div>
             `;
