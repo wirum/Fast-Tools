@@ -275,3 +275,13 @@ footer p {
 .cmsoon h3, .cmsoon h2, .cmsoon h1, .cmsoon span {
     color: #9498a1;
 }
+
+.development h3, .development h2, .development h1, .development span
+{
+    color: var(--accent);
+}
+
+.development .tool-status
+{
+    font-weight: 800;
+}
