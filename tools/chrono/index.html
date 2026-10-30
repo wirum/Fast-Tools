@@ -60,6 +60,35 @@
         <div id="laps"></div>
       </div>
     </section>
+
+    <section class="timer">
+      <h1 class="secondary-title">Timer</h1>
+      <div class="timerDisplay">
+        <input id="timerTime" type="text" value="00:00:00.00" readonly>
+      </div>
+      <div class="timerButtons">
+        <button id="timerStart">Start</button>
+        <button id="timerReset">Reset</button>
+        <button id="timerPause">Pause</button>
+      </div>
+      <div class="shortcutButtons">
+        <button data-minutes="1">+1m</button>
+        <button data-minutes="-1">-1m</button>
+        <button data-minutes="3">+3m</button>
+        <button data-minutes="-3">-3m</button>
+        <button data-minutes="5">+5m</button>
+        <button data-minutes="-5">-5m</button>
+      </div>
+      <div class="secondaryInput">
+        <input id="timerSecondaryInput" type="text" placeholder="Enter time (HH:MM:SS:CC)">
+        <button id="timerSet">Set</button>
+      </div>
+    </section>
+
+    <section class="pomodoro">
+      <h1 class="secondary-title">Pomodoro Timer</h1>
+
+    </section>
   </main>
 
   <footer>

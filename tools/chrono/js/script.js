@@ -8,10 +8,6 @@ function updateTime()
     const now = new Date();
     const locale = navigator.language;
 
-    console.log("Fuso Horário:", timeZone);
-    console.log("Horário:", now.toLocaleTimeString(locale, {hourCycle: "h23"}));
-    console.log("Data atual:", now.toLocaleDateString());
-
     const formatter = new Intl.DateTimeFormat(locale, {timeZone: timeZone, timeZoneName: "longGeneric"});
 
     const parts = formatter.formatToParts(now);
@@ -242,4 +238,40 @@ function renderLapHistory()
                 </div>
             `;
         }).join("");
+}
+
+let timerInitial = 0;
+let timerRemaining = 0;
+let timerEndTime = 0;
+let timerInterval = null;
+let isTimerRunning = false;
+const timerSet = document.getElementById("timerSet");
+
+timerSet.addEventListener("click", () =>{
+    const timerParts = document.getElementById("timerSecondaryInput").value.split(":")
+    if (timerParts.length == 3 && timerParts.every(part.length > 0 && part.split("").every(isNumber))) //vê se os putos são numeros e são menor q 3
+    {
+        timerRemaining = Number(timerParts[2]) + Number((timerParts[1]*60)) + Number((timerParts[0]*3600));
+        timerInitial = timerRemaining;
+        console.log(timerInitial);
+        updateTimerDisplay();
+    }
+})
+
+function updateTimerDisplay()
+{
+    document.getElementById("timerTime").value = formatTime(timerRemaining * 1000);
+}
+
+const buttons = document.querySelectorAll("[data-minutes]");
+
+buttons.forEach(button =>{
+    button.addEventListener("click", () =>{
+        timerRemaining = Math.max(0 ,timerRemaining + Number(button.dataset.minutes) * 60);
+        updateTimerDisplay();
+    })
+})
+
+function isNumber(isNum) {
+    return ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"].includes(String(isNum)); //calcify returns
 }
