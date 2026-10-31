@@ -249,7 +249,8 @@ const timerSet = document.getElementById("timerSet");
 
 timerSet.addEventListener("click", () =>{
     const timerParts = document.getElementById("timerSecondaryInput").value.split(":")
-    if (timerParts.length == 3 && timerParts.every(part.length > 0 && part.split("").every(isNumber))) //vê se os putos são numeros e são menor q 3
+    const secondParts = timerParts.value.split(".")
+    if (timerParts.length === 3 && timerParts.every(part => part.length > 0 && part.split("").every(isNumber))) //vê se os putos são numeros e são menor q 3
     {
         timerRemaining = Number(timerParts[2]) + Number((timerParts[1]*60)) + Number((timerParts[0]*3600));
         timerInitial = timerRemaining;
@@ -274,4 +275,44 @@ buttons.forEach(button =>{
 
 function isNumber(isNum) {
     return ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"].includes(String(isNum)); //calcify returns
+}
+
+document.getElementById("timerToggle").addEventListener("click", timerToggle);
+
+function timerToggle()
+{
+    if(isTimerRunning)
+    {
+        timerRemaining = Math.max(0, (timerEndTime - Date.now()) / 1000);
+        stopTimer();
+    }
+    else
+    {
+        if (timerRemaining <= 0) return;
+
+        timerEndTime = Date.now() + timerRemaining * 1000;
+        isTimerRunning = true;
+        timerInterval = setInterval(updateTimer, 50);
+    }
+    updateTimerDisplay();
+}
+
+function updateTimer()
+{
+    const timeLeft = timerEndTime - Date.now();
+
+    timerRemaining = Math.max(0, timeLeft / 1000);
+    updateTimerDisplay();
+
+    if (timeLeft <= 0)
+    {
+        stopTimer();
+    }
+}
+
+function stopTimer()
+{
+    clearInterval(timerInterval);
+    timerInterval = null;
+    isTimerRunning = false;
 }
