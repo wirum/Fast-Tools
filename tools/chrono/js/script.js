@@ -445,7 +445,6 @@ function updatePomodoroDisplay()
     {
         document.querySelector(".pomodoroStatus").textContent = "FOCUS";
     }
-    lucide.createIcons();
 }
 
 function pomodoroFormatTime(ms)
@@ -471,7 +470,7 @@ function togglePomodoro()
         pomodoroRunning = true;
         pomodoroInterval = setInterval(updatePomodoro, 50);
         document.getElementById("pomodoroToggle").innerHTML = '<i data-lucide="pause"></i>';
-
+        lucide.createIcons();
     }
     updatePomodoroDisplay();
 }
@@ -502,5 +501,18 @@ function updatePomodoro()
         }
         pomodoroEndTime = Date.now() + pomodoroRemaining * 1000;
     } 
+    updatePomodoroDisplay();
+}
+
+document.getElementById("pomodoroReset").addEventListener("click", resetPomodoro)
+
+function resetPomodoro()
+{
+    stopPomodoroTimer();
+
+    pomodoroFocus = true;
+    pomodoroRemaining = pomodoroFocusTime;
+    pomodoroEndTime = 0;
+
     updatePomodoroDisplay();
 }

@@ -289,9 +289,8 @@ input:focus
     cursor:text;
 }
 
-button:focus-visible,
-input:focus-visible,
-a:focus-visible{
+button:focus-visible, input:focus-visible, a:focus-visible
+{
     outline: 3px solid var(--secondary);
     outline-offset: 3px;
 }
@@ -330,7 +329,7 @@ a:focus-visible{
     font-size: 2rem;
 }
 
-.pomodoroButtons
+.pomodoroButtons, .timerButtons
 {
     display: flex;
     gap: 10px;
@@ -338,7 +337,7 @@ a:focus-visible{
     margin-bottom: 1rem;
 }
 
-.pomodoroButtons button 
+.pomodoroButtons button , .timerButtons button
 {
     display: flex;
     align-items: center;
@@ -352,22 +351,88 @@ a:focus-visible{
     transition: 0.2s;
 }
 
-.pomodoroButtons button:hover
+.pomodoroButtons button:hover, .timerButtons button:hover
 {
     background: var(--border);
     color: var(--background);
 }
 
-.pomodoroButtons svg
+.pomodoroButtons svg, .timerButtons svg
 {
     width: 22px;
     height: 22px;
 }
 
-#pomodoroTime,
-.pomodoroStatus
+#pomodoroTime, .pomodoroStatus
 {
     margin: 0;
+}
+
+.timer
+{
+    width: 70%;
+    box-sizing: border-box;
+    border: 4px solid var(--border);
+    padding: 24px;
+    border-radius: 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.timerDisplay
+{
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    border: 2px solid var(--border);
+    width: 90%;
+    border-radius: 10px;
+    padding: 12px;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+#timerTime
+{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 12px;
+    font-size: 7.5rem;
+    font-weight: 700;
+}
+
+.shortcutButtons button, .secondaryInput input, .secondaryInput button
+{
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    border: 2px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    border-radius: 8px;
+    transition: 0.2s;
+}
+
+.shortcutButtons button:hover, .secondaryInput input:hover, .secondaryInput button:hover
+{
+    background: var(--border);
+    color: var(--background);
+}
+
+.shortcutButtons
+{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.secondaryInput
+{
+    display: flex;
+    align-items: center;
+    gap: 5px;
 }
 
 @keyframes lapEntry {
