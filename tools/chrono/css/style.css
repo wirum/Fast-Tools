@@ -1,22 +1,23 @@
-@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&display=swap');
+/*@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&display=swap');*/
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&display=swap');
 
 :root {
-    --background: #101231;
-    --surface: #181C46;
+    --background: #17130F;
+    --surface: #292019;
 
-    --text: #E8ECFF;
-    --muted: #A7AEC9;
+    --text: #E8DCC5;
+    --muted: #A99A82;
 
-    --accent: #b5a2fc;
-    --border: #E8ECFF;
+    --accent: #B58A50;
+    --border: #80613B;
 
-    --secondary: #E6D36A;
+    --secondary: #D0AD70;
 }
 
 body{
     background-color: var(--background);
     color: var(--text);
-    font-family: "Bricolage Grotesque", sans-serif;
+    font-family: "Cinzel", serif;
     font-optical-sizing: auto;
     font-weight: 200;
     font-style: normal;
@@ -433,6 +434,11 @@ button:focus-visible, input:focus-visible, a:focus-visible
     display: flex;
     align-items: center;
     gap: 5px;
+}
+
+.secondaryInput input, .shortcutButtons button, .secondaryInput button  
+{
+    font-family: "Cinzel", serif;
 }
 
 @keyframes lapEntry {
