@@ -64,11 +64,12 @@
     <section class="timer">
       <h1 class="secondary-title">Timer</h1>
       <div class="timerDisplay">
-        <input id="timerTime" type="text" value="00:00:00.00" readonly>
+        <p id="timerTime">00:00:00.00</p>
       </div>
       <div class="timerButtons">
-        <button id="timerToggle">Start</button>
-        <button id="timerReset">Reset</button>
+        <button id="timerToggle"><i data-lucide="play"></i></button>
+        <button id="timerReset"><i data-lucide="rotate-ccw"></i></button>
+        <button id="timerClear"><i data-lucide=""></i></button>
       </div>
       <div class="shortcutButtons">
         <button data-minutes="1">+1m</button>

@@ -261,17 +261,20 @@ timerSet.addEventListener("click", () => {
             centiseconds = Number(secondParts[1].padEnd(2, "0"));
         }
 
-        timerRemaining = Number(timerParts[0]) * 3600 + Number(timerParts[1]) + Number(secondParts[0]) + centiseconds / 100;
+        timerRemaining = Number(timerParts[0]) * 3600 + Number(timerParts[1] * 60) + Number(secondParts[0]) + centiseconds / 100;
 
         timerInitial = timerRemaining;
-
+        if (isTimerRunning)
+        {
+            timerEndTime = Date.now() + timerRemaining * 1000;
+        }
         updateTimerDisplay();
     }
 });
 
 function updateTimerDisplay()
 {
-    document.getElementById("timerTime").value = formatTime(timerRemaining * 1000);
+    document.getElementById("timerTime").textContent = formatTime(timerRemaining * 1000);
 }
 
 const buttons = document.querySelectorAll("[data-minutes]");
@@ -279,6 +282,11 @@ const buttons = document.querySelectorAll("[data-minutes]");
 buttons.forEach(button =>{
     button.addEventListener("click", () =>{
         timerRemaining = Math.max(0 ,timerRemaining + Number(button.dataset.minutes) * 60);
+        timerInitial = Math.max(0, timerInitial + Number(button.dataset.minutes) * 60);
+        if (isTimerRunning)
+        {
+            timerEndTime = Date.now() + timerRemaining * 1000;
+        }
         updateTimerDisplay();
     })
 })
@@ -316,6 +324,20 @@ function isDigits(value)
 
 document.getElementById("timerToggle").addEventListener("click", timerToggle);
 
+document.getElementById("timerReset").addEventListener("click", timerReset);
+
+function timerReset()
+{
+    if (isTimerRunning)
+    {
+        stopTimer();
+    }
+
+    timerRemaining = timerInitial;
+    updateTimerDisplay();
+}
+
+
 function timerToggle()
 {
     if(isTimerRunning)
@@ -330,6 +352,8 @@ function timerToggle()
         timerEndTime = Date.now() + timerRemaining * 1000;
         isTimerRunning = true;
         timerInterval = setInterval(updateTimer, 50);
+        document.getElementById("timerToggle").innerHTML = '<i data-lucide="pause"></i>';
+        lucide.createIcons();
     }
     updateTimerDisplay();
 }
@@ -347,9 +371,55 @@ function updateTimer()
     }
 }
 
+document.getElementById("timerClear").addEventListener("click", timerClear);
+
+function timerClear()
+{
+    stopTimer();
+    timerInitial = 0;
+    timerRemaining = 0;
+    timerEndTime = 0;
+    document.getElementById("timerSecondaryInput").value = ''
+    updateTimerDisplay();
+}
+
 function stopTimer()
 {
     clearInterval(timerInterval);
     timerInterval = null;
     isTimerRunning = false;
+    document.getElementById("timerToggle").innerHTML = '<i data-lucide="play"></i>';
+    lucide.createIcons();
+}
+
+lucide.createIcons();
+
+function parseTimerInput(value) //future add
+{
+    const parts = value.trim().split(" ").filter(part => part !== "");
+    
+    let totalSeconds = 0;
+
+    for(const part of parts)
+    {
+        const unit = part[part.length - 1].toLowerCase();
+        const amount  = Number(part.slice(0,-1));
+        if(unit == "h")
+        {
+            totalSeconds += amount * 3600;
+        }
+        else if (unit == "m")
+        {
+            totalSeconds += amount * 60;
+        }
+        else if (unit == "s")
+        {
+            totalSeconds += amount;
+        }
+        else if (unit == "c")
+        {
+            totalSeconds += amount / 100;
+        }
+    }
+    return totalSeconds;
 }
