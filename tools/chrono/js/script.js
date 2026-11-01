@@ -445,6 +445,7 @@ function updatePomodoroDisplay()
     {
         document.querySelector(".pomodoroStatus").textContent = "FOCUS";
     }
+    lucide.createIcons();
 }
 
 function pomodoroFormatTime(ms)
@@ -469,6 +470,8 @@ function togglePomodoro()
         pomodoroEndTime = Date.now() + pomodoroRemaining * 1000;
         pomodoroRunning = true;
         pomodoroInterval = setInterval(updatePomodoro, 50);
+        document.getElementById("pomodoroToggle").innerHTML = '<i data-lucide="pause"></i>';
+
     }
     updatePomodoroDisplay();
 }
@@ -484,7 +487,7 @@ function stopPomodoroTimer()
 
 function updatePomodoro()
 {
-    pomodoroRemaining = Math.max(0, Math.ceil((pomodoroEndTime - Date.now()) / 1000)); //math.ceil impede de mostrar 24:59 logo no primeiro segundo
+    pomodoroRemaining = Math.max(0,(pomodoroEndTime - Date.now()) / 1000);
 
     if (pomodoroRemaining == 0)
     {
