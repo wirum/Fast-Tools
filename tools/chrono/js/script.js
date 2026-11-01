@@ -247,17 +247,27 @@ let timerInterval = null;
 let isTimerRunning = false;
 const timerSet = document.getElementById("timerSet");
 
-timerSet.addEventListener("click", () =>{
-    const timerParts = document.getElementById("timerSecondaryInput").value.split(":")
-    const secondParts = timerParts.value.split(".")
-    if (timerParts.length === 3 && timerParts.every(part => part.length > 0 && part.split("").every(isNumber))) //vê se os putos são numeros e são menor q 3
+timerSet.addEventListener("click", () => {
+    const timerParts = document.getElementById("timerSecondaryInput").value.split(":");
+    
+    if(timerParts.length === 3 && isDigits(timerParts[0]) && isDigits(timerParts[1]) && isValidSeconds(timerParts[2]))
     {
-        timerRemaining = Number(timerParts[2]) + Number((timerParts[1]*60)) + Number((timerParts[0]*3600));
+        const secondParts = timerParts[2].split(".");
+
+        let centiseconds = 0;
+
+        if (secondParts.length === 2)
+        {
+            centiseconds = Number(secondParts[1].padEnd(2, "0"));
+        }
+
+        timerRemaining = Number(timerParts[0]) * 3600 + Number(timerParts[1]) + Number(secondParts[0]) + centiseconds / 100;
+
         timerInitial = timerRemaining;
-        console.log(timerInitial);
+
         updateTimerDisplay();
     }
-})
+});
 
 function updateTimerDisplay()
 {
@@ -275,6 +285,33 @@ buttons.forEach(button =>{
 
 function isNumber(isNum) {
     return ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"].includes(String(isNum)); //calcify returns
+}
+
+function isValidSeconds(value)
+{
+    const parts  = value.split(".");
+
+    if (parts.length > 2 || !isDigits(parts[0])) 
+    {
+        return false;
+    }
+
+    if (parts.length === 1 ) 
+    {
+        return true;
+    }
+
+    if (parts[1].length >= 1 && parts[1].length <= 2 && isDigits(parts[1]))
+    {
+        return true;
+    }
+
+    return false;
+}
+
+function isDigits(value)
+{
+    return value.length > 0 && value.split("").every(isNumber);
 }
 
 document.getElementById("timerToggle").addEventListener("click", timerToggle);
