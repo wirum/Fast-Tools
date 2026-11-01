@@ -31,7 +31,7 @@ body{
 {
     width: 70%;
     box-sizing: border-box  ;
-    border: 8px double var(--border);
+    border: 4px solid var(--border);
     padding: 24px;
     border-radius: 18px;
     display: flex;
@@ -167,7 +167,7 @@ footer p {
 {
     width: 70%;
     box-sizing: border-box;
-    border: 8px double var(--border);
+    border: 4px solid var(--border);
     padding: 24px;
     border-radius: 18px;
     display: flex;
@@ -294,6 +294,80 @@ input:focus-visible,
 a:focus-visible{
     outline: 3px solid var(--secondary);
     outline-offset: 3px;
+}
+
+.pomodoro
+{
+    width: 70%;
+    box-sizing: border-box;
+    border: 4px solid var(--border);
+    padding: 24px;
+    border-radius: 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.pomodoroDisplay
+{
+    font-weight: 700;
+    font-size: 7.5rem;
+    border: 2px solid var(--border);
+    padding: 12px;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+    text-align: center;
+    width: 40%;
+}
+
+.pomodoroStatus
+{
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+    font-style: oblique;
+    font-size: 2rem;
+}
+
+.pomodoroButtons
+{
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+    margin-bottom: 1rem;
+}
+
+.pomodoroButtons button 
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    background: var(--surface);
+    color: var(--text);
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.pomodoroButtons button:hover
+{
+    background: var(--border);
+    color: var(--background);
+}
+
+.pomodoroButtons svg
+{
+    width: 22px;
+    height: 22px;
+}
+
+#pomodoroTime,
+.pomodoroStatus
+{
+    margin: 0;
 }
 
 @keyframes lapEntry {
