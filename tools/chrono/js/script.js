@@ -169,7 +169,6 @@ function markLap()
     checkLap(lap);
     checkSlowestLap(lap);
     console.log("Volta mais rápida: ", formatTime(fastestLap));
-    let historytext //= lapHistory.map(lap => `Lap ${lap.number}: ${formatTime(lap.time)} | Total: ${formatTime(lap.totalTime)}`).join("\n");
     renderLapHistory();
     document.querySelector("#lapTimeDisplay").style.display = "flex";
     document.querySelector(".lapDisplay").style.display = "flex";
@@ -292,7 +291,7 @@ buttons.forEach(button =>{
 })
 
 function isNumber(isNum) {
-    return ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"].includes(String(isNum)); //calcify returns
+    return ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"].includes(String(isNum)); //calcify calling back lol (reused it)
 }
 
 function isValidSeconds(value)
@@ -422,4 +421,63 @@ function parseTimerInput(value) //future add
         }
     }
     return totalSeconds;
+}
+
+let pomodoroFocusTime = 25 * 60; //25m * 60 = 1500 segundos
+let pomodoroBreakTime = 5 * 60; // 5m * 60 = 300s
+
+let pomodoroRemaining = pomodoroFocusTime;
+let pomodoroEndTime = 0;
+let pomodoroInterval = null;
+
+let pomodoroRunning = false;
+let pomodoroFocus = true;
+
+function updatePomodoroDisplay()
+{
+    document.getElementById("pomodoroTime").textContent = pomodoroFormatTime(pomodoroRemaining * 1000);
+
+    if (!pomodoroFocus)
+    {
+        document.querySelector(".pomodoroStatus").textContent = "BREAK";
+    }
+    else
+    {
+        document.querySelector(".pomodoroStatus").textContent = "FOCUS";
+    }
+}
+
+function pomodoroFormatTime(ms)
+{
+    const formattedMinutes = String((Math.floor(ms/60000)) % 60).padStart(2,"0"); //mesmo pra minutos e segundos
+    const formattedSeconds = String((Math.floor(ms/1000)) % 60).padStart(2, "0"); //segundos
+
+    return `${formattedMinutes}:${formattedSeconds}`;
+}
+
+document.getElementById("pomodoroToggle").addEventListener("click", togglePomodoro);
+
+function togglePomodoro()
+{
+    if (pomodoroRunning)
+    {
+        pomodoroRemaining = (pomodoroEndTime - Date.now()) / 1000;
+        stopPomodoroTimer();
+    }
+    else
+    {
+        pomodoroEndTime = (Date.now() + pomodoroRemaining) * 1000;
+        pomodoroRunning = true;
+        pomodoroInterval = setInterval(updatePomodoroDisplay, 50);
+    }
+    updatePomodoroDisplay();
+}
+
+function stopPomodoroTimer()
+{
+    clearInterval(pomodoroInterval);
+    pomodoroInterval = null;
+    pomodoroRunning = false;
+    document.getElementById("pomodoroToggle").innerHTML = '<i data-lucide="play"></i>';
+    lucide.createIcons();
 }
