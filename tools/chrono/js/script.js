@@ -466,9 +466,9 @@ function togglePomodoro()
     }
     else
     {
-        pomodoroEndTime = (Date.now() + pomodoroRemaining) * 1000;
+        pomodoroEndTime = Date.now() + pomodoroRemaining * 1000;
         pomodoroRunning = true;
-        pomodoroInterval = setInterval(updatePomodoroDisplay, 50);
+        pomodoroInterval = setInterval(updatePomodoro, 50);
     }
     updatePomodoroDisplay();
 }
@@ -480,4 +480,24 @@ function stopPomodoroTimer()
     pomodoroRunning = false;
     document.getElementById("pomodoroToggle").innerHTML = '<i data-lucide="play"></i>';
     lucide.createIcons();
+}
+
+function updatePomodoro()
+{
+    pomodoroRemaining = Math.max(0, Math.ceil((pomodoroEndTime - Date.now()) / 1000)); //math.ceil impede de mostrar 24:59 logo no primeiro segundo
+
+    if (pomodoroRemaining == 0)
+    {
+        pomodoroFocus = !pomodoroFocus
+        if (pomodoroFocus)
+        {
+            pomodoroRemaining = pomodoroFocusTime;
+        }
+        else
+        {
+            pomodoroRemaining = pomodoroBreakTime;
+        }
+        pomodoroEndTime = Date.now() + pomodoroRemaining * 1000;
+    } 
+    updatePomodoroDisplay();
 }
