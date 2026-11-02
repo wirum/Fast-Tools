@@ -60,7 +60,7 @@ Alternates between FOCUS state and BREAK.
 ## IMPORTANT OBSERVATIONS FOR CHRONO V1
 
 - It probably has a bunch of little bugs I haven't noticed.
-- It has VERY LITTLE responsiveness
+- It has VERY LIMITED responsiveness
 - And yes i'll work on it next week (i was VERY BUSY this week so i had to do everything on the BASIC of the BASIC)
 - A revamp is coming soon, principally on the main logic. I really don't like the way it is lol... so big changes are coming.
 
