@@ -2,19 +2,19 @@
 @import url('https://fonts.googleapis.com/css2?family=Henny+Penny&display=swap');
 
 :root {
-    --background: #080609;
-    --surface: #1f1635;
+    --background: #100D17;
+    --surface: #21182D;
+    --filling: #120F18;
 
-    --filling: #100a1f;
+    --text: #F8DCB6;
+    --muted: #737C5D;
 
-    --text: #c51b27;
-    --muted: #78658f;
+    --accent: #EC7C22;
+    --border: #9F440B;
 
-    --accent: #7961ad;
-    --border: #59427f;
-
-    --secondary: #d0d85a;
+    --secondary: #79A87A;
 }
+
 body{
     background-color: var(--background);
     color: var(--text);
@@ -80,6 +80,7 @@ body{
     align-items: center;
     justify-content: center;
     display: flex;
+    flex-direction: row;
 
     font-size: 3rem;
 }
@@ -449,6 +450,27 @@ button:focus-visible, input:focus-visible, a:focus-visible
 .secondaryInput input, .shortcutButtons button, .secondaryInput button, .button-text
 {
     font-family: "Cinzel", serif;
+}
+
+#clock-time, .stopwatchDisplay, .timerDisplay, .pomodoroDisplay
+{
+    box-shadow: 0 0 18px rgba(236, 124, 34, 0.30), inset 0 0 12px rgba(236, 124, 34, 0.18);
+}
+
+.clock, .stopwatch, .timer, .pomodoro
+{
+    background: var(--surface);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+}
+
+#timeDisplay 
+{
+    background: transparent;
+}
+
+.stopwatchDisplay
+{
+    background: var(--surface);
 }
 
 @keyframes lapEntry {
