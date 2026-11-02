@@ -7,7 +7,7 @@ Fast-tool's time utility!
 - Timer
 - Stopwatch
 - Pomodoro
-- Live UTC time
+- Live Local time
 
 ## Technologies
 
@@ -19,7 +19,7 @@ Uses lucide's icons.
 
 ## How to use
 
-Open the direct tool link ![Here!](https://wirum.github.io/Fast-Tools/tools/chrono/index.html)
+Open the direct tool link [Here!](https://wirum.github.io/Fast-Tools/tools/chrono/index.html)
 
 
 ### UTC Clock
@@ -36,9 +36,11 @@ And they save on local storage.
 
 ### Timer
 
-Timer you insert the time in the HH:MM:SS.CC( Hours : Minutes : Seconds . Centiseconds ) (IT HAS TO BE IN THE DOT FORMAT otherwise it WILL NOT WORK, im working on fixing that on V2) and then click on Set, then the play button.
+Enter the time using the `HH:MM:SS.CC` format (Hours : Minutes : Seconds . Centiseconds). **IT HAS TO USE A DOT (`.`) BEFORE THE CENTISECONDS, OTHERWISE IT WILL NOT WORK.** I'm working on fixing this in V2.
 
-Shortcut buttons add minutes to the timer, you can click them while the timer is still running that they'll work.
+After entering the time, click **Set**, then press the **Play** button.
+
+Shortcut buttons adds minutes to the timer, you can click them while the timer is still running that they'll work.
 
 Erase button on the right will clear the input the time back to zero.
 
@@ -48,6 +50,8 @@ The classic pomodoro, it is unfortunately locked to 25m, custom times will be on
 
 Play and Reset buttons work just like on the other ones.
 
+Alternates between FOCUS state and BREAK.
+
 ## Screenshots
 
 ![Current1](../../assets/Chrono/Current1.png)
@@ -55,8 +59,8 @@ Play and Reset buttons work just like on the other ones.
 
 ## IMPORTANT OBSERVATIONS FOR CHRONO V1
 
-- It IS GOING to have a lot of bugs (i think).
-- It has VERY LITTLE responsivity
+- It probably has a bunch of little bugs I haven't noticed.
+- It has VERY LITTLE responsiveness
 - And yes i'll work on it next week (i was VERY BUSY this week so i had to do everything on the BASIC of the BASIC)
 - A revamp is coming soon, principally on the main logic. I really don't like the way it is lol... so big changes are coming.
 
