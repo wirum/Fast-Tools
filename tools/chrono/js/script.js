@@ -346,8 +346,10 @@ function timerToggle()
     }
     else
     {
-        if (timerRemaining <= 0) return;
-
+        if (timerRemaining <= 0)
+        {
+            return;
+        }
         timerEndTime = Date.now() + timerRemaining * 1000;
         isTimerRunning = true;
         timerInterval = setInterval(updateTimer, 50);
@@ -366,6 +368,7 @@ function updateTimer()
 
     if (timeLeft <= 0)
     {
+        playAlarm();
         stopTimer();
     }
 }
@@ -493,6 +496,7 @@ function updatePomodoro()
         pomodoroFocus = !pomodoroFocus
         if (pomodoroFocus)
         {
+            playAlarm();
             pomodoroRemaining = pomodoroFocusTime;
         }
         else
@@ -515,4 +519,11 @@ function resetPomodoro()
     pomodoroEndTime = 0;
 
     updatePomodoroDisplay();
+}
+
+const alarmSound = new Audio("../../assets/Chrono/audio/bell.wav");
+
+function playAlarm() {
+    alarmSound.currentTime = 0;
+    alarmSound.play();
 }

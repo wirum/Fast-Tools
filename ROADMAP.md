@@ -87,5 +87,7 @@
 
 - [x] Stopwatch
 - [x] Timer
-- [ ] Pomodoro
+- [x] Pomodoro
 - [x] Local persistence
+
+(mb i know the responsivity of this is total buns, i'll be fixing it at v2)
