@@ -18,14 +18,25 @@ Uses Bootstrap for the icons and some other styling.
 
 ## How to use
 
-Open the first index or open the website ![Here!](https://wirum.github.io/Fast-Tools/)
+Open the first index or open the website [Here!](https://wirum.github.io/Fast-Tools/)
 
 ## Screenshots
 
 ### Current
 
-![Current FastTools]()
-![CalcifyV3 screenshot](assets/images/Current.png)
+![Current FastTools](assets/images/Current.png)
+
+### Current Calcify
+
+![CalcifyV3 screenshot](tools/calcify/assets/images/Current.png)
+
+### Current Odd or Even
+
+![Odd or Even screenshot](assets/Odd/Current.png)
+
+### Current Chrono
+
+![Odd or Even screenshot](assets/Chrono/Current1.png)
 
 ## License
 
