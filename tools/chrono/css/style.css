@@ -1,23 +1,24 @@
 /*@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&display=swap');*/
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Henny+Penny&display=swap');
 
 :root {
-    --background: #17130F;
-    --surface: #292019;
+    --background: #080609;
+    --surface: #1f1635;
 
-    --text: #E8DCC5;
-    --muted: #A99A82;
+    --filling: #100a1f;
 
-    --accent: #B58A50;
-    --border: #80613B;
+    --text: #c51b27;
+    --muted: #78658f;
 
-    --secondary: #D0AD70;
+    --accent: #7961ad;
+    --border: #59427f;
+
+    --secondary: #d0d85a;
 }
-
 body{
     background-color: var(--background);
     color: var(--text);
-    font-family: "Cinzel", serif;
+    font-family: "Henny Penny", system-ui;
     font-optical-sizing: auto;
     font-weight: 200;
     font-style: normal;
@@ -39,6 +40,7 @@ body{
     flex-direction: column;
     align-items: center;
     margin-bottom: 1rem;
+    background: var(--background);
 }
 
 #clock-time
@@ -62,6 +64,7 @@ body{
     padding: 24px;
     border-radius: 10px;
     margin-bottom: 0rem;
+    background: var(--filling);
 }   
 
 .clock-info {
@@ -175,6 +178,7 @@ footer p {
     flex-direction: column;
     align-items: center;
     margin-bottom: 1rem;
+    background: var(--background);
 }
 
 .stopwatch-buttons
@@ -216,9 +220,15 @@ footer p {
     display: flex;
     flex-direction: column;
     align-items: center;
-    border: 2px solid var(--border);
+    border: 1px solid var(--border);
     width: 90%;
     border-radius: 10px;
+    background: var(--background);
+}
+
+#timeDisplay
+{
+    background: var(--background);
 }
 
 #lapTimeDisplay
@@ -439,18 +449,6 @@ button:focus-visible, input:focus-visible, a:focus-visible
 .secondaryInput input, .shortcutButtons button, .secondaryInput button, .button-text
 {
     font-family: "Cinzel", serif;
-}
-
-#clock-time, .stopwatchDisplay, .timerDisplay, .pomodoroDisplay
-{
-    background-color: #302619;
-    background-image: repeating-linear-gradient(90deg,rgba(220, 180, 110, 0.04) 0 1px, transparent 2px 2.5px);
-}
-.shortcutButtons button, .secondaryInput input, .secondaryInput button, .pomodoroButtons button, .stopwatch-buttons button, .timerButtons button
-{
-    background-color: #493722;
-    border: 1px solid #A47B43;
-    box-shadow: inset 0 1px rgba(255, 230, 180, 0.18), inset 0 -2px rgba(0, 0, 0, 0.3);
 }
 
 @keyframes lapEntry {
