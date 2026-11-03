@@ -1,10 +1,8 @@
 /*@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&display=swap');*/
-@import url('https://fonts.googleapis.com/css2?family=Henny+Penny&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Henny+Penny&family=New+Rocker&display=swap');
 :root {
     --background: #100D17;
-    --surface: #21182D;
-    --filling: #120F18;
+    --surface: #160f1f;
 
     --text: #F8DCB6;
     --muted: #737C5D;
@@ -16,13 +14,16 @@
 }
 
 body{
-    background-color: var(--background);
     color: var(--text);
     font-family: "Henny Penny", system-ui;
-    font-optical-sizing: auto;
     font-weight: 200;
     font-style: normal;
-    font-variation-settings: "wdth" 100;
+    background:
+        radial-gradient(ellipse at 50% 0%, rgba(236,124,34,.08), transparent 60%),
+        radial-gradient(ellipse at 50% 100%, rgba(121,168,122,.06), transparent 50%),
+        var(--background);
+    min-height: 100vh;
+    margin: 0;
 }
 
 .badge {
@@ -40,7 +41,6 @@ body{
     flex-direction: column;
     align-items: center;
     margin-bottom: 1rem;
-    background: var(--background);
 }
 
 #clock-time
@@ -48,7 +48,7 @@ body{
     margin-top: 0px;
     font-weight: 700;
     font-size: 7.5rem;
-    border: 2px solid var(--border);
+    border: 4px solid var(--border);
     padding: 24px;
     border-radius: 10px;
     margin-bottom: 0rem;
@@ -64,7 +64,7 @@ body{
     padding: 24px;
     border-radius: 10px;
     margin-bottom: 0rem;
-    background: var(--filling);
+    background: transparent;
 }   
 
 .clock-info {
@@ -86,7 +86,7 @@ body{
 }
 
 .secondary-title {
-    font-weight: thin;
+    font-weight: 300;
     color:var(--secondary);
 }
 
@@ -121,11 +121,19 @@ footer p {
     display: none;
     flex-direction: column;
     align-items: center;
+    background-color: transparent;
+}
+
+.lapDisplay button
+{
+    background-color: transparent;
+    border: transparent;
 }
 
 .lap-row {
     padding: 8px;
     border-bottom: 2px solid var(--border);
+    animation: lapEntry 0.3s ease-out;
 }
 
 .button-text
@@ -148,8 +156,6 @@ footer p {
 
 .lapDisplay #laps
 {
-    align-items: right;
-    gap: 16px;
     font-weight: 500;
     font-style: oblique;
     font-size: 1rem;
@@ -166,6 +172,7 @@ footer p {
     font-weight: 500;
     font-style: oblique;
     font-size: 2rem;
+    display: none;
 }
 
 .stopwatch
@@ -178,15 +185,6 @@ footer p {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 1rem;
-    background: var(--background);
-}
-
-.stopwatch-buttons
-{
-    display: flex;
-    gap: 10px;
-    margin-top: 10px;
     margin-bottom: 1rem;
 }
 
@@ -221,25 +219,10 @@ footer p {
     display: flex;
     flex-direction: column;
     align-items: center;
-    border: 1px solid var(--border);
+    border: 4px solid var(--border);
     width: 90%;
     border-radius: 10px;
-    background: var(--background);
-}
-
-#timeDisplay
-{
-    background: var(--background);
-}
-
-#lapTimeDisplay
-{
-    display: none;
-}
-
-.lap-row
-{
-    animation: lapEntry 0.3s ease-out;
+    background: var(--surface);
 }
 
 .lapDisplay.collapsed #laps
@@ -261,7 +244,6 @@ footer p {
 
 input, button
 {
-    font-family: "Bricolage Grotesque", sans-serif;
     font-optical-sizing: auto;
     font-weight: 200;
     font-style: normal;
@@ -271,10 +253,6 @@ input, button
     border: 2px solid var(--background);
     border-radius: 5px;
     padding: 10px 14px;
-}
-
-button, input
-{
     transition: 0.2s ease;
 }
 
@@ -288,17 +266,6 @@ button:hover, input:hover
 button:hover
 {
     cursor: pointer;
-}
-
-button:active
-{
-    color: var(--accent);
-    font-weight: 500;
-}
-
-input:focus
-{
-    cursor:text;
 }
 
 button:focus-visible, input:focus-visible, a:focus-visible
@@ -324,7 +291,7 @@ button:focus-visible, input:focus-visible, a:focus-visible
 {
     font-weight: 700;
     font-size: 7.5rem;
-    border: 2px solid var(--border);
+    border: 4px solid var(--border);
     padding: 12px;
     border-radius: 10px;
     margin-bottom: 1rem;
@@ -399,7 +366,7 @@ button:focus-visible, input:focus-visible, a:focus-visible
     align-items: center;
     justify-content: center;
     display: flex;
-    border: 2px solid var(--border);
+    border: 4px solid var(--border);
     width: 90%;
     border-radius: 10px;
     padding: 12px;
@@ -449,28 +416,79 @@ button:focus-visible, input:focus-visible, a:focus-visible
 
 .secondaryInput input, .shortcutButtons button, .secondaryInput button, .button-text
 {
-    font-family: "Cinzel", serif;
+    font-family: "New Rocker", system-ui
 }
 
 #clock-time, .stopwatchDisplay, .timerDisplay, .pomodoroDisplay
 {
-    box-shadow: 0 0 18px rgba(236, 124, 34, 0.30), inset 0 0 12px rgba(236, 124, 34, 0.18);
+    box-shadow: 0 0 18px rgba(236, 124, 34, 0.10), inset 0 0 12px rgba(236, 124, 34, 0.18);
 }
 
-.clock, .stopwatch, .timer, .pomodoro
-{
-    background: var(--surface);
+.clock, .stopwatch, .timer, .pomodoro {
+    position: relative;
+    overflow: hidden;
+    background-image: url("../../../assets/Chrono/pumpkin.png");
+    background-size: 125px auto;
+    background-position: left bottom;
+    background-repeat: no-repeat;
+    background-color: var(--surface);
     box-shadow: 0 8px 24px rgba(0,0,0,0.25);
 }
 
-#timeDisplay 
-{
-    background: transparent;
+.clock::after, .stopwatch::after, .timer::after, .pomodoro::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    transform: translate(12px, -12px) rotate(90deg);
+
+    width: 180px;
+    height: 180px;
+
+    background-image: url("../../../assets/Chrono/spiderweb.svg");
+    background-size: contain;
+
+    opacity: 0.35;
+
+    pointer-events: none;
 }
 
-.stopwatchDisplay
+.stopwatch-buttons
 {
-    background: var(--surface);
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+    margin-bottom: 50px 
+}
+
+
+#clock-time, #timeDisplay, #timerTime, #pomodoroTime {
+    color: var(--text);
+    text-shadow: 0 0 12px rgba(236,124,34,.45), 0 0 32px rgba(236,124,34,.2);
+    animation: flicker 4s infinite;
+}
+
+button:active, .stopwatch-buttons button:active, .pomodoroButtons button:active, .timerButtons button:active, .shortcutButtons button:active, .secondaryInput button:active
+{
+    background: var(--accent);
+    color: var(--background);
+    transform: scale(0.96);
+}
+
+@keyframes flicker {
+    0%, 100% 
+    {
+        text-shadow: 0 0 12px rgba(236,124,34,.45), 0 0 32px rgba(236,124,34,.2);
+    }
+    45% 
+    {
+        text-shadow: 0 0 10px rgba(236,124,34,.35), 0 0 26px rgba(236,124,34,.15);
+    }
+    50% 
+    {
+        text-shadow: 0 0 16px rgba(236,124,34,.55), 0 0 40px rgba(236,124,34,.25);
+    }
 }
 
 @keyframes lapEntry {
@@ -482,4 +500,8 @@ button:focus-visible, input:focus-visible, a:focus-visible
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
 }

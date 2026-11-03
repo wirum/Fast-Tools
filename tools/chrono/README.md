@@ -68,6 +68,10 @@ Alternates between FOCUS state and BREAK.
 
 Im open to suggestions! If you see anything that could be done different im more than eager to hear!
 
+## AI USE
+
+Used just a bit for the CSS, the more complex gradients and the glow animation.
+
 ## License
 
 MIT License.
