@@ -21,7 +21,7 @@ function updateTime()
     document.getElementById("timezone").innerText = timeZoneLabel;
 }
 
-lucide.createIcons();
+renderIcons();
 
 let isRunning = false;
 let startTime = 0;
@@ -32,8 +32,6 @@ let lapHistory = [];
 let lapCount = 0;
 let fastestLap = null;
 let slowestLap = null;
-
-let lapIcon = "";
 
 let lapElapsed = 0;
 let lapStartTime= 0;
@@ -73,23 +71,24 @@ if (savedLaps)
 
 function toggleStopwatch() 
 {
+    const now = Date.now();
+
     if (isRunning) 
     {
-        elapsed += Date.now() - startTime;
-        lapElapsed += Date.now() - lapStartTime;
+        elapsed += now - startTime;
+        lapElapsed += now - lapStartTime;
         isRunning = false;
         clearInterval(intervalId);
-        startButton.innerHTML = '<i data-lucide="play"></i>';        
-        lucide.createIcons();
+        updateStopwatch();
+        setButtonState(startButton, "play", "Start stopwatch");
     }
     else    
     {
-        startTime = Date.now();
-        lapStartTime = Date.now();
+        startTime = now;
+        lapStartTime = now;
         isRunning = true;
         intervalId = setInterval(updateStopwatch, 50);
-        startButton.innerHTML = '<i data-lucide="pause"></i>';
-        lucide.createIcons();
+        setButtonState(startButton, "pause", "Pause stopwatch");
     }
 }
 
@@ -106,7 +105,6 @@ function updateStopwatch()
     {
         total = elapsed;
     }
-    currentLapTime = lapTotal;
     timeDisplay.textContent = formatTime(total);
     lapTimeDisplay.textContent = formatTime(lapTotal);
 }
@@ -123,13 +121,9 @@ function formatTime(ms)
 
 function resetStopwatch()
 {
-    if (isRunning)
-    {
-        clearInterval(intervalId);
-    }
+    clearInterval(intervalId);
     isRunning = false;
     lapElapsed = 0;
-    currentLapTime = 0;
     lapStartTime = 0;
     lapHistory = [];
     lapCount = 0;   
@@ -137,15 +131,16 @@ function resetStopwatch()
     slowestLap = null;
     timeDisplay.textContent = '00:00:00.00';
     lapTimeDisplay.textContent = '00:00:00.00';
+
     localStorage.removeItem("chronoLapHistory");
     elapsed = 0;
     startTime = 0;
     intervalId = null;
-    startButton.innerHTML = '<i data-lucide="play"></i>';        
-    document.getElementById("laps").innerText = "";
+    document.getElementById("laps").textContent = "";
     document.querySelector("#lapTimeDisplay").style.display = "none";
     document.querySelector(".lapDisplay").style.display = "none";
-    lucide.createIcons();
+    setButtonState(startButton, "play", "Start stopwatch");        
+
 }
 
 function markLap()
@@ -154,11 +149,13 @@ function markLap()
     {
         return;
     }
-    let lap = currentLapTime;
-    let lapTotal =  elapsed + (Date.now() - startTime); 
-    console.log(lapTotal);
-    resetLapTime();
-    console.log(lap);
+
+    const now = Date.now();
+    let lap = lapElapsed + (now - lapStartTime);
+    let lapTotal =  elapsed + (now - startTime); 
+
+    resetLapTime(now);
+
     lapCount++;
     lapHistory.push({
         number: lapCount,
@@ -174,11 +171,10 @@ function markLap()
     document.querySelector(".lapDisplay").style.display = "flex";
 }
 
-function resetLapTime()
+function resetLapTime(now)
 {
     lapElapsed = 0;
-    currentLapTime = 0;
-    lapStartTime = Date.now();
+    lapStartTime = now;
     lapTimeDisplay.textContent = '00:00:00.00';
 }
 
@@ -273,12 +269,12 @@ timerSet.addEventListener("click", () => {
 
 function updateTimerDisplay()
 {
-    document.getElementById("timerTime").textContent = formatTime(timerRemaining * 1000);
+    document.getElementById("timerTime").textContent = formatTime(Math.round(timerRemaining * 1000));
 }
 
-const buttons = document.querySelectorAll("[data-minutes]");
+const minuteButtons = document.querySelectorAll("[data-minutes]");
 
-buttons.forEach(button =>{
+minuteButtons.forEach(button =>{
     button.addEventListener("click", () =>{
         timerRemaining = Math.max(0 ,timerRemaining + Number(button.dataset.minutes) * 60);
         timerInitial = Math.max(0, timerInitial + Number(button.dataset.minutes) * 60);
@@ -353,8 +349,7 @@ function timerToggle()
         timerEndTime = Date.now() + timerRemaining * 1000;
         isTimerRunning = true;
         timerInterval = setInterval(updateTimer, 50);
-        document.getElementById("timerToggle").innerHTML = '<i data-lucide="pause"></i>';
-        lucide.createIcons();
+        setButtonState(document.getElementById("timerToggle"), "pause", "Pause timer");
     }
     updateTimerDisplay();
 }
@@ -390,11 +385,8 @@ function stopTimer()
     clearInterval(timerInterval);
     timerInterval = null;
     isTimerRunning = false;
-    document.getElementById("timerToggle").innerHTML = '<i data-lucide="play"></i>';
-    lucide.createIcons();
+    setButtonState(document.getElementById("timerToggle"), "play", "Start timer");
 }
-
-lucide.createIcons();
 
 function parseTimerInput(value) //future add
 {
@@ -472,8 +464,7 @@ function togglePomodoro()
         pomodoroEndTime = Date.now() + pomodoroRemaining * 1000;
         pomodoroRunning = true;
         pomodoroInterval = setInterval(updatePomodoro, 50);
-        document.getElementById("pomodoroToggle").innerHTML = '<i data-lucide="pause"></i>';
-        lucide.createIcons();
+        setButtonState(document.getElementById("pomodoroToggle"), "pause", "Pause Pomodoro");
     }
     updatePomodoroDisplay();
 }
@@ -483,8 +474,7 @@ function stopPomodoroTimer()
     clearInterval(pomodoroInterval);
     pomodoroInterval = null;
     pomodoroRunning = false;
-    document.getElementById("pomodoroToggle").innerHTML = '<i data-lucide="play"></i>';
-    lucide.createIcons();
+    setButtonState(document.getElementById("pomodoroToggle"), "play", "Start Pomodoro");
 }
 
 function updatePomodoro()
@@ -493,10 +483,10 @@ function updatePomodoro()
 
     if (pomodoroRemaining == 0)
     {
+        playAlarm();
         pomodoroFocus = !pomodoroFocus
         if (pomodoroFocus)
         {
-            playAlarm();
             pomodoroRemaining = pomodoroFocusTime;
         }
         else
@@ -525,5 +515,17 @@ const alarmSound = new Audio("../../assets/Chrono/audio/bell.wav");
 
 function playAlarm() {
     alarmSound.currentTime = 0;
-    alarmSound.play();
+    alarmSound.play().catch(() => {}); //cria erro no console caso nao funcione
+}
+
+function renderIcons()
+{
+    if (window.lucide) lucide.createIcons();
+}
+
+function setButtonState()
+{
+    minuteButtons.innerHTML = `<i data-lucide="${icon}" aria-hidden="true"></i>`;
+    minuteButtons.setAttribute("aria-label", label);
+    renderIcons();
 }
