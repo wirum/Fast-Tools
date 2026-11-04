@@ -36,7 +36,9 @@ And they save on local storage.
 
 ### Timer
 
-Enter the time using the `HH:MM:SS.CC` format (Hours : Minutes : Seconds . Centiseconds). **IT HAS TO USE A DOT (`.`) BEFORE THE CENTISECONDS, OTHERWISE IT WILL NOT WORK.** I'm working on fixing this in V2.
+Enter the time using the `HH:MM:SS.CC` format (Hours : Minutes : Seconds . Centiseconds). ~~IT HAS TO USE A DOT (`.`) BEFORE THE CENTISECONDS, OTHERWISE IT WILL NOT WORK.~~ IT IS FIXED.
+
+Now you can use `HH:MM:SS.CC` or `2h 30m 20s` or even `HH:MM:SS` and `2m 30h 10c`!
 
 After entering the time, click **Set**, then press the **Play** button.
 

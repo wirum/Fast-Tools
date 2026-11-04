@@ -1,4 +1,46 @@
+let isRunning = false;
+let startTime = 0;
+let elapsed = 0;
+let intervalId = null;
+
+let lapHistory = [];
+let lapCount = 0;
+let fastestLap = null;
+let slowestLap = null;
+
+let lapElapsed = 0;
+let lapStartTime= 0;
+let currentLapTime = 0;
+
+const lapTimeDisplay = document.getElementById("lapTimeDisplay");
+const timeDisplay = document.getElementById("timeDisplay");
+const startButton = document.getElementById("start");
+
+const savedLaps = localStorage.getItem("chronoLapHistory");
+
+let timerInitial = 0;
+let timerRemaining = 0;
+let timerEndTime = 0;
+let timerInterval = null;
+let isTimerRunning = false;
+const timerSet = document.getElementById("timerSet");
+
+let pomodoroFocusTime = 25 * 60; //25m * 60 = 1500 segundos
+let pomodoroBreakTime = 5 * 60; // 5m * 60 = 300s
+
+let pomodoroRemaining = pomodoroFocusTime;
+let pomodoroEndTime = 0;
+let pomodoroInterval = null;
+
+let pomodoroRunning = false;
+let pomodoroFocus = true;
+
+let currentTitle = null;
+
+
+renderIcons();
 updateTime();
+
 setInterval(updateTime, 1000);
 
 function updateTime()
@@ -21,27 +63,16 @@ function updateTime()
     document.getElementById("timezone").innerText = timeZoneLabel;
 }
 
-renderIcons();
+function formatTime(ms)
+{
+    const formattedHours = String(Math.floor(ms/3600000)).padStart(2,"0"); //calcula a hora formata colocando zero onde falta e guarda (esse tá sem módulo pq deixei passar de 24 horas)
+    const formattedMinutes = String((Math.floor(ms/60000)) % 60).padStart(2,"0"); //mesmo pra minutos e segundos
+    const formattedSeconds = String((Math.floor(ms/1000)) % 60).padStart(2, "0"); //segundos
+    const formattedCent = String(Math.floor(ms / 10) % 100).padStart(2, "0"); //centesimo
 
-let isRunning = false;
-let startTime = 0;
-let elapsed = 0;
-let intervalId = null;
+    return `${formattedHours}:${formattedMinutes}:${formattedSeconds}.${formattedCent}`;
+}
 
-let lapHistory = [];
-let lapCount = 0;
-let fastestLap = null;
-let slowestLap = null;
-
-let lapElapsed = 0;
-let lapStartTime= 0;
-let currentLapTime = 0;
-
-const lapTimeDisplay = document.getElementById("lapTimeDisplay");
-const timeDisplay = document.getElementById("timeDisplay");
-const startButton = document.getElementById("start");
-
-const savedLaps = localStorage.getItem("chronoLapHistory");
 
 if (savedLaps)
 {
@@ -81,6 +112,11 @@ function toggleStopwatch()
         clearInterval(intervalId);
         updateStopwatch();
         setButtonState(startButton, "play", "Start stopwatch");
+
+        if (currentTitle === "stopwatch") {
+            currentTitle = null;
+            document.title = "Chrono";
+        }
     }
     else    
     {
@@ -89,6 +125,7 @@ function toggleStopwatch()
         isRunning = true;
         intervalId = setInterval(updateStopwatch, 50);
         setButtonState(startButton, "pause", "Pause stopwatch");
+        currentTitle = "stopwatch"
     }
 }
 
@@ -100,6 +137,13 @@ function updateStopwatch()
     {
         total = elapsed + (Date.now() - startTime);
         lapTotal += Date.now() - lapStartTime;
+
+        const formatted = formatTime(total);
+        if (currentTitle === "stopwatch") 
+        {
+            const formatted = formatTime(total);
+            document.title = `(${formatted.slice(0, -3)}) Stopwatch - Chrono`;
+        }
     }
     else
     {
@@ -109,15 +153,6 @@ function updateStopwatch()
     lapTimeDisplay.textContent = formatTime(lapTotal);
 }
 
-function formatTime(ms)
-{
-    const formattedHours = String(Math.floor(ms/3600000)).padStart(2,"0"); //calcula a hora formata colocando zero onde falta e guarda (esse tá sem módulo pq deixei passar de 24 horas)
-    const formattedMinutes = String((Math.floor(ms/60000)) % 60).padStart(2,"0"); //mesmo pra minutos e segundos
-    const formattedSeconds = String((Math.floor(ms/1000)) % 60).padStart(2, "0"); //segundos
-    const formattedCent = String(Math.floor(ms / 10) % 100).padStart(2, "0"); //centesimo
-
-    return `${formattedHours}:${formattedMinutes}:${formattedSeconds}.${formattedCent}`;
-}
 
 function resetStopwatch()
 {
@@ -140,7 +175,7 @@ function resetStopwatch()
     document.querySelector("#lapTimeDisplay").style.display = "none";
     document.querySelector(".lapDisplay").style.display = "none";
     setButtonState(startButton, "play", "Start stopwatch");        
-
+    document.title = "Chrono";
 }
 
 function markLap()
@@ -235,41 +270,42 @@ function renderLapHistory()
         }).join("");
 }
 
-let timerInitial = 0;
-let timerRemaining = 0;
-let timerEndTime = 0;
-let timerInterval = null;
-let isTimerRunning = false;
-const timerSet = document.getElementById("timerSet");
-
 timerSet.addEventListener("click", () => {
-    const timerParts = document.getElementById("timerSecondaryInput").value.split(":");
-    
-    if(timerParts.length === 3 && isDigits(timerParts[0]) && isDigits(timerParts[1]) && isValidSeconds(timerParts[2]))
+    const input = document.getElementById("timerSecondaryInput").value;
+    let seconds = colonParser(input);
+
+    if (seconds === null)
     {
-        const secondParts = timerParts[2].split(".");
-
-        let centiseconds = 0;
-
-        if (secondParts.length === 2)
-        {
-            centiseconds = Number(secondParts[1].padEnd(2, "0"));
-        }
-
-        timerRemaining = Number(timerParts[0]) * 3600 + Number(timerParts[1] * 60) + Number(secondParts[0]) + centiseconds / 100;
-
-        timerInitial = timerRemaining;
-        if (isTimerRunning)
-        {
-            timerEndTime = Date.now() + timerRemaining * 1000;
-        }
-        updateTimerDisplay();
+        seconds = textParser(input);
     }
+
+    if (seconds === null)
+    {
+        return
+    }
+
+    timerRemaining = seconds;
+    timerInitial = seconds;
+
+    if (isTimerRunning)
+    {
+        timerEndTime = Date.now() + timerRemaining * 1000;
+    }
+    updateTimerDisplay();
 });
 
 function updateTimerDisplay()
 {
-    document.getElementById("timerTime").textContent = formatTime(Math.round(timerRemaining * 1000));
+    const total = Math.round(timerRemaining * 1000)
+    const formatted = formatTime(total);
+
+    document.getElementById("timerTime").textContent = formatted;
+
+    if (isTimerRunning && currentTitle === "timer")
+    {
+        const titleTime = formatted.slice(0, -3);
+        document.title = `(${titleTime}) Timer - Chrono`;
+    }
 }
 
 const minuteButtons = document.querySelectorAll("[data-minutes]");
@@ -329,6 +365,12 @@ function timerReset()
     }
 
     timerRemaining = timerInitial;
+
+    if (currentTitle === "timer") {
+        currentTitle = null;
+        document.title = "Chrono";
+    }
+    
     updateTimerDisplay();
 }
 
@@ -339,6 +381,12 @@ function timerToggle()
     {
         timerRemaining = Math.max(0, (timerEndTime - Date.now()) / 1000);
         stopTimer();
+
+        if (currentTitle === "timer")
+        {
+            currentTitle = null;
+            document.title = "Chrono"
+        }
     }
     else
     {
@@ -350,6 +398,7 @@ function timerToggle()
         isTimerRunning = true;
         timerInterval = setInterval(updateTimer, 50);
         setButtonState(document.getElementById("timerToggle"), "pause", "Pause timer");
+        currentTitle = "timer"
     }
     updateTimerDisplay();
 }
@@ -377,6 +426,10 @@ function timerClear()
     timerRemaining = 0;
     timerEndTime = 0;
     document.getElementById("timerSecondaryInput").value = ''
+    if (currentTitle === "timer") {
+        currentTitle = null;
+        document.title = "Chrono";
+    }
     updateTimerDisplay();
 }
 
@@ -388,57 +441,92 @@ function stopTimer()
     setButtonState(document.getElementById("timerToggle"), "play", "Start timer");
 }
 
-function parseTimerInput(value) //future add
+function colonParser(value)
 {
-    const parts = value.trim().split(" ").filter(part => part !== "");
+    const parts = value.trim().split(":");
+
+    if (parts.length !== 3 || !isDigits(parts[0]) || !isDigits(parts[1]) || !isValidSeconds(parts[2]))
+    {
+        return null;
+    }
+
+    const secondParts = parts[2].split(".");
+    const centiseconds = secondParts.length === 2 ? Number(secondParts[1].padEnd(2, "0")) : 0;
     
+    return Number(parts[0]) * 3600 + Number (parts[1]) * 60 + Number(secondParts[0]) + centiseconds / 100;  
+}
+
+function textParser(value)
+{
+    const text = value.trim().toLowerCase();
+
+    if (text === "")
+    {
+        return null;
+    }
+
+    const parts = text.split(" ").filter(part => part !== "");
+
     let totalSeconds = 0;
 
     for(const part of parts)
     {
-        const unit = part[part.length - 1].toLowerCase();
-        const amount  = Number(part.slice(0,-1));
-        if(unit == "h")
+        const unit = part[part.length - 1];
+        const valueStr = part.slice(0, -1);
+
+        if (!isDigits(valueStr)) return null;
+
+        const amount = Number(valueStr);
+
+        if (isNaN(amount) || amount < 0)
+        {
+            return null;
+        }
+
+        if (unit === "h")
         {
             totalSeconds += amount * 3600;
         }
-        else if (unit == "m")
+        else if (unit === "m")
         {
             totalSeconds += amount * 60;
         }
-        else if (unit == "s")
+        else if (unit === "s")
         {
             totalSeconds += amount;
         }
-        else if (unit == "c")
+        else if (unit === "c")
         {
             totalSeconds += amount / 100;
+        }
+        else
+        {
+            return null;
         }
     }
     return totalSeconds;
 }
 
-let pomodoroFocusTime = 25 * 60; //25m * 60 = 1500 segundos
-let pomodoroBreakTime = 5 * 60; // 5m * 60 = 300s
-
-let pomodoroRemaining = pomodoroFocusTime;
-let pomodoroEndTime = 0;
-let pomodoroInterval = null;
-
-let pomodoroRunning = false;
-let pomodoroFocus = true;
-
 function updatePomodoroDisplay()
 {
+    let status;
+    const formatted = pomodoroFormatTime(pomodoroRemaining * 1000)
     document.getElementById("pomodoroTime").textContent = pomodoroFormatTime(pomodoroRemaining * 1000);
 
     if (!pomodoroFocus)
     {
         document.querySelector(".pomodoroStatus").textContent = "BREAK";
+        status = "Break"
     }
     else
     {
         document.querySelector(".pomodoroStatus").textContent = "FOCUS";
+        status = "Focus"
+    }
+
+    if (pomodoroRunning && currentTitle === "pomodoro")
+    {
+        document.title = `(${formatted}) Pomodoro (${status}) - Chrono`
     }
 }
 
@@ -458,6 +546,11 @@ function togglePomodoro()
     {
         pomodoroRemaining = (pomodoroEndTime - Date.now()) / 1000;
         stopPomodoroTimer();
+
+        if (currentTitle === "pomodoro") {
+            currentTitle = null;
+            document.title = "Chrono";
+        }
     }
     else
     {
@@ -465,6 +558,7 @@ function togglePomodoro()
         pomodoroRunning = true;
         pomodoroInterval = setInterval(updatePomodoro, 50);
         setButtonState(document.getElementById("pomodoroToggle"), "pause", "Pause Pomodoro");
+        currentTitle = "pomodoro";
     }
     updatePomodoroDisplay();
 }
@@ -508,6 +602,11 @@ function resetPomodoro()
     pomodoroRemaining = pomodoroFocusTime;
     pomodoroEndTime = 0;
 
+    if (currentTitle === "pomodoro") 
+    {
+        currentTitle = null;
+        document.title = "Chrono";
+    }
     updatePomodoroDisplay();
 }
 
@@ -523,9 +622,29 @@ function renderIcons()
     if (window.lucide) lucide.createIcons();
 }
 
-function setButtonState()
+function setButtonState(buttons, icon, label)
 {
-    minuteButtons.innerHTML = `<i data-lucide="${icon}" aria-hidden="true"></i>`;
-    minuteButtons.setAttribute("aria-label", label);
+    buttons.innerHTML = `<i data-lucide="${icon}" aria-hidden="true"></i>`;
+    buttons.setAttribute("aria-label", label);
     renderIcons();
+}
+
+function updatePageTitle(timeString, moduleName, extraInfo = "")
+{
+    if (currentTitle === moduleName)
+    {
+        let base;
+
+        if (extraInfo)
+        {
+            base = `${timeString} ${extraInfo}`;
+            
+        }
+        else
+        {
+            base = timeString;
+        }
+
+        document.title = `(${base}) - Chrono`
+    }
 }
