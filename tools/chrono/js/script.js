@@ -512,15 +512,22 @@ function updatePomodoroDisplay()
     const formatted = pomodoroFormatTime(pomodoroRemaining * 1000)
     document.getElementById("pomodoroTime").textContent = pomodoroFormatTime(pomodoroRemaining * 1000);
 
-    if (!pomodoroFocus)
+    if (!pomodoroRunning)
     {
-        document.querySelector(".pomodoroStatus").textContent = "BREAK";
-        status = "Break"
+        document.querySelector(".pomodoroStatus").textContent = "Not Running..";
     }
     else
     {
-        document.querySelector(".pomodoroStatus").textContent = "FOCUS";
-        status = "Focus"
+        if (!pomodoroFocus)
+        {
+            document.querySelector(".pomodoroStatus").textContent = "BREAK";
+            status = "Break"
+        }
+        else
+        {
+            document.querySelector(".pomodoroStatus").textContent = "FOCUS";
+            status = "Focus"
+        }
     }
 
     if (pomodoroRunning && currentTitle === "pomodoro")
@@ -531,9 +538,9 @@ function updatePomodoroDisplay()
 
 function pomodoroFormatTime(ms)
 {
-    const formattedMinutes = String((Math.floor(ms/60000)) % 60).padStart(2,"0"); //mesmo pra minutos e segundos
+    const totalMinutes = Math.floor(ms / 60000);
+    const formattedMinutes = String(totalMinutes).padStart(2,"0"); //mesmo pra minutos e segundos
     const formattedSeconds = String((Math.floor(ms/1000)) % 60).padStart(2, "0"); //segundos
-
     return `${formattedMinutes}:${formattedSeconds}`;
 }
 
@@ -598,6 +605,7 @@ function resetPomodoro()
     stopPomodoroTimer();
 
     pomodoroFocus = true;
+    pomodoroFocusTime = 25 * 60;
     pomodoroRemaining = pomodoroFocusTime;
     pomodoroEndTime = 0;
 
@@ -720,5 +728,87 @@ document.addEventListener("keydown", (key) => {
 const pomodoroButtons = document.querySelectorAll("[data-pomodoro]");
 
 pomodoroButtons.forEach(button =>{
+    button.addEventListener("click", () => {
+        if (pomodoroRunning)
+        {
+            return; // nao deve alterar se tiver rodando
+        }
 
+        const minutes = Number(button.dataset.pomodoro);
+        
+        if (minutes <= 0) 
+        {
+            return; //trava contra zeros raivosos
+        }
+        pomodoroFocusTime = minutes * 60;
+        pomodoroBreakTime = pomodoroFocusTime * 0.2;
+
+        if (pomodoroFocus)
+        {
+            pomodoroRemaining = pomodoroFocusTime;
+        }
+
+        activeModule = "pomodoro";
+        updatePomodoroDisplay();
+    });
+});
+
+document.getElementById("pomodoroSet").addEventListener("click", () =>{
+    if (pomodoroRunning)
+    {
+        return;
+    }
+
+    const input = document.getElementById("pomodoroInput").value;
+    let seconds = inputParser(input); //agora  com o nosso parser geral
+
+    if (seconds === null || seconds <= 0) // checa por invalidos
+    {
+        return;
+    }
+
+    pomodoroFocusTime = seconds;
+    pomodoroBreakTime = pomodoroFocusTime * 0.2;
+    
+    if (pomodoroFocus) //se tiver no focus atualiza
+    {
+        pomodoroRemaining = pomodoroFocusTime;
+    }
+
+    activeModule = "pomodoro"
+    updatePomodoroDisplay();
+
+    document.getElementById("pomodoroInput").value = "";
 })
+
+function inputParser(value)
+{
+    const input = value.trim().toLowerCase();
+
+    if (input === "")
+    {
+        return null;
+    }
+
+    if(isDigits(input))
+    {
+        return Number(input) * 60 //se for apenas numero consideira minutos
+    }
+
+    if(input.includes(":") && input.split(":").length === 2)
+    {
+        const parts = input.split(":");
+        if (isDigits(parts[0]) &&  isDigits(parts[1])) //se tiver dois blocos é formato colon
+        {
+            return Number(parts[0]) * 60 + Number(parts[1]);
+        }
+    }
+    
+    if (input.split(":").length === 3)
+    {
+        return colonParser(input);
+    }
+
+    return textParser(input); //fallback
+}
+

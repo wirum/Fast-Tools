@@ -48,7 +48,11 @@ Erase button on the right will clear the input the time back to zero.
 
 ### Pomodoro Timer
 
-The classic pomodoro, it is unfortunately locked to 25m, custom times will be on V2.
+The classic pomodoro, you can use the input the buttons just like the timer!
+
+It is proportional to your breaks
+20% of your focus time is dedicated to your break
+Example: If focus: 25m then break: 5m, or focus: 50m break is 10m.
 
 Play and Reset buttons work just like on the other ones.
 
