@@ -388,7 +388,7 @@ button:focus-visible, input:focus-visible, a:focus-visible
     font-size: clamp(2.5rem, 11vw, 7.5rem);
 }
 
-.shortcutButtons button, .secondaryInput input, .secondaryInput button
+.shortcutButtons button, .secondaryInput input, .secondaryInput button, .pomodoroShortcut button, .pomodoroInput input, .pomodoroInput button
 {
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
@@ -399,13 +399,13 @@ button:focus-visible, input:focus-visible, a:focus-visible
     transition: 0.2s;
 }
 
-.shortcutButtons button:hover, .secondaryInput input:hover, .secondaryInput button:hover
+.shortcutButtons button:hover, .secondaryInput input:hover, .secondaryInput button:hover, .pomodoroShortcut button:hover, .pomodoroInput input:hover, .pomodoroInput button:hover
 {
     background: var(--border);
     color: var(--text);
 }
 
-.shortcutButtons, .secondaryInput
+.shortcutButtons, .secondaryInput, .pomodoroShortcut, .pomodoroInput
 {
     display: flex;
     align-items: center;
@@ -414,7 +414,7 @@ button:focus-visible, input:focus-visible, a:focus-visible
     gap: 5px;
 }
 
-.secondaryInput input, .shortcutButtons button, .secondaryInput button, .button-text
+.secondaryInput input, .shortcutButtons button, .secondaryInput button, .button-text, .pomodoroShortcut button, .pomodoroInput input, .pomodoroInput button
 {
     font-family: "New Rocker", system-ui;
 }
@@ -469,7 +469,7 @@ button:focus-visible, input:focus-visible, a:focus-visible
     animation: flicker 4s infinite;
 }
 
-button:active, .stopwatch-buttons button:active, .pomodoroButtons button:active, .timerButtons button:active, .shortcutButtons button:active, .secondaryInput button:active
+button:active, .stopwatch-buttons button:active, .pomodoroButtons button:active, .timerButtons button:active, .shortcutButtons button:active, .secondaryInput button:active, .pomodoroShortcut button:active, .pomodoroInput input:active, .pomodoroInput button:active
 {
     background: var(--accent);
     color: var(--background);
@@ -524,11 +524,11 @@ button:active, .stopwatch-buttons button:active, .pomodoroButtons button:active,
     {
         margin-bottom: 50px;
     }
-    .stopwatch-buttons, .secondaryInput
+    .stopwatch-buttons, .secondaryInput, .pomodoroShortcut, .pomodoroInput 
     {
         margin-bottom: 100px;
     }
-    .secondaryInput input
+    .secondaryInput input , .pomodoroShortcut button, .pomodoroInput input
     {
         width: 200px;
     }
