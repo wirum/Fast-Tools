@@ -96,7 +96,15 @@
         <button id="pomodoroToggle" aria-label="Pomodoro toggle"><i data-lucide="play"></i></button>
         <button id="pomodoroReset" aria-label="Reset Pomodoro"><i data-lucide="rotate-ccw"></i></button>
       </div>
-
+      <div class="pomodoroShortcut">
+        <button data-pomodoro="15" aria-label="Set 15 minute focus duration">15m</button>
+        <button data-pomodoro="25" aria-label="Set 25 minute focus duration">25m</button>
+        <button data-pomodoro="50" aria-label="Set 50 minute focus duration">50m</button>
+      </div>
+      <div class="pomodoroInput">
+        <input id="pomodoroInput" type="text" placeholder="Enter time" aria-label="Input for focus">
+        <button id="pomodoroSet" aria-label="Set pomodoro by input above">Set</button>
+      </div>
     </section>
   </main>
 

@@ -36,6 +36,7 @@ let pomodoroRunning = false;
 let pomodoroFocus = true;
 
 let currentTitle = null;
+let activeModule = "stopwatch";
 
 
 renderIcons();
@@ -103,6 +104,7 @@ if (savedLaps)
 function toggleStopwatch() 
 {
     const now = Date.now();
+    activeModule = "stopwatch";
 
     if (isRunning) 
     {
@@ -114,8 +116,7 @@ function toggleStopwatch()
         setButtonState(startButton, "play", "Start stopwatch");
 
         if (currentTitle === "stopwatch") {
-            currentTitle = null;
-            document.title = "Chrono";
+            refreshTabOwner();
         }
     }
     else    
@@ -125,7 +126,7 @@ function toggleStopwatch()
         isRunning = true;
         intervalId = setInterval(updateStopwatch, 50);
         setButtonState(startButton, "pause", "Pause stopwatch");
-        currentTitle = "stopwatch"
+        refreshTabOwner();
     }
 }
 
@@ -141,7 +142,6 @@ function updateStopwatch()
         const formatted = formatTime(total);
         if (currentTitle === "stopwatch") 
         {
-            const formatted = formatTime(total);
             document.title = `(${formatted.slice(0, -3)}) Stopwatch - Chrono`;
         }
     }
@@ -175,7 +175,7 @@ function resetStopwatch()
     document.querySelector("#lapTimeDisplay").style.display = "none";
     document.querySelector(".lapDisplay").style.display = "none";
     setButtonState(startButton, "play", "Start stopwatch");        
-    document.title = "Chrono";
+    refreshTabOwner();
 }
 
 function markLap()
@@ -284,6 +284,7 @@ timerSet.addEventListener("click", () => {
         return
     }
 
+    activeModule = "timer";
     timerRemaining = seconds;
     timerInitial = seconds;
 
@@ -367,8 +368,7 @@ function timerReset()
     timerRemaining = timerInitial;
 
     if (currentTitle === "timer") {
-        currentTitle = null;
-        document.title = "Chrono";
+        refreshTabOwner();
     }
     
     updateTimerDisplay();
@@ -377,6 +377,7 @@ function timerReset()
 
 function timerToggle()
 {
+    activeModule = "timer";
     if(isTimerRunning)
     {
         timerRemaining = Math.max(0, (timerEndTime - Date.now()) / 1000);
@@ -384,8 +385,7 @@ function timerToggle()
 
         if (currentTitle === "timer")
         {
-            currentTitle = null;
-            document.title = "Chrono"
+            refreshTabOwner();
         }
     }
     else
@@ -398,7 +398,7 @@ function timerToggle()
         isTimerRunning = true;
         timerInterval = setInterval(updateTimer, 50);
         setButtonState(document.getElementById("timerToggle"), "pause", "Pause timer");
-        currentTitle = "timer"
+        refreshTabOwner();
     }
     updateTimerDisplay();
 }
@@ -427,8 +427,7 @@ function timerClear()
     timerEndTime = 0;
     document.getElementById("timerSecondaryInput").value = ''
     if (currentTitle === "timer") {
-        currentTitle = null;
-        document.title = "Chrono";
+        refreshTabOwner();
     }
     updateTimerDisplay();
 }
@@ -542,14 +541,14 @@ document.getElementById("pomodoroToggle").addEventListener("click", togglePomodo
 
 function togglePomodoro()
 {
+    activeModule = "pomodoro";
     if (pomodoroRunning)
     {
         pomodoroRemaining = (pomodoroEndTime - Date.now()) / 1000;
         stopPomodoroTimer();
 
         if (currentTitle === "pomodoro") {
-            currentTitle = null;
-            document.title = "Chrono";
+            refreshTabOwner();
         }
     }
     else
@@ -558,7 +557,7 @@ function togglePomodoro()
         pomodoroRunning = true;
         pomodoroInterval = setInterval(updatePomodoro, 50);
         setButtonState(document.getElementById("pomodoroToggle"), "pause", "Pause Pomodoro");
-        currentTitle = "pomodoro";
+        refreshTabOwner();
     }
     updatePomodoroDisplay();
 }
@@ -604,8 +603,7 @@ function resetPomodoro()
 
     if (currentTitle === "pomodoro") 
     {
-        currentTitle = null;
-        document.title = "Chrono";
+        refreshTabOwner();
     }
     updatePomodoroDisplay();
 }
@@ -648,3 +646,79 @@ function updatePageTitle(timeString, moduleName, extraInfo = "")
         document.title = `(${base}) - Chrono`
     }
 }
+
+function refreshTabOwner()
+{
+    if (isRunning)
+    {
+        currentTitle = "stopwatch";
+    }
+    else if (isTimerRunning)
+    {
+        currentTitle = "timer";
+    }
+    else if (pomodoroRunning)
+    {
+        currentTitle = "pomodoro"
+    }
+    else
+    {
+        currentTitle = null;
+        document.title = "Chrono"
+    }
+}
+
+document.addEventListener("keydown", (key) => {
+
+    if(["INPUT", "TEXTAREA"].includes(document.activeElement.tagName))
+    {
+        return;
+    }
+
+    if(key.code === "Space")
+    {
+        key.preventDefault();
+        
+        if (activeModule === "stopwatch")
+        {
+            toggleStopwatch();
+        }
+        else if (activeModule === "timer")
+        {
+            timerToggle();
+        }
+        else if (activeModule === "pomodoro")
+        {
+            togglePomodoro();
+        }
+        else
+        {
+            toggleStopwatch();
+        }
+    }
+    if(key.code === "KeyR")
+    {
+        if (activeModule === "stopwatch")
+        {
+            resetStopwatch();
+        }
+        else if (activeModule === "timer")
+        {
+            timerReset();
+        }
+        else if (activeModule === "pomodoro")
+        {
+            resetPomodoro();
+        }
+        else
+        {
+            resetStopwatch();
+        }
+    }
+})
+
+const pomodoroButtons = document.querySelectorAll("[data-pomodoro]");
+
+pomodoroButtons.forEach(button =>{
+
+})
