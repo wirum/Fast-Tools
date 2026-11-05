@@ -54,17 +54,15 @@ Play and Reset buttons work just like on the other ones.
 
 Alternates between FOCUS state and BREAK.
 
+## All of the timers/stopwatch contain the keyboard shortcuts
+
+### R to reset
+### Space to start (default is stopwatch)
+
 ## Screenshots
 
 ![Current1](../../assets/Chrono/Current1.png)
 ![Current2](../../assets/Chrono/Current2.png)
-
-## IMPORTANT OBSERVATIONS FOR CHRONO V1
-
-- It probably has a bunch of little bugs I haven't noticed.
-- It has VERY LIMITED responsiveness
-- And yes i'll work on it next week (i was VERY BUSY this week so i had to do everything on the BASIC of the BASIC)
-- A revamp is coming soon, principally on the main logic. I really don't like the way it is lol... so big changes are coming.
 
 ### FOR THE REVIEWER
 
