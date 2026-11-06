@@ -54,6 +54,18 @@ Break durations scale proportionally to your focus time (automatically set to 20
 
 Play and Reset buttons work just like the other modules, smoothly alternating between  **FOCUS** and **BREAK** states.
 
+### Alarm
+
+Select the time by the time selector on the bottom.
+
+After selecting start the alarm with the play button, if you need to stop it press it again.
+
+To remove the alarm fully, press the erase button on the right.
+
+To add more minutes or remove press the buttons under. They work while the alarm is ongoing.
+
+The display shows how much time is left.
+
 ## All of the timers/stopwatch contain the keyboard shortcuts
 
 ### R to reset
