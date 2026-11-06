@@ -64,17 +64,6 @@ function updateTime()
     document.getElementById("timezone").innerText = timeZoneLabel;
 }
 
-function formatTime(ms)
-{
-    const formattedHours = String(Math.floor(ms/3600000)).padStart(2,"0"); //calcula a hora formata colocando zero onde falta e guarda (esse tá sem módulo pq deixei passar de 24 horas)
-    const formattedMinutes = String((Math.floor(ms/60000)) % 60).padStart(2,"0"); //mesmo pra minutos e segundos
-    const formattedSeconds = String((Math.floor(ms/1000)) % 60).padStart(2, "0"); //segundos
-    const formattedCent = String(Math.floor(ms / 10) % 100).padStart(2, "0"); //centesimo
-
-    return `${formattedHours}:${formattedMinutes}:${formattedSeconds}.${formattedCent}`;
-}
-
-
 if (savedLaps)
 {
     try
@@ -132,14 +121,14 @@ function toggleStopwatch()
 
 function updateStopwatch()
 {
-    let total =0 ;
+    let total = 0;
     let lapTotal = lapElapsed;
     if (isRunning)
     {
         total = elapsed + (Date.now() - startTime);
         lapTotal += Date.now() - lapStartTime;
 
-        const formatted = formatTime(total);
+        const formatted = formatDuration(total, true);
         if (currentTitle === "stopwatch") 
         {
             document.title = `(${formatted.slice(0, -3)}) Stopwatch - Chrono`;
@@ -149,8 +138,8 @@ function updateStopwatch()
     {
         total = elapsed;
     }
-    timeDisplay.textContent = formatTime(total);
-    lapTimeDisplay.textContent = formatTime(lapTotal);
+    timeDisplay.textContent = formatDuration(total, true);
+    lapTimeDisplay.textContent = formatDuration(lapTotal, true);
 }
 
 
@@ -200,7 +189,7 @@ function markLap()
     localStorage.setItem("chronoLapHistory", JSON.stringify(lapHistory));
     checkLap(lap);
     checkSlowestLap(lap);
-    console.log("Volta mais rápida: ", formatTime(fastestLap));
+    console.log("Volta mais rápida: ", formatDuration(fastestLap, true));
     renderLapHistory();
     document.querySelector("#lapTimeDisplay").style.display = "flex";
     document.querySelector(".lapDisplay").style.display = "flex";
@@ -263,8 +252,8 @@ function renderLapHistory()
 
             return `
                 <div class="lap-row ${lapClass}">
-                    ${lapIcon}Lap ${lap.number}: ${formatTime(lap.time)}
-                    | Total: ${formatTime(lap.totalTime)}
+                    ${lapIcon}Lap ${lap.number}: ${formatDuration(lap.time, true)}
+                    | Total: ${formatDuration(lap.totalTime, true)}
                 </div>
             `;
         }).join("");
@@ -272,16 +261,12 @@ function renderLapHistory()
 
 timerSet.addEventListener("click", () => {
     const input = document.getElementById("timerSecondaryInput").value;
-    let seconds = colonParser(input);
 
+    let seconds = universalInputParser(input);
+    
     if (seconds === null)
     {
-        seconds = textParser(input);
-    }
-
-    if (seconds === null)
-    {
-        return
+        return; //previne entradas vazias
     }
 
     activeModule = "timer";
@@ -297,8 +282,8 @@ timerSet.addEventListener("click", () => {
 
 function updateTimerDisplay()
 {
-    const total = Math.round(timerRemaining * 1000)
-    const formatted = formatTime(total);
+    const total = Math.round(timerRemaining * 1000);
+    const formatted = formatDuration(total, true);
 
     document.getElementById("timerTime").textContent = formatted;
 
@@ -425,7 +410,7 @@ function timerClear()
     timerInitial = 0;
     timerRemaining = 0;
     timerEndTime = 0;
-    document.getElementById("timerSecondaryInput").value = ''
+    document.getElementById("timerSecondaryInput").value = '';
     if (currentTitle === "timer") {
         refreshTabOwner();
     }
@@ -451,6 +436,13 @@ function colonParser(value)
 
     const secondParts = parts[2].split(".");
     const centiseconds = secondParts.length === 2 ? Number(secondParts[1].padEnd(2, "0")) : 0;
+    const minutes = Number(parts[1]);
+    const secs = Number(secondParts[0]);
+
+    if (minutes >= 60 || seconds >= 60)
+    {
+        return null; // pra previnir o 25:60:60
+    }
     
     return Number(parts[0]) * 3600 + Number (parts[1]) * 60 + Number(secondParts[0]) + centiseconds / 100;  
 }
@@ -509,8 +501,8 @@ function textParser(value)
 function updatePomodoroDisplay()
 {
     let status;
-    const formatted = pomodoroFormatTime(pomodoroRemaining * 1000)
-    document.getElementById("pomodoroTime").textContent = pomodoroFormatTime(pomodoroRemaining * 1000);
+    const formatted = formatDuration(pomodoroRemaining * 1000, false)
+    document.getElementById("pomodoroTime").textContent = formatDuration(pomodoroRemaining * 1000, false);
 
     if (!pomodoroRunning)
     {
@@ -521,27 +513,19 @@ function updatePomodoroDisplay()
         if (!pomodoroFocus)
         {
             document.querySelector(".pomodoroStatus").textContent = "BREAK";
-            status = "Break"
+            status = "Break";
         }
         else
         {
             document.querySelector(".pomodoroStatus").textContent = "FOCUS";
-            status = "Focus"
+            status = "Focus";
         }
     }
 
     if (pomodoroRunning && currentTitle === "pomodoro")
     {
-        document.title = `(${formatted}) Pomodoro (${status}) - Chrono`
+        document.title = `(${formatted}) Pomodoro (${status}) - Chrono`;
     }
-}
-
-function pomodoroFormatTime(ms)
-{
-    const totalMinutes = Math.floor(ms / 60000);
-    const formattedMinutes = String(totalMinutes).padStart(2,"0"); //mesmo pra minutos e segundos
-    const formattedSeconds = String((Math.floor(ms/1000)) % 60).padStart(2, "0"); //segundos
-    return `${formattedMinutes}:${formattedSeconds}`;
 }
 
 document.getElementById("pomodoroToggle").addEventListener("click", togglePomodoro);
@@ -584,7 +568,7 @@ function updatePomodoro()
     if (pomodoroRemaining == 0)
     {
         playAlarm();
-        pomodoroFocus = !pomodoroFocus
+        pomodoroFocus = !pomodoroFocus;
         if (pomodoroFocus)
         {
             pomodoroRemaining = pomodoroFocusTime;
@@ -606,6 +590,7 @@ function resetPomodoro()
 
     pomodoroFocus = true;
     pomodoroFocusTime = 25 * 60;
+    pomodoroBreakTime = 5 * 60;
     pomodoroRemaining = pomodoroFocusTime;
     pomodoroEndTime = 0;
 
@@ -651,7 +636,7 @@ function updatePageTitle(timeString, moduleName, extraInfo = "")
             base = timeString;
         }
 
-        document.title = `(${base}) - Chrono`
+        document.title = `(${base}) - Chrono`;
     }
 }
 
@@ -667,12 +652,12 @@ function refreshTabOwner()
     }
     else if (pomodoroRunning)
     {
-        currentTitle = "pomodoro"
+        currentTitle = "pomodoro";
     }
     else
     {
         currentTitle = null;
-        document.title = "Chrono"
+        document.title = "Chrono";
     }
 }
 
@@ -760,7 +745,7 @@ document.getElementById("pomodoroSet").addEventListener("click", () =>{
     }
 
     const input = document.getElementById("pomodoroInput").value;
-    let seconds = inputParser(input); //agora  com o nosso parser geral
+    let seconds = universalInputParser(input); //agora  com o nosso parser geral
 
     if (seconds === null || seconds <= 0) // checa por invalidos
     {
@@ -781,34 +766,71 @@ document.getElementById("pomodoroSet").addEventListener("click", () =>{
     document.getElementById("pomodoroInput").value = "";
 })
 
-function inputParser(value)
+function formatDuration(ms, showCentiseconds = false)
+{
+
+    if (isNaN(ms) || ms < 0)
+    {
+        ms = 0;
+    }
+    const totalHours = Math.floor(ms / 3600000);
+    const totalMinutes = Math.floor(ms / 60000);
+
+    const formattedMinutes = String(totalMinutes % 60).padStart(2, "0");
+    const formattedSeconds =  String(Math.floor(ms / 1000) % 60).padStart(2, "0");
+
+    if (totalHours > 0 || showCentiseconds)
+    {
+        const formattedHours = String(totalHours).padStart(2, "0");
+        let result = `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+
+        if (showCentiseconds)
+        {
+            const formmatedCent = String(Math.floor(ms/10) % 100).padStart(2, "0");
+            result += `.${formmatedCent}`;
+        }
+        return result;
+    }
+    return `${totalMinutes}:${formattedSeconds}`;
+}
+
+function universalInputParser(value)
 {
     const input = value.trim().toLowerCase();
 
     if (input === "")
     {
-        return null;
+        return null; //previne entrada vazia
     }
 
     if(isDigits(input))
     {
-        return Number(input) * 60 //se for apenas numero consideira minutos
+        return Number(input) * 60; //consideira minutos
     }
 
-    if(input.includes(":") && input.split(":").length === 2)
+    if (input.includes(":")) //formato colon
     {
-        const parts = input.split(":");
-        if (isDigits(parts[0]) &&  isDigits(parts[1])) //se tiver dois blocos é formato colon
+        const parts = input.split(":")
+
+        //MM:SS (2 parte)
+        if (parts.length === 2 && isDigits(parts[0]) && isDigits(parts[1]))
         {
-            return Number(parts[0]) * 60 + Number(parts[1]);
+            const minutes = Number(parts[0]);
+            const seconds = Number(parts[1]);
+
+            if (seconds >= 60)
+            {
+                return null;
+            }
+
+            return minutes * 60 + seconds;
+        }
+
+        //HH:MM:SS (3 parte)
+        if (parts.length === 3)
+        {
+            return colonParser(input);
         }
     }
-    
-    if (input.split(":").length === 3)
-    {
-        return colonParser(input);
-    }
-
-    return textParser(input); //fallback
+    return textParser(input);
 }
-

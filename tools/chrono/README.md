@@ -36,27 +36,23 @@ And they save on local storage.
 
 ### Timer
 
-Enter the time using the `HH:MM:SS.CC` format (Hours : Minutes : Seconds . Centiseconds). ~~IT HAS TO USE A DOT (`.`) BEFORE THE CENTISECONDS, OTHERWISE IT WILL NOT WORK.~~ IT IS FIXED.
-
-Now you can use `HH:MM:SS.CC` or `2h 30m 20s` or even `HH:MM:SS` and `2m 30h 10c`!
+Enter the time using the `HH:MM:SS.CC` format (Hours : Minutes : Seconds . Centiseconds) or natural shortcuts like `2h 30m 20s` / `15m`
 
 After entering the time, click **Set**, then press the **Play** button.
 
-Shortcut buttons adds minutes to the timer, you can click them while the timer is still running that they'll work.
+Quick-add minute buttons can be clicked at any time, even while the timer is running.
 
-Erase button on the right will clear the input the time back to zero.
+Use the clear button on the right to reset the input back to zero.
 
 ### Pomodoro Timer
 
-The classic pomodoro, you can use the input the buttons just like the timer!
+The classic pomodoro.
 
-It is proportional to your breaks
-20% of your focus time is dedicated to your break
-Example: If focus: 25m then break: 5m, or focus: 50m break is 10m.
+Now supporting the same flexible input format as the timer!
 
-Play and Reset buttons work just like on the other ones.
+Break durations scale proportionally to your focus time (automatically set to 20%. For example, a 25 minute focus session gives a 5 minute break, while 50 minutes would give 10).
 
-Alternates between FOCUS state and BREAK.
+Play and Reset buttons work just like the other modules, smoothly alternating between  **FOCUS** and **BREAK** states.
 
 ## All of the timers/stopwatch contain the keyboard shortcuts
 
