@@ -39,11 +39,25 @@ let pomodoroFocus = true;
 let currentTitle = null;
 let activeModule = "stopwatch";
 
+const hoursSelect = document.getElementById("hours");
+const minutesSelect = document.getElementById("minutes");
 
 renderIcons();
 updateTime();
 
 setInterval(updateTime, 1000);
+
+for (let i = 0; i < 24; i++)
+{
+    const value = String(i).padStart(2, "0");
+    hoursSelect.innerHTML += `<option value="${value}">${value}</option>`;
+}
+
+for (let i = 0; i < 60; i++)
+{
+    const value = String(i).padStart(2, "0");
+    minutesSelect.innerHTML += `<option value="${value}">${value}</option>`;
+}
 
 function updateTime()
 {
@@ -896,3 +910,4 @@ function savePomodoroState()
     };
     localStorage.setItem("chronoPomodoroState", JSON.stringify(state));
 }
+

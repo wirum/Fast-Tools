@@ -106,6 +106,28 @@
         <button id="pomodoroSet" aria-label="Set pomodoro by input above">Set</button>
       </div>
     </section>
+    <section class="alarm">
+      <h1 class="secondary-title">Alarm</h1>
+      <div class="alarmDisplay">
+        <p id="alarmTime">00:00:00</p>
+      </div>
+      <p class="alarmStatus">Not running..</p>
+      <div class="timerSelector">
+        <label for="hours">Hour</label>
+        <select name="hour" id="hours">
+          <option value="00">00</option>
+        </select>
+        <label for="minutes">Minutes</label>
+          <select name="minutes" id="minutes">              
+          <option value="00">00</option>
+        </select>
+      </div>
+      <div class="alarmButtons">
+        <button id="setAlarm">Set</button>
+        <button id="stopAlarm">Stop</button>
+        <button id="clearAlarm">Clear</button>
+      </div>
+    </section>
   </main>
 
   <footer>
