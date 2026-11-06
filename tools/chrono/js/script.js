@@ -17,6 +17,7 @@ const timeDisplay = document.getElementById("timeDisplay");
 const startButton = document.getElementById("start");
 
 const savedLaps = localStorage.getItem("chronoLapHistory");
+const savedPomodoro = localStorage.getItem("chronoPomodoroState");
 
 let timerInitial = 0;
 let timerRemaining = 0;
@@ -88,6 +89,52 @@ if (savedLaps)
         console.error("savedLaps inválido");
     }
 
+}
+if (savedPomodoro)
+{
+    try
+    {
+        const pomodoroState = JSON.parse(savedPomodoro);
+        pomodoroFocus = pomodoroState.focus;
+
+        if (pomodoroState.focusTime)
+        {
+            pomodoroFocusTime = pomodoroState.focusTime;
+        }
+
+        if (pomodoroState.breakTime)
+        {
+            pomodoroBreakTime = pomodoroState.breakTime;
+        }
+
+        if (pomodoroState.running)
+        {
+            const timeLeft = (pomodoroState.endTime - Date.now()) / 1000;
+            if (timeLeft > 0)
+            {
+                pomodoroRemaining = timeLeft;
+                pomodoroEndTime = pomodoroState.endTime;
+                pomodoroRunning = true;
+                pomodoroInterval = setInterval(updatePomodoro, 50);
+                setButtonState(document.getElementById("pomodoroToggle"), "pause", "Pause pomodoro");
+            }
+            else
+            {
+                pomodoroRemaining = pomodoroFocus ? pomodoroFocusTime : pomodoroBreakTime; //Se pomodoroFocus for verdadeiro (true), a variável pomodoroRemaining recebe o valor de pomodoroFocusTime.
+                pomodoroRunning = false;
+            }
+        }
+        else
+        {
+            pomodoroRunning = false;
+            pomodoroRemaining = pomodoroState.remaining;
+        }
+        updatePomodoroDisplay();
+    }
+    catch
+    {
+        console.error("savePomodoro Inválido")
+    }
 }
 
 function toggleStopwatch() 
@@ -436,10 +483,10 @@ function colonParser(value)
 
     const secondParts = parts[2].split(".");
     const centiseconds = secondParts.length === 2 ? Number(secondParts[1].padEnd(2, "0")) : 0;
-    const minutes = Number(parts[1]);
-    const secs = Number(secondParts[0]);
+    const min = Number(parts[1]);
+    const sec = Number(secondParts[0]);
 
-    if (minutes >= 60 || seconds >= 60)
+    if (min >= 60 || sec >= 60)
     {
         return null; // pra previnir o 25:60:60
     }
@@ -550,6 +597,7 @@ function togglePomodoro()
         setButtonState(document.getElementById("pomodoroToggle"), "pause", "Pause Pomodoro");
         refreshTabOwner();
     }
+    savePomodoroState()
     updatePomodoroDisplay();
 }
 
@@ -589,8 +637,6 @@ function resetPomodoro()
     stopPomodoroTimer();
 
     pomodoroFocus = true;
-    pomodoroFocusTime = 25 * 60;
-    pomodoroBreakTime = 5 * 60;
     pomodoroRemaining = pomodoroFocusTime;
     pomodoroEndTime = 0;
 
@@ -599,6 +645,7 @@ function resetPomodoro()
         refreshTabOwner();
     }
     updatePomodoroDisplay();
+    savePomodoroState()
 }
 
 const alarmSound = new Audio("../../assets/Chrono/audio/bell.wav");
@@ -734,6 +781,7 @@ pomodoroButtons.forEach(button =>{
         }
 
         activeModule = "pomodoro";
+        savePomodoroState();
         updatePomodoroDisplay();
     });
 });
@@ -762,6 +810,7 @@ document.getElementById("pomodoroSet").addEventListener("click", () =>{
 
     activeModule = "pomodoro"
     updatePomodoroDisplay();
+    savePomodoroState();
 
     document.getElementById("pomodoroInput").value = "";
 })
@@ -833,4 +882,17 @@ function universalInputParser(value)
         }
     }
     return textParser(input);
+}
+
+function savePomodoroState()
+{
+    const state={
+        remaining: pomodoroRemaining,
+        focus: pomodoroFocus,
+        running: pomodoroRunning,
+        endTime: pomodoroEndTime,
+        focusTime: pomodoroFocusTime,
+        breakTime: pomodoroBreakTime
+    };
+    localStorage.setItem("chronoPomodoroState", JSON.stringify(state));
 }

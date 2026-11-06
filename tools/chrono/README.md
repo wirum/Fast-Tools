@@ -72,6 +72,8 @@ Im open to suggestions! If you see anything that could be done different im more
 
 Used just a bit for the CSS, the more complex gradients and the glow animation.
 
+And to mask my bad english a bit.. lol
+
 ## License
 
 MIT License.
