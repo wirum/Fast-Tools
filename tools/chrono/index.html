@@ -112,21 +112,22 @@
         <p id="alarmTime">00:00:00</p>
       </div>
       <p class="alarmStatus">Not running..</p>
-      <div class="timerSelector">
-        <label for="hours">Hour</label>
-        <select name="hour" id="hours">
-          <option value="00">00</option>
-        </select>
-        <label for="minutes">Minutes</label>
-          <select name="minutes" id="minutes">              
-          <option value="00">00</option>
-        </select>
-      </div>
       <div class="alarmButtons">
-        <button id="setAlarm">Set</button>
-        <button id="stopAlarm">Stop</button>
-        <button id="clearAlarm">Clear</button>
+        <button id="setAlarm"><i data-lucide="play"></i></button>
+        <button id="clearAlarm"><i data-lucide="eraser"></i></button>
       </div>
+      <div class="alarmInput">
+        <input id="alarmInput" type="time" placeholder="Enter time" aria-label="Input for alarm">
+      </div>
+      <div class="alarmShortcuts">
+        <button alarm-minutes="1" aria-label="Add 1 minute">+1m</button>
+        <button alarm-minutes="-1" aria-label="Remove 1 minute">-1m</button>
+        <button alarm-minutes="3" aria-label="Add 3 minutes">+3m</button>
+        <button alarm-minutes="-3" aria-label="Remove 3 minutes">-3m</button>
+        <button alarm-minutes="5" aria-label="Add 5 minutes">+5m</button>
+        <button alarm-minutes="-5" aria-label="Remove 5 minutes">-5m</button>
+      </div>
+
     </section>
   </main>
 
