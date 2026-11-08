@@ -47,6 +47,8 @@ let alarmTime = null;
 let alarmTriggered = false;
 let alarmInterval = null;
 
+const alarmShortcuts = document.querySelectorAll(".alarmShortcuts button")
+
 renderIcons();
 updateTime();
 
@@ -918,7 +920,7 @@ setAlarm.addEventListener("click", () => {
 
     toggleAlarm();
     updateAlarmDisplay(alarmInput);
-});
+    });
 
 function updateAlarmDisplay(value)
 {
@@ -927,6 +929,7 @@ function updateAlarmDisplay(value)
 
 function toggleAlarm()
 {
+    console.log("Toggle:", alarmRunning);
     if(alarmRunning)
     {
         stopAlarm()
@@ -948,6 +951,7 @@ function clearAlarm()
     clearInterval(alarmInterval)
     alarmInterval = null;
     document.getElementById("alarmTime").textContent = "00:00";
+    document.getElementById("alarmInput").value = "";
     document.querySelector(".alarmStatus").textContent = "Not running.."
 }
 
@@ -964,6 +968,7 @@ function getCurrentTime()
 
 function checkAlarm()
 {
+    console.log("Verificando alarme...");
     if (!alarmRunning || !alarmTime)
     {
         return; //previne virar um inferno auditivo
@@ -982,3 +987,26 @@ function stopAlarm()
     alarmInterval = null;
     document.querySelector(".alarmStatus").textContent = "Alarm stopped"
 }
+
+alarmShortcuts.forEach(button => {
+    button.addEventListener("click", () =>{
+        const minuteOffset = Number(button.getAttribute("alarm-minutes"));
+
+        const alarmInput = document.getElementById("alarmInput");
+        let [hours, minutes] = alarmInput.value.split(":").map(Number);
+
+        let totalMinutes = hours * 60 + minutes;
+        totalMinutes += minuteOffset;
+        totalMinutes = (totalMinutes + 1440) % 1440;    
+
+        const newHours = Math.floor(totalMinutes / 60);
+        const newMinutes = totalMinutes % 60;
+
+        const formattedTime = `${String(newHours).padStart(2, "0")}:${String(newMinutes).padStart(2, "0")}`;
+
+        alarmInput.value = formattedTime;
+        alarmTime = formattedTime;
+        updateAlarmDisplay(formattedTime);
+        alarmTriggered = false;
+    }); 
+});
