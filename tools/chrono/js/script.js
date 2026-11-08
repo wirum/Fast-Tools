@@ -39,6 +39,13 @@ let pomodoroFocus = true;
 let currentTitle = null;
 let activeModule = "stopwatch";
 
+const setAlarm = document.getElementById("setAlarm");
+const clearAlarmButton = document.getElementById("clearAlarm");
+
+let alarmRunning = false;
+let alarmTime = null;
+let alarmTriggered = false;
+
 renderIcons();
 updateTime();
 
@@ -896,3 +903,68 @@ function savePomodoroState()
     localStorage.setItem("chronoPomodoroState", JSON.stringify(state));
 }
 
+setAlarm.addEventListener("click", () => {
+    const alarmInput = document.getElementById("alarmInput").value;
+    console.log(alarmInput)
+
+    if (!alarmInput)
+    {
+        return;
+    }
+
+    alarmTime = alarmInput;
+
+    toggleAlarm();
+    updateAlarmDisplay(alarmInput);
+});
+
+function updateAlarmDisplay(value)
+{
+    document.getElementById("alarmTime").textContent = value;  
+}
+
+function toggleAlarm()
+{
+    if(alarmRunning)
+    {
+        document.querySelector(".alarmStatus").textContent = "Alarm stopped";
+        alarmRunning = false;
+    }
+    else
+    {
+        document.querySelector(".alarmStatus").textContent = "Alarm Set";
+        alarmRunning = true;
+    }
+}
+
+document.getElementById("clearAlarm").addEventListener("click", clearAlarm);
+
+function clearAlarm()
+{
+    alarmRunning = false;
+    document.getElementById("alarmTime").textContent = "00:00";
+    document.querySelector(".alarmStatus").textContent = "Not running.."
+}
+
+function getCurrentTime()
+{
+    const now = new Date();
+
+    return now.toLocaleDateString(navigator.language, {
+        hour: "2-digit",
+        minute: "2-digit",
+        hourCycle: "h23"
+    });
+}
+
+function checkAlarm()
+{
+    if (!alarmRunning || !alarmTime)
+    {
+        return; //previne virar um inferno auditivo
+    }
+    if(getCurrentTime() === alarmTime)
+    {
+        playAlarm();
+    }
+}
