@@ -45,6 +45,7 @@ const clearAlarmButton = document.getElementById("clearAlarm");
 let alarmRunning = false;
 let alarmTime = null;
 let alarmTriggered = false;
+let alarmInterval = null;
 
 renderIcons();
 updateTime();
@@ -913,6 +914,7 @@ setAlarm.addEventListener("click", () => {
     }
 
     alarmTime = alarmInput;
+    alarmTriggered = false;
 
     toggleAlarm();
     updateAlarmDisplay(alarmInput);
@@ -927,13 +929,13 @@ function toggleAlarm()
 {
     if(alarmRunning)
     {
-        document.querySelector(".alarmStatus").textContent = "Alarm stopped";
-        alarmRunning = false;
+        stopAlarm()
     }
     else
     {
         document.querySelector(".alarmStatus").textContent = "Alarm Set";
         alarmRunning = true;
+        alarmInterval = setInterval(checkAlarm, 1000)
     }
 }
 
@@ -942,6 +944,9 @@ document.getElementById("clearAlarm").addEventListener("click", clearAlarm);
 function clearAlarm()
 {
     alarmRunning = false;
+    alarmTriggered = false;
+    clearInterval(alarmInterval)
+    alarmInterval = null;
     document.getElementById("alarmTime").textContent = "00:00";
     document.querySelector(".alarmStatus").textContent = "Not running.."
 }
@@ -950,7 +955,7 @@ function getCurrentTime()
 {
     const now = new Date();
 
-    return now.toLocaleDateString(navigator.language, {
+    return now.toLocaleTimeString(navigator.language, {
         hour: "2-digit",
         minute: "2-digit",
         hourCycle: "h23"
@@ -963,8 +968,17 @@ function checkAlarm()
     {
         return; //previne virar um inferno auditivo
     }
-    if(getCurrentTime() === alarmTime)
+    if(getCurrentTime() === alarmTime && !alarmTriggered)
     {
         playAlarm();
+        alarmTriggered = true;
     }
+}
+
+function stopAlarm()
+{
+    alarmRunning = false;
+    clearInterval(alarmInterval)
+    alarmInterval = null;
+    document.querySelector(".alarmStatus").textContent = "Alarm stopped"
 }
