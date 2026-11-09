@@ -110,7 +110,7 @@ header{
     overflow: hidden;
 }
 
-.calcify-art, .terra-art {
+.calcify-art, .terra-art, .chrono-art {
     position: absolute;
     right: 55px;
     top: 50%;
@@ -132,12 +132,12 @@ header{
     transition: 0.25 ease;
 }
 
-.calcify-art span , .terra-art span {
+.calcify-art span , .terra-art span, .chrono-art span {
     display: inline-block;
     transition: 0.25 ease;
 }
 
-.tool-card:hover .calcify-art , .tool-card:hover .terra-art {
+.tool-card:hover .calcify-art , .tool-card:hover .terra-art:hover, .chrono-art:hover {
     opacity: 0.16;
 }
 
@@ -188,6 +188,20 @@ header{
         scale(0.95);
 }
 
+.bi-stopwatch-fill {
+    transform:
+        rotate(10deg)
+        translate(-10px, 40px);
+}
+
+.bi-hourglass-split {
+    transform:
+        rotate(-12deg)
+        translate(12px, -28px)
+        scale(1.2);
+}
+
+
 .odd-art {
     position: absolute;
 
@@ -213,12 +227,16 @@ header{
     transition: 0.25s ease;
 }
 
-.tool-card:hover .odd-art {
+.chrono-art{
+    transition: 0.25s ease;
+}
+
+.tool-card:hover .odd-art, .tool-card:hover .chrono-art {
     opacity: 0.16;
 }
 
-.tool-card:hover .sign-icon {
-    transform: rotate(-8deg) translate(10px, 2px), scale(1.17);
+.tool-card:hover .sign-icon, .tool-card.hover .chrono-art  {
+    transform: rotate(-8deg) translate(10px 2px), scale(1.17);
 }
 
 .about-section h2 {
