@@ -99,11 +99,15 @@ if (savedLaps)
     }
 
 }
-if (savedPomodoro)
+if (savedPomodoro) //blitz SINISTRA (passa NADA mlk)
 {
     try
     {
         const pomodoroState = JSON.parse(savedPomodoro);
+        if (typeof pomodoroState !== "object" || pomodoroState === null || Array.isArray(pomodoroState))
+        {
+            throw new Error("Estado do pomodoro inválido")
+        }
         if (typeof pomodoroState.focus === "boolean")
         {
             pomodoroFocus = pomodoroState.focus;
@@ -126,6 +130,10 @@ if (savedPomodoro)
 
         if (typeof pomodoroState.running === "boolean" && pomodoroState.running)
         {
+            if (typeof pomodoroState.endTime !== "number" || pomodoroState.endTime <= 0)
+            {
+                throw new Error("endtime inválido");
+            }
             const timeLeft = (pomodoroState.endTime - Date.now()) / 1000;
             if (timeLeft > 0)
             {
@@ -144,13 +152,34 @@ if (savedPomodoro)
         else
         {
             pomodoroRunning = false;
-            pomodoroRemaining = pomodoroState.remaining;
+            if (typeof pomodoroState.remaining === "number" && Number.isFinite(pomodoroState.remaining) && pomodoroState.remaining >= 0)
+            {
+                pomodoroRemaining = pomodoroState.remaining;
+            }
+            else
+            {
+                if(pomodoroFocus)
+                {
+                    pomodoroRemaining = pomodoroFocusTime;
+                }
+                else
+                {
+                    pomodoroRemaining = pomodoroBreakTime;
+                }
+            }
         }
         updatePomodoroDisplay();
     }
-    catch
+    catch(error)
     {
-        console.error("savePomodoro Inválido")
+        console.error("Erro ao recuperar pomodoro:", error);
+
+        pomodoroFocus = true;
+        pomodoroRunning = false;
+        pomodoroRemaining = pomodoroFocusTime;
+        pomodoroEndTime = 0;
+
+        localStorage.removeItem("chronoPomodoroState");
     }
 }
 

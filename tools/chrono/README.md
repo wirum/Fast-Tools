@@ -84,7 +84,9 @@ Im open to suggestions! If you see anything that could be done different im more
 
 Used just a bit for the CSS, the more complex gradients and the glow animation.
 
-And to mask my bad english a bit.. lol
+A bit in the end to review code to improve some faulty logic that i THOUGHT worked well (turns out codex is smarter lol). Not much was used. And i read through all its awnsers before pasting, and made improvements/changes to its code. No code was pasted without verifying.
+
+And to mask my bad english a bit.. lol (you can clearly see my english isn't of the best)
 
 ## License
 
