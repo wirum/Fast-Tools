@@ -71,10 +71,24 @@ The display shows how much time is left.
 ### R to reset
 ### Space to start (default is stopwatch)
 
+*Some sounds may be... unexpected.*
+
+*You might not hear them the same way twice.*
+
+*tip: Try a few times..*
+
 ## Screenshots
+
+### Current
 
 ![Current1](../../assets/Chrono/Current1.png)
 ![Current2](../../assets/Chrono/Current2.png)
+![Current3](../../assets/Chrono/Current3.png)
+![Current4](../../assets/Chrono/Current4.png)
+
+### V1
+![Pastv1](../../assets/Chrono/V1-1.png)
+![Pastv1](../../assets/Chrono/V1-2.png)
 
 ### FOR THE REVIEWER
 

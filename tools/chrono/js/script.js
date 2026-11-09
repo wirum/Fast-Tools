@@ -696,10 +696,27 @@ function resetPomodoro()
 }
 
 const alarmSound = new Audio("../../assets/Chrono/audio/bell.wav");
+const secretAlarmSound = new Audio("../../assets/Chrono/audio/ghost.mp3");
+
 
 function playAlarm() {
     alarmSound.currentTime = 0;
-    alarmSound.play().catch(error => console.error("Erro ao reproduzir alarme:", error)) //cria erro no console caso nao funcione
+    secretAlarmSound.currentTime = 0;
+    if(Math.random() < 0.09)
+    {
+        document.getElementById("ghostJumpscare").style.display = "flex";
+        secretAlarmSound.play().catch(error => console.error("Erro ao reproduzir alarme:", error)) //cria erro no console caso nao funcione
+    }
+    
+    else
+    {
+        alarmSound.play().catch(error => console.error("Erro ao reproduzir alarme:", error)) //secret kkk
+    }
+
+    secretAlarmSound.onended = () => //parte do secret
+    {
+        document.getElementById("ghostJumpscare").style.display = "none";
+    };  
 }
 
 function renderIcons()
