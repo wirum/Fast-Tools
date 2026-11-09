@@ -104,19 +104,27 @@ if (savedPomodoro)
     try
     {
         const pomodoroState = JSON.parse(savedPomodoro);
-        pomodoroFocus = pomodoroState.focus;
+        if (typeof pomodoroState.focus === "boolean")
+        {
+            pomodoroFocus = pomodoroState.focus;
+        }
+        else
+        {
+            pomodoroFocus = true;
+        }
+        console.log(pomodoroState); 
 
-        if (pomodoroState.focusTime)
+        if (typeof pomodoroState.focusTime === "number" && pomodoroState.focusTime > 0)
         {
             pomodoroFocusTime = pomodoroState.focusTime;
         }
 
-        if (pomodoroState.breakTime)
+        if (typeof pomodoroState.breakTime === "number" && pomodoroState.breakTime > 0)
         {
             pomodoroBreakTime = pomodoroState.breakTime;
         }
 
-        if (pomodoroState.running)
+        if (typeof pomodoroState.running === "boolean" && pomodoroState.running)
         {
             const timeLeft = (pomodoroState.endTime - Date.now()) / 1000;
             if (timeLeft > 0)
@@ -635,6 +643,7 @@ function updatePomodoro()
             pomodoroRemaining = pomodoroBreakTime;
         }
         pomodoroEndTime = Date.now() + pomodoroRemaining * 1000;
+        savePomodoroState();
     } 
     updatePomodoroDisplay();
 }
@@ -661,7 +670,7 @@ const alarmSound = new Audio("../../assets/Chrono/audio/bell.wav");
 
 function playAlarm() {
     alarmSound.currentTime = 0;
-    alarmSound.play().catch(() => {}); //cria erro no console caso nao funcione
+    alarmSound.play().catch(error => console.error("Erro ao reproduzir alarme:", error)) //cria erro no console caso nao funcione
 }
 
 function renderIcons()
@@ -933,21 +942,25 @@ function toggleAlarm()
     if(alarmRunning)
     {
         stopAlarm()
+        setButtonState(setAlarm, "play", "Start alarm")
     }
     else
     {
         document.querySelector(".alarmStatus").textContent = "Alarm Set";
         alarmRunning = true;
+        setButtonState(setAlarm, "pause", "Stop alarm")
         alarmInterval = setInterval(checkAlarm, 1000)
     }
 }
 
-document.getElementById("clearAlarm").addEventListener("click", clearAlarm);
+clearAlarmButton.addEventListener("click", clearAlarm);
 
 function clearAlarm()
 {
     alarmRunning = false;
+    setButtonState(setAlarm, "play", "Start alarm");
     alarmTriggered = false;
+    alarmTime = null;
     clearInterval(alarmInterval)
     alarmInterval = null;
     document.getElementById("alarmTime").textContent = "00:00";
@@ -993,6 +1006,10 @@ alarmShortcuts.forEach(button => {
         const minuteOffset = Number(button.getAttribute("alarm-minutes"));
 
         const alarmInput = document.getElementById("alarmInput");
+        if (!alarmInput.value)
+        {
+            return;
+        }
         let [hours, minutes] = alarmInput.value.split(":").map(Number);
 
         let totalMinutes = hours * 60 + minutes;

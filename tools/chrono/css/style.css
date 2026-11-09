@@ -435,7 +435,7 @@ button:focus-visible, input:focus-visible, a:focus-visible
     transition: 0.2s;
 }
 
-.shortcutButtons button:hover, .secondaryInput input:hover, .secondaryInput button:hover, .pomodoroShortcut button:hover, .pomodoroInput input:hover, .pomodoroInput button:hover .alarmButtons button:hover, .alarmShortcuts button:hover
+.shortcutButtons button:hover, .secondaryInput input:hover, .secondaryInput button:hover, .pomodoroShortcut button:hover, .pomodoroInput input:hover, .pomodoroInput button:hover, .alarmButtons button:hover, .alarmShortcuts button:hover
 {
     background: var(--border);
     color: var(--text);
@@ -499,13 +499,13 @@ button:focus-visible, input:focus-visible, a:focus-visible
 }
 
 
-#clock-time, #timeDisplay, #timerTime, #pomodoroTime {
+#clock-time, #timeDisplay, #timerTime, #pomodoroTime, #alarmTime {
     color: var(--text);
     text-shadow: 0 0 12px rgba(236,124,34,.45), 0 0 32px rgba(236,124,34,.2);
     animation: flicker 4s infinite;
 }
 
-button:active, .stopwatch-buttons button:active, .pomodoroButtons button:active, .timerButtons button:active, .shortcutButtons button:active, .secondaryInput button:active, .pomodoroShortcut button:active, .pomodoroInput input:active, .pomodoroInput button:active, .alarmInput input:active
+button:active, .stopwatch-buttons button:active, .pomodoroButtons button:active, .timerButtons button:active, .shortcutButtons button:active, .secondaryInput button:active, .pomodoroShortcut button:active, .pomodoroInput input:active, .pomodoroInput button:active, .alarmInput input:active, .alarmShortcuts button:active
 {
     background: var(--accent);
     color: var(--background);
@@ -539,7 +539,7 @@ button:active, .stopwatch-buttons button:active, .pomodoroButtons button:active,
 }
 
 @media (max-width: 900px) {
-  .clock, .stopwatch, .timer, .pomodoro
+  .clock, .stopwatch, .timer, .pomodoro, .alarm
   {
     width: 92%; 
   }
@@ -551,16 +551,16 @@ button:active, .stopwatch-buttons button:active, .pomodoroButtons button:active,
 
 @media (max-width: 600px) 
 {
-    .clock::after, .stopwatch::after, .timer::after, .pomodoro::after 
+    .clock::after, .stopwatch::after, .timer::after, .pomodoro::after, .alarm
     {
         width: 130px;
         height: 130px;
     }
-    .pomodoroButtons
+    .pomodoroButtons, .alarmButtons
     {
         margin-bottom: 50px;
     }
-    .stopwatch-buttons, .secondaryInput, .pomodoroShortcut, .pomodoroInput 
+    .stopwatch-buttons, .secondaryInput, .pomodoroShortcut, .pomodoroInput, .alarmInput, .alarmShortcuts
     {
         margin-bottom: 100px;
     }
