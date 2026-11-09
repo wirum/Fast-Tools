@@ -572,20 +572,12 @@ button:active, .stopwatch-buttons button:active, .pomodoroButtons button:active,
 
 @media (max-width: 600px) 
 {
-    .clock::after, .stopwatch::after, .timer::after, .pomodoro::after, .alarm
+    .clock::after, .stopwatch::after, .timer::after, .pomodoro::after, .alarm::after        
     {
         width: 130px;
         height: 130px;
     }
-    .pomodoroButtons, .alarmButtons
-    {
-        margin-bottom: 50px;
-    }
-    .stopwatch-buttons, .secondaryInput, .pomodoroShortcut, .pomodoroInput, .alarmInput, .alarmShortcuts
-    {
-        margin-bottom: 100px;
-    }
-    .secondaryInput input , .pomodoroShortcut button, .pomodoroInput input
+    .secondaryInput input , .pomodoroInput input
     {
         width: 200px;
     }
@@ -602,9 +594,13 @@ button:active, .stopwatch-buttons button:active, .pomodoroButtons button:active,
     {
         margin-bottom: 40px;
     }
-    .clock-info p
+    .clock-info p, #pomodoroTime p, .pomodoroStatus p
     {
         margin: 0;
+    }
+    .alarmStatus P
+    {
+        margin: 0.5rem 0;
     }
     .title-extra
     {
@@ -622,7 +618,7 @@ button:active, .stopwatch-buttons button:active, .pomodoroButtons button:active,
     {
         gap: 4px;
     }
-    .shortcutButtons button
+    .shortcutButtons button, .alarmShortcuts button
     {
         padding: 8px;
         font-size: 0.9rem;
@@ -633,7 +629,19 @@ button:active, .stopwatch-buttons button:active, .pomodoroButtons button:active,
     }
     .title img
     {
-        width: 70px;
+        width: 70px;    
+    }
+    .alarmShortcuts, .pomodoroInput, .secondaryInput, .clock-info
+    {
+        margin-bottom: 50px;
+    }
+    .stopwatch-buttons
+    {
+        margin-bottom: 120px;
+    }
+    .timerDisplay, .stopwatchDisplay
+    {
+        width: 98%;
     }
 }
 
