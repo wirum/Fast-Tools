@@ -1,0 +1,148 @@
+@import url('https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@1..144,1..1000&display=swap');
+
+* {
+    /* pra todos */
+    box-sizing: border-box;
+}
+
+:root {
+    --bg-primary: #131314;
+    --bg-secondary: #1E1F20;
+    --bg-surface: #28292A;
+
+    --text-primary: #E3E2E6;
+    --text-secondary: #C4C6D0;
+
+    --accent: #ffa726;
+
+    --border: #383a398c;
+}
+
+body {
+    font-family: "Google Sans Flex", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 300;
+    font-style: normal;
+    font-variation-settings:
+        "slnt" 0,
+        "wdth" 100,
+        "ROND" 0;
+}
+
+body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    margin: 0;
+    min-height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    background-color: var(--bg-secondary);
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+}
+
+header h1 {
+    margin: 0;
+    margin-left: 16px;
+
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+.material-symbols-outlined.logo-icon {
+    font-size: 2rem;
+}
+
+main {
+    background-color: var(--bg-primary);
+    display: flex;
+    flex: 1;
+}
+
+.sidebar {
+    background-color: var(--bg-secondary);
+    width: 250px;
+    flex-shrink: 0;
+
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    border-right: 2px solid var(--border);
+}
+
+.sidebar h2 {
+    color: var(--text-primary);
+    font-weight: 500;
+    font-size: 1.1rem;
+    margin-top: 0;
+}
+
+.datasets,
+.chart-types,
+.customization {
+    background-color: var(--bg-primary);
+    padding: 12px;
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    transition: 0.2s ease;
+}
+
+.datasets:hover,
+.chart-types:hover,
+.customization:hover {
+    background-color: var(--bg-surface);
+    border-color: var(--accent);
+    cursor: pointer;
+    transition: 0.2 ease;
+}
+
+.dropdown-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.dropdown-header h2 {
+    margin: 0;
+}
+
+.workspace {
+    background-color: var(--bg-primary);
+    flex: 1;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.graph-container {
+    background-color: var(--bg-surface);
+    color: var(--text-primary);
+
+    width: 80%;
+    height: 75%;
+    padding: 16px;
+    border-radius: 16px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+footer {
+    background-color: var(--bg-secondary);
+
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+footer img {
+    width: 35px;
+    height: auto;
+}
