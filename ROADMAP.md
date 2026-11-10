@@ -21,6 +21,7 @@
 - [x] Create navigation
 - [x] Make responsive
 - [x] Define Terra visual identity
+- [-] Add Graph
 
 ### Hub polish / Calcifiy
 
@@ -50,11 +51,24 @@
 ## Graph (integrated with terra tracker also)
 
 - [ ] Manual data input
+- [ ] CSV import
+- [ ] JSON import
+- [ ] Clipboard import
 - [ ] Line chart
 - [ ] Bar chart
 - [ ] Pie chart
+- [ ] Multiple graphs
+- [ ] Unlimited split
+- [ ] Multiple data series
+- [ ] Dataset management
 - [ ] Labels and titles
-- [ ] Export graph
+- [ ] Custom colors
+- [ ] Legend customization
+- [ ] Axis customization
+- [ ] PNG export
+- [ ] SVG export
+- [ ] CSV export
+- [ ] JSON export
 
 ## File Converter (useful!)
 
@@ -89,5 +103,3 @@
 - [x] Timer
 - [x] Pomodoro
 - [x] Local persistence
-
-(mb i know the responsivity of this is total buns, i'll be fixing it at v2)
