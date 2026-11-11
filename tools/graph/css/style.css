@@ -84,6 +84,13 @@ main {
     margin-top: 0;
 }
 
+.sidebar h3 {
+    color: var(--text-primary);
+    font-weight: 300;
+    font-size: 1.1rem;
+    margin-top: 10px;
+}
+
 .datasets,
 .chart-types,
 .customization {
@@ -91,7 +98,7 @@ main {
     padding: 12px;
     border: 2px solid var(--border);
     border-radius: 12px;
-    transition: 0.2s ease;
+    transition: 0.44s ease-in-out;
 }
 
 .datasets:hover,
@@ -100,7 +107,7 @@ main {
     background-color: var(--bg-surface);
     border-color: var(--accent);
     cursor: pointer;
-    transition: 0.2 ease;
+    transition: 0.2s ease-in-out;
 }
 
 .dropdown-header {
@@ -111,6 +118,24 @@ main {
 
 .dropdown-header h2 {
     margin: 0;
+}
+
+.dropdown-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease-in-out;
+}
+
+.active .dropdown-content {
+    max-height: 500px;
+}
+
+.dropdown-header .material-symbols-outlined {
+    transition: transform 0.2s ease;
+}
+
+.active .dropdown-header .material-symbols-outlined {
+    transform: rotate(180deg);
 }
 
 .workspace {
