@@ -1,4 +1,3 @@
-
 //dropdowns
 
 const dropdowns = document.querySelectorAll(
@@ -44,6 +43,7 @@ datasetForm.addEventListener("submit", (event) => {
     }
 
     datasets.push({
+        id: crypto.randomUUID(),
         name: name
     });
 
@@ -56,18 +56,37 @@ datasetForm.addEventListener("submit", (event) => {
 });
 
 //localstorage ganggg
+//renderiza e cria os datasets
 
 let datasets = JSON.parse(localStorage.getItem("datasets")) || [];
+let selectedDatasetId = null;
+const datasetTitle = document.querySelector(".dataset-title");
+const datasetConfig = document.querySelector(".dataset-config");
 
 function renderDatasets() {
     datasetList.innerHTML = "";
 
     datasets.forEach(dataset => {
-        const item = document.createElement("p");
-        item.textContent = dataset.name;
+        if (!dataset.id) {
+            dataset.id = crypto.randomUUID();
+        }
+        const item = document.createElement("div");
+        item.classList.add("dataset-item");
+        item.dataset.id = dataset.id
+        const name = document.createElement("span");
+        item.addEventListener("click", () => {
+            selectedDatasetId = dataset.id;
+            datasetTitle.textContent = dataset.name;
 
+            datasetConfig.hidden = false;
+
+        });
+        name.textContent = dataset.name;
+        item.appendChild(name);
         datasetList.appendChild(item);
     });
+
+    localStorage.setItem("datasets", JSON.stringify(datasets));
 
     emptyState.style.display = datasets.length ? "none" : "block"; //inverte
 }

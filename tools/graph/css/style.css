@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@1..144,1..1000&display=swap');
 
 * {
-    /* pra todos */
+    /* (*) --> pra todos */
     box-sizing: border-box;
 }
 
@@ -18,6 +18,7 @@
     --bg-primary: #131314;
     --bg-secondary: #1E1F20;
     --bg-surface: #28292A;
+    --bg-accent-surface: #363738;
 
     --text-primary: #E3E2E6;
     --text-secondary: #C4C6D0;
@@ -117,6 +118,19 @@ main {
     border-color: var(--accent);
     cursor: pointer;
     transition: 0.3s ease-in-out;
+}
+
+.dataset-item {
+    padding: 10px;
+    margin-bottom: 4px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: color 0.2s, background-color 0.2s;
+}
+
+.dataset-item:hover {
+    color: var(--accent);
+    background-color: var(--bg-accent-surface);
 }
 
 .dropdown-header {
