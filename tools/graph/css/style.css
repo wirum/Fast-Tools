@@ -98,7 +98,7 @@ main {
     padding: 12px;
     border: 2px solid var(--border);
     border-radius: 12px;
-    transition: 0.44s ease-in-out;
+    transition: 0.3s ease-in-out;
 }
 
 .datasets:hover,
@@ -107,7 +107,7 @@ main {
     background-color: var(--bg-surface);
     border-color: var(--accent);
     cursor: pointer;
-    transition: 0.2s ease-in-out;
+    transition: 0.3s ease-in-out;
 }
 
 .dropdown-header {
@@ -123,7 +123,7 @@ main {
 .dropdown-content {
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.4s ease-in-out;
+    transition: max-height 0.3s ease-in-out;
 }
 
 .active .dropdown-content {
@@ -131,11 +131,17 @@ main {
 }
 
 .dropdown-header .material-symbols-outlined {
-    transition: transform 0.2s ease;
+    transition: transform 0.25s ease-in-out;
 }
 
 .active .dropdown-header .material-symbols-outlined {
     transform: rotate(180deg);
+}
+
+.empty-state {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    text-align: center;
 }
 
 .workspace {
@@ -156,6 +162,112 @@ main {
     padding: 16px;
     border-radius: 16px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.new-dataset {
+    width: 100%;
+    padding: 10px;
+    margin-top: 8px;
+
+    background-color: var(--bg-surface);
+    color: var(--text-primary);
+
+    border: 2px solid var(--border);
+    border-radius: 8px;
+
+    font-family: inherit;
+    font-size: 0.9rem;
+
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.new-dataset:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    transition: 0.2s ease;
+}
+
+.dataset-modal {
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+
+    border: 2px solid var(--border);
+    border-radius: 12px;
+
+    padding: 24px;
+    width: 400px;
+    max-width: 90%;
+}
+
+.dataset-modal::backdrop {
+    background-color: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(3px);
+}
+
+.dataset-modal h2 {
+    margin-top: 0;
+    font-weight: 600;
+}
+
+.dataset-modal input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px;
+
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+
+    border: none;
+    border-radius: 8px;
+
+    font-family: inherit;
+    font-size: 0.95rem;
+
+    outline: 2px solid transparent;
+    transition: outline 0.2 ease;
+}
+
+.dataset-modal input:focus {
+    outline-color: var(--accent);
+}
+
+.dataset-modal input::placeholder {
+    outline-color: var(--text-secondary);
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.modal-actions button {
+    padding: 9px 18px;
+    border: none;
+    border-radius: 20px;
+
+    font-family: inherit;
+    font-size: 0.9rem;
+    font-weight: 500;
+
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.modal-actions button[type="button"] {
+    background-color: transparent;
+    color: var(--text-primary);
+}
+
+.modal-actions button[type="submit"] {
+    background-color: var(--accent);
+    color: #131314;
+}
+
+.modal-actions button:hover {
+    filter: brightness(1.12);
 }
 
 footer {

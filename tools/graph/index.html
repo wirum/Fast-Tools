@@ -28,7 +28,8 @@
         </div>
 
         <div class="dropdown-content">
-          <h3>aoba</h3>
+          <p class="empty-state">No datasets yet</p>
+          <button class="new-dataset"> New dataset </button>
         </div>
 
       </div>
@@ -69,6 +70,19 @@
       </div>
     </section>
   </main>
+
+  <dialog class="dataset-modal">
+    <h2>New dataset</h2>
+
+    <form>
+      <input type="text" placeholder="Dataset name">
+
+      <div class="modal-actions">
+        <button type="button">Cancel</button>
+        <button type="submit">Create</button>
+      </div>
+    </form>
+  </dialog>
   <footer>
     <p>&copy; 2026 Graph - Made by Lucas</p>
     <img src="../../assets/images/Brasil.svg" alt="Brasil">
