@@ -212,12 +212,12 @@ main {
 
 .material-symbols-outlined.config-button {
     font-size: 2.1rem;
-    transition: 0.4s ease-in-out;
+    transition: 0.2s ease-in-out;
     transform-origin: center center;
 }
 
 .material-symbols-outlined.config-button:hover {
-    transform: translateY(-1.9px) rotate(180deg);
+    transform: translateY(1px) rotate(90deg);
     color: var(--accent);
 }
 
@@ -262,7 +262,9 @@ main {
     box-shadow: inset 0 0 0 2px var(--accent);
 }
 
-.dataset-modal {
+.dataset-modal,
+.config-modal,
+.delete-confirm-modal {
     background-color: var(--bg-secondary);
     color: var(--text-primary);
 
@@ -274,12 +276,16 @@ main {
     max-width: 90%;
 }
 
-.dataset-modal::backdrop {
+.dataset-modal::backdrop,
+.config-modal::backdrop,
+.delete-confirm-modal::backdrop {
     background-color: rgba(0, 0, 0, 0.65);
     backdrop-filter: blur(3px);
 }
 
-.dataset-modal h2 {
+.dataset-modal h2,
+.config-modal h2,
+.delete-confirm-modal h2 {
     margin-top: 0;
     font-weight: 600;
 }
@@ -317,7 +323,8 @@ main {
     margin-top: 20px;
 }
 
-.modal-actions button {
+.modal-actions button,
+.config-modal>button {
     padding: 9px 18px;
     border: none;
     border-radius: 20px;
@@ -330,17 +337,22 @@ main {
     transition: 0.2s ease;
 }
 
-.modal-actions button[type="button"] {
+.modal-actions button[type="button"],
+.config-modal button[type="button"],
+.delete-dataset button[type="button"] {
     background-color: transparent;
     color: var(--text-primary);
 }
 
-.modal-actions button[type="submit"] {
+.modal-actions button[type="submit"],
+.config-modal button[type="submit"],
+.delete-confirm-modal button[type="submit"] {
     background-color: var(--accent);
     color: #131314;
 }
 
-.modal-actions button:hover {
+.modal-actions button:hover,
+.config-modal>button:hover {
     filter: brightness(1.12);
 }
 

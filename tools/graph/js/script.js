@@ -109,3 +109,40 @@ const closeConfigButton = document.querySelector(".close-config");
 const cancelDeleteButton = document.querySelector(".cancel-delete");
 const confirmDeleteButton = document.querySelector(".confirm-delete");
 
+datasetConfig.addEventListener("click", () => {
+    const selectedDataset = datasets.find(dataset => dataset.id === selectedDatasetId);
+
+    if (!selectedDataset) return;
+
+    configDatasetName.textContent = selectedDataset.name;
+    configModal.showModal();
+});
+
+closeConfigButton.addEventListener("click", () => {
+    configModal.close();
+});
+
+deleteDatasetButton.addEventListener("click", () => {
+    deleteConfirmModal.showModal();
+});
+
+cancelDeleteButton.addEventListener("click", () => {
+    deleteConfirmModal.close();
+})
+
+confirmDeleteButton.addEventListener("click", () => {
+    datasets = datasets.filter(dataset => dataset.id !== selectedDatasetId);
+
+    localStorage.setItem("datasets", JSON.stringify(datasets));
+
+    renderDatasets();
+
+    selectedDatasetId = null;
+
+    datasetTitle.textContent = "Select a dataset";
+    datasetConfig.hidden = true;
+    graphTitle.hidden = true
+
+    configModal.close();
+    deleteConfirmModal.close();
+})
