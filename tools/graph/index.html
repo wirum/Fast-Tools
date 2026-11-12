@@ -71,7 +71,7 @@
       <h2 class="dataset-title">Select a dataset</h2>
       <!--sempre aparece, fica em cima centralizado com o bloco do container.-->
       <button class="dataset-config" hidden>
-        <span class="material-symbols-outlined">settings</span> <!--fica no topo superior direito-->
+        <span class="material-symbols-outlined config-button">settings</span> <!--fica no topo superior direito-->
       </button>
       <div class="graph-container">
 
@@ -94,6 +94,27 @@
       </div>
     </form>
   </dialog>
+
+  <dialog class="config-modal">
+    <h2>Dataset Settings</h2>
+
+    <p class="config-dataset-name"></p>
+
+    <button class="delete-dataset">Delete dataset</button>
+
+    <button class="close-config">Close</button>
+  </dialog>
+
+  <dialog class="delete-confirm-modal">
+    <h2>Delete dataset?</h2>
+    <p>This action can't be undone.</p>
+
+    <div class="modal-actions">
+      <button class="cancel-delete" type="button">Cancel</button>
+      <button class="confirm-delete" type="button">Delete</button>
+    </div>
+  </dialog>
+
   <footer>
     <p>&copy; 2026 Graph - Made by Lucas</p>
     <img src="../../assets/images/Brasil.svg" alt="Brasil">

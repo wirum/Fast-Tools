@@ -62,6 +62,7 @@ let datasets = JSON.parse(localStorage.getItem("datasets")) || [];
 let selectedDatasetId = null;
 const datasetTitle = document.querySelector(".dataset-title");
 const datasetConfig = document.querySelector(".dataset-config");
+const graphTitle = document.querySelector(".graph-title");
 
 function renderDatasets() {
     datasetList.innerHTML = "";
@@ -79,6 +80,10 @@ function renderDatasets() {
             datasetTitle.textContent = dataset.name;
 
             datasetConfig.hidden = false;
+            graphTitle.hidden = false;
+
+            graphTitle.style.display = "flex";
+            datasetConfig.style.display = "flex";
 
         });
         name.textContent = dataset.name;
@@ -93,5 +98,14 @@ function renderDatasets() {
 
 renderDatasets();
 
+// delete modal
 
+const configModal = document.querySelector(".config-modal");
+const configDatasetName = document.querySelector(".config-dataset-name");
+const deleteConfirmModal = document.querySelector(".delete-confirm-modal");
+
+const deleteDatasetButton = document.querySelector(".delete-dataset");
+const closeConfigButton = document.querySelector(".close-config");
+const cancelDeleteButton = document.querySelector(".cancel-delete");
+const confirmDeleteButton = document.querySelector(".confirm-delete");
 
