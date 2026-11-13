@@ -285,13 +285,32 @@ main {
     transition: 0.2s ease;
 }
 
-.new-dataset:hover {
+.category-item .btn-flat,
+.add-category {
+    background-color: var(--bg-surface);
+    color: var(--text-primary);
+
+    border: 2px solid var(--border);
+    border-radius: 8px;
+
+    font-family: inherit;
+    font-size: 0.9rem;
+
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.new-dataset:hover,
+.category-item .btn-flat:hover,
+.add-category:hover {
     border-color: var(--accent);
     color: var(--accent);
     transition: 0.2s ease;
 }
 
-.new-dataset:focus-visible {
+.new-dataset:focus-visible,
+.category-item .btn-flat:focus-visible,
+.add-category:focus-visible {
     outline: none;
     box-shadow: inset 0 0 0 2px var(--accent);
 }
@@ -394,6 +413,45 @@ main {
     display: flex;
     align-items: center;
     gap: 8px;
+    margin-bottom: 8px;
+}
+
+.category-item span {
+    flex: 1;
+    min-width: 0;
+}
+
+.category-item input {
+    width: 80px;
+    padding: 8px;
+
+    padding-bottom: 12px;
+
+    background-color: var(--bg-surface);
+    color: var(--text-primary);
+
+    border: 1px solid var(--border);
+    border-radius: 8px;
+
+    font-family: inherit;
+}
+
+.category-input {
+    width: 100%;
+    padding: 8px;
+
+    background-color: var(--bg-surface);
+    color: var(--text-primary);
+
+    border: 1px solid var(--border);
+    border-radius: 8px;
+
+    font-family: inherit;
+}
+
+.category-input,
+.add-category {
+    margin-top: 8px
 }
 
 footer {

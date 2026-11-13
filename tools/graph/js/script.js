@@ -253,7 +253,7 @@ function renderCategories() {
 
         const remove = document.createElement("button");
         remove.classList.add("btn-flat");
-        remove.innerHTML = '<i class="material-icons">delete</i>';
+        remove.innerHTML = '<i class="material-symbols-outlined">delete</i>';
 
         remove.addEventListener("click", (event) => {
             event.stopPropagation();
