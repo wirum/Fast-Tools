@@ -5,6 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts@8.8.1/dist/apexcharts.min.js"></script>
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
@@ -61,10 +62,15 @@
         </div>
 
         <div class="dropdown-content">
-          <h3>aoba</h3>
-        </div>
+          <h3>Data</h3>
 
-      </div>
+          <div class="data-editor">
+            <div class="category-list"></div>
+            <input type="text" class="category-input" placeholder="Category name">
+            <button class="add-category">Add category</button>
+          </div>
+
+        </div>
     </aside>
 
     <section class="workspace">
@@ -73,10 +79,13 @@
       <button class="dataset-config" hidden>
         <span class="material-symbols-outlined config-button">settings</span> <!--fica no topo superior direito-->
       </button>
-      <div class="graph-container">
+      <div class="graph-container"> <!--isso só aparece depois de selecionar um dataset, dentro do container-->
 
-        <h2 class="graph-title" hidden>Select a graph</h2>
-        <!--isso só aparece depois de selecionar um dataset, dentro do container-->
+        <div class="graph-header">
+          <h2 class="graph-title" hidden>Select a graph</h2>
+        </div>
+
+        <div class="chart"></div>
 
       </div>
     </section>

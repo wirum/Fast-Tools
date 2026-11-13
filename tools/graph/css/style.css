@@ -155,6 +155,8 @@ main {
 
 .active .dropdown-content {
     max-height: 500px;
+    overflow-y: auto;
+    max-height: 300px;
 }
 
 .dropdown-header .material-symbols-outlined {
@@ -181,6 +183,7 @@ main {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
 }
 
 .dataset-title {
@@ -226,11 +229,42 @@ main {
     background-color: var(--bg-surface);
     color: var(--text-primary);
 
-    width: 80%;
-    height: 75%;
+    width: 85%;
+    height: 80%;
     padding: 16px;
     border-radius: 16px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+}
+
+.graph-header {
+    width: 100%;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    padding: 0 8px;
+}
+
+.graph-title {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+
+.chart {
+    flex: 1;
+    min-height: 0;
+    width: 100%;
+}
+
+.apexcharts-menu {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+.apexcharts-menu-item {
+    color: var(--text-primary);
 }
 
 .new-dataset {
@@ -348,7 +382,7 @@ main {
 .config-modal button[type="submit"],
 .delete-confirm-modal button[type="submit"] {
     background-color: var(--accent);
-    color: #131314;
+    color: var(--bg-primary);
 }
 
 .modal-actions button:hover,
