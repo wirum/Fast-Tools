@@ -1,25 +1,38 @@
 //graph
 
 const categoryList = document.querySelector(".category-list");
-const options = {
-    chart: {
-        type: "bar",
-        height: "100%",
-        width: "100%",
-        foreColor: "#E3E2E6",
-        fontFamily: "Google Sans Flex, sans-serif"
-    },
-    series: [{
-        name: "teste",
-        data: [30, 40, 35, 50]
-    }],
-    xaxis: {
-        categories: ["Jan", "Fev", "Mar", "Abr"]
+
+
+let datasets = JSON.parse(localStorage.getItem("datasets")) || [];
+let selectedDatasetId = null;
+let selectedGraphId = null;
+
+datasets.forEach(dataset => {
+    if (!dataset.graphs || dataset.graphs.length === 0) {
+        dataset.graphs = [{
+            id: crypto.randomUUID(),
+            name: "Graph 1",
+            type: "bar"
+        }]
     }
-};
+});
 
 const chart = new ApexCharts(
-    document.querySelector(".chart"), options
+    document.querySelector(".chart"),
+    {
+        chart: {
+            type: "bar",
+            height: "100%",
+            width: "100%",
+            foreColor: "#E3E2E6",
+            fontFamily: "Google Sans Flex, sans-serif"
+        },
+        series: [],
+        xaxis: {
+            categories: []
+        }
+
+    }
 );
 
 function updateChart() {
@@ -84,7 +97,12 @@ datasetForm.addEventListener("submit", (event) => {
         id: crypto.randomUUID(),
         name: name,
         categories: [],
-        series: []
+        series: [],
+        graphs: [{
+            id: crypto.randomUUID(),
+            name: "Graph 1",
+            type: "bar"
+        }],
     });
 
     localStorage.setItem("datasets", JSON.stringify(datasets));
@@ -98,8 +116,6 @@ datasetForm.addEventListener("submit", (event) => {
 //localstorage ganggg
 //renderiza e cria os datasets
 
-let datasets = JSON.parse(localStorage.getItem("datasets")) || [];
-let selectedDatasetId = null;
 const datasetTitle = document.querySelector(".dataset-title");
 const datasetConfig = document.querySelector(".dataset-config");
 const graphTitle = document.querySelector(".graph-title");
@@ -108,6 +124,7 @@ function renderDatasets() {
     datasetList.innerHTML = "";
 
     datasets.forEach(dataset => {
+
         if (!dataset.id) {
             dataset.id = crypto.randomUUID();
         }
@@ -116,14 +133,27 @@ function renderDatasets() {
         item.dataset.id = dataset.id
         const name = document.createElement("span");
         item.addEventListener("click", () => {
+            selectedGraphId = dataset.graphs[0].id;
+
             selectedDatasetId = dataset.id;
             datasetTitle.textContent = dataset.name;
+
+            datasetList.hidden = true;
+            emptyState.hidden = true;
+            newDatasetButton.hidden = true;
+
+            graphList.hidden = false;
+            newGraph.hidden = false;
+            backDatasets.hidden = false;
 
             datasetConfig.hidden = false;
             graphTitle.hidden = false;
 
             graphTitle.style.display = "flex";
             datasetConfig.style.display = "flex";
+
+            renderGraphs(dataset);
+
             renderCategories();
             updateChart();
         });
@@ -135,6 +165,28 @@ function renderDatasets() {
     localStorage.setItem("datasets", JSON.stringify(datasets));
 
     emptyState.style.display = datasets.length ? "none" : "block"; //inverte
+}
+
+function renderGraphs(dataset) {
+    graphList.innerHTML = "";
+
+    dataset.graphs.forEach(graph => {
+        const item = document.createElement("div");
+        item.classList.add("graph-item");
+
+        const name = document.createElement("span");
+        name.textContent = graph.name;
+
+        item.appendChild(name);
+
+        item.addEventListener("click", () => {
+            selectedGraphId = graph.id;
+            graphTitle.textContent = graph.name;
+
+            updateChart();
+        })
+        graphList.appendChild(item);
+    })
 }
 
 renderDatasets();
@@ -273,3 +325,57 @@ function renderCategories() {
         categoryList.appendChild(item);
     })
 }
+
+// alternando entre dataset e charts
+
+const graphList = document.querySelector(".graph-list");
+const backDatasets = document.querySelector(".back-datasets");
+const newGraph = document.querySelector(".new-graph");
+
+backDatasets.addEventListener("click", () => {
+    selectedDatasetId = null;
+    selectedGraphId = null;
+
+    datasetTitle.textContent = "Select a dataset";
+    graphTitle.textContent = "Select a graph";
+
+    datasetList.hidden = false;
+    newDatasetButton.hidden = false;
+    emptyState.hidden = false;
+
+    graphList.hidden = true;
+    newGraph.hidden = true;
+    backDatasets.hidden = true;
+
+    datasetConfig.hidden = true;
+    graphTitle.hidden = true;
+
+    categoryList.innerHTML = "";
+
+    chart.updateOptions({
+        xaxis: {
+            categories: []
+        },
+        series: []
+    });
+});
+
+newGraph.addEventListener("click", () => {
+    const selectedDataset = datasets.find(dataset => dataset.id === selectedDatasetId);
+
+    if (!selectedDataset) return;
+
+    const graphNumber = selectedDataset.graphs.length + 1;
+
+    const graph = {
+        id: crypto.randomUUID(),
+        name: `Graph ${graphNumber}`,
+        type: "bar"
+    }
+
+    selectedDataset.graphs.push(graph);
+
+    localStorage.setItem("datasets", JSON.stringify(datasets));
+
+    renderGraphs(selectedDataset);
+});
