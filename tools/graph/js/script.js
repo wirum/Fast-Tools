@@ -249,8 +249,27 @@ function renderCategories() {
             updateChart();
         })
 
-        item.append(name, value);
 
+
+        const remove = document.createElement("button");
+        remove.classList.add("btn-flat");
+        remove.innerHTML = '<i class="material-icons">delete</i>';
+
+        remove.addEventListener("click", (event) => {
+            event.stopPropagation();
+            selectedDataset.categories.splice(categoryIndex, 1);
+
+            selectedDataset.series.forEach(series => {
+                series.data.splice(categoryIndex, 1);
+            });
+
+            localStorage.setItem("datasets", JSON.stringify(datasets));
+
+            renderCategories();
+            updateChart();
+        });
+
+        item.append(name, value, remove);
         categoryList.appendChild(item);
     })
 }

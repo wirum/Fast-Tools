@@ -390,6 +390,12 @@ main {
     filter: brightness(1.12);
 }
 
+.category-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
 footer {
     background-color: var(--bg-secondary);
 
