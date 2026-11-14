@@ -3,7 +3,18 @@
 const categoryList = document.querySelector(".category-list");
 
 
-let datasets = JSON.parse(localStorage.getItem("datasets")) || [];
+let datasets = [];
+
+try {
+    datasets = JSON.parse(localStorage.getItem("datasets")) || [];
+}
+catch (error) {
+    console.error("Error loading datasets:", error);
+}
+
+if (!Array.isArray(datasets)) {
+    console.error("Invalid datasets format.");
+}
 let selectedDatasetId = null;
 let selectedGraphId = null;
 
@@ -286,7 +297,7 @@ function renderCategories() {
         });
     }
 
-    selectedDataset.categories.forEach(category => {
+    selectedDataset.categories.forEach((category, categoryIndex) => {
         const item = document.createElement("div");
         item.classList.add("category-item");
 
@@ -295,8 +306,8 @@ function renderCategories() {
 
         const value = document.createElement("input");
         value.type = "number";
-
-        const categoryIndex = selectedDataset.categories.indexOf(category);
+        c
+        onst categoryIndex = selectedDataset.categories.indexOf(category);
         value.value = selectedDataset.series[0].data[categoryIndex] ?? 0; //selectedDataset.series[0]: pega a primeira série do dataset. | .data: acessa os valores dessa série. | [categoryIndex]: pega o valor na posição da categoria atual. | ?? 0: se esse valor for null ou undefined, usa zero.
 
         value.addEventListener("input", () => {
