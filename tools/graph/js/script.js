@@ -286,6 +286,15 @@ closeGraphConfig.addEventListener("click", () => {
     graphConfigModal.close();
 })
 
+deleteGraphButton.addEventListener("click", () => {
+    graphConfigModal.close();
+    graphDeleteModal.showModal();
+})
+
+cancelGraphDelete.addEventListener("click", () => {
+    graphDeleteModal.close();
+})
+
 closeConfigButton.addEventListener("click", () => {
     configModal.close();
 });
@@ -297,6 +306,28 @@ deleteDatasetButton.addEventListener("click", () => {
 cancelDeleteButton.addEventListener("click", () => {
     deleteConfirmModal.close();
 })
+
+confirmGraphDelete.addEventListener("click", () => {
+    const selectedDataset = datasets.find(dataset => dataset.id === selectedDatasetId);
+
+    if (!selectedDataset) return
+
+    selectedDataset.graphs = selectedDataset.graphs.filter(graph => graph.id !== selectedGraphId);
+
+    selectedGraphId = null;
+    graphTitle.textContent = "Select a graph";
+    graphConfig.hidden = true;
+
+    localStorage.setItem("datasets", JSON.stringify(datasets));
+
+    renderGraphs(selectedDataset);
+    updateChart();
+
+    document.querySelector(".chart-types").hidden = true;
+    document.querySelector(".customization").hidden = true;
+
+    graphDeleteModal.close();
+});
 
 confirmDeleteButton.addEventListener("click", () => {
     datasets = datasets.filter(dataset => dataset.id !== selectedDatasetId);
