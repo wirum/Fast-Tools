@@ -267,7 +267,9 @@ main {
     color: var(--text-primary);
 }
 
-.new-dataset {
+.new-dataset,
+.back-datasets,
+.new-graph {
     width: 100%;
     padding: 10px;
     margin-top: 8px;
@@ -302,10 +304,19 @@ main {
 
 .new-dataset:hover,
 .category-item .btn-flat:hover,
-.add-category:hover {
+.add-category:hover,
+.back-datasets:hover,
+.new-graph:hover {
     border-color: var(--accent);
     color: var(--accent);
     transition: 0.2s ease;
+}
+
+.back-datasets {
+    width: fit-content;
+    align-self: flex-start;
+    padding: 8px 14px;
+    margin-top: 8px;
 }
 
 .new-dataset:focus-visible,
@@ -407,6 +418,27 @@ main {
 .modal-actions button:hover,
 .config-modal>button:hover {
     filter: brightness(1.12);
+}
+
+.graph-item {
+    display: flex;
+    align-items: center;
+
+    padding: 8px 10px;
+    margin-top: 4px;
+
+    border-radius: 8px;
+    color: var(--text-secondary);
+
+    font-size: 0.95rem;
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.graph-item:hover {
+    background-color: var(--bg-accent-surface);
+    color: var(--accent);
 }
 
 .category-item {

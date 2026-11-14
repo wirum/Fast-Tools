@@ -70,6 +70,17 @@ function updateChart() {
     });
 }
 
+//graph config
+
+const graphConfig = document.querySelector(".graph-config");
+
+const graphConfigModal = document.querySelector(".graph-config-modal");
+const graphNameInput = document.querySelector(".graph-name-input");
+
+const graphDeleteModal = document.querySelector(".delete-graph-confirm-modal");
+const cancelGraphDelete = document.querySelector(".cancel-delete-graph");
+const confirmGraphDelete = document.querySelector(".confirm-delete-graph");
+const deleteGraphButton = document.querySelector(".delete-graph");
 
 //dropdowns
 
@@ -208,6 +219,7 @@ function renderGraphs(dataset) {
         item.addEventListener("click", () => {
             selectedGraphId = graph.id;
             graphTitle.textContent = graph.name;
+            graphConfig.hidden = false;
             document.querySelector(".chart-types").hidden = false;
             document.querySelector(".customization").hidden = false;
 
@@ -238,6 +250,41 @@ datasetConfig.addEventListener("click", () => {
     configDatasetName.textContent = selectedDataset.name;
     configModal.showModal();
 });
+
+graphConfig.addEventListener("click", () => {
+    const selectedDataset = datasets.find(dataset => dataset.id === selectedDatasetId);
+    const selectedGraph = selectedDataset?.graphs.find(graph => graph.id === selectedGraphId);
+
+    if (!selectedGraphId) return;
+
+    graphNameInput.value = selectedGraph.name;
+    graphConfigModal.showModal();
+});
+
+document.querySelector(".save-graph-name").addEventListener("click", () => {
+    const selectedDataset = datasets.find(dataset => dataset.id === selectedDatasetId);
+    const selectedGraph = selectedDataset?.graphs.find(graph => graph.id === selectedGraphId);
+
+    if (!selectedGraph) return;
+
+    const newName = graphNameInput.value.trim();
+
+    if (!newName) return;
+
+    selectedGraph.name = newName;
+
+    localStorage.setItem("datasets", JSON.stringify(datasets));
+    graphTitle.textContent = newName;
+
+    renderGraphs(selectedDataset);
+    graphConfigModal.close();
+});
+
+const closeGraphConfig = document.querySelector(".close-graph-config");
+
+closeGraphConfig.addEventListener("click", () => {
+    graphConfigModal.close();
+})
 
 closeConfigButton.addEventListener("click", () => {
     configModal.close();
@@ -361,6 +408,7 @@ const newGraph = document.querySelector(".new-graph");
 backDatasets.addEventListener("click", () => {
     selectedDatasetId = null;
     selectedGraphId = null;
+    graphConfig.hidden = true;
 
     chart.updateSeries([]);
     chart.updateOptions({
@@ -415,3 +463,7 @@ newGraph.addEventListener("click", () => {
 
     renderGraphs(selectedDataset);
 });
+
+
+
+

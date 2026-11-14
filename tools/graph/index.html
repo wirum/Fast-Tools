@@ -89,6 +89,11 @@
       <button class="dataset-config" hidden>
         <span class="material-symbols-outlined config-button">settings</span> <!--fica no topo superior direito-->
       </button>
+
+      <button class="graph-config" hidden>
+        <span class="material-symbols-outlined">perm_data_setting</span>
+      </button>
+
       <div class="graph-container"> <!--isso só aparece depois de selecionar um dataset, dentro do container-->
 
         <div class="graph-header">
@@ -122,6 +127,30 @@
     <button class="delete-dataset" type="submit">Delete dataset</button>
 
     <button class="close-config" type="button">Close</button>
+  </dialog>
+
+  <dialog class="graph-config-modal">
+    <h2>Graph settings</h2>
+
+    <label for="graph-name-input">Graph name</label>
+    <input type="text" id="graph-name-input" class="graph-name-input" placeholder="Graph name" required>
+
+    <div class="modal-actions">
+      <button class="close-graph-config" type="button">Close</button>
+      <button class="save-graph-name" type="button">Save</button>
+    </div>
+
+    <button class="delete-graph" type="button">Delete graph</button>
+  </dialog>
+
+  <dialog class="delete-graph-confirm-modal">
+    <h2>Are you sure?</h2>
+    <p>This action can't be undone.</p>
+
+    <div class="modal-actions">
+      <button class="cancel-delete-graph" type="button">Cancel</button>
+      <button class="confirm-delete-graph" type="submit">Delete</button>
+    </div>
   </dialog>
 
   <dialog class="delete-confirm-modal">
