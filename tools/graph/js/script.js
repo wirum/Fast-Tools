@@ -133,7 +133,11 @@ function renderDatasets() {
         item.dataset.id = dataset.id
         const name = document.createElement("span");
         item.addEventListener("click", () => {
-            selectedGraphId = dataset.graphs[0].id;
+            selectedGraphId = null;
+            graphTitle.textContent = "Select a graph";
+
+            document.querySelector(".chart-types").hidden = true;
+            document.querySelector(".customization").hidden = true;
 
             selectedDatasetId = dataset.id;
             datasetTitle.textContent = dataset.name;
@@ -182,6 +186,8 @@ function renderGraphs(dataset) {
         item.addEventListener("click", () => {
             selectedGraphId = graph.id;
             graphTitle.textContent = graph.name;
+            document.querySelector(".chart-types").hidden = false;
+            document.querySelector(".customization").hidden = false;
 
             updateChart();
         })
@@ -351,6 +357,9 @@ backDatasets.addEventListener("click", () => {
     graphTitle.hidden = true;
 
     categoryList.innerHTML = "";
+
+    document.querySelector("chart-types").hidden = true;
+    document.querySelector("customization").hidden = true;
 
     chart.updateOptions({
         xaxis: {
