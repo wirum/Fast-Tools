@@ -14,6 +14,7 @@ catch (error) {
 
 if (!Array.isArray(datasets)) {
     console.error("Invalid datasets format.");
+    datasets = [];
 }
 let selectedDatasetId = null;
 let selectedGraphId = null;
@@ -49,7 +50,17 @@ const chart = new ApexCharts(
 function updateChart() {
     const selectedDataset = datasets.find(dataset => dataset.id === selectedDatasetId);
 
-    if (!selectedDataset) return;
+    const selectedGraph = selectedDataset?.graphs.find(graph => graph.id === selectedGraphId); //o ? ali faz sacessar somente se tiver algo, pra nao dar null
+
+    if (!selectedDataset || !selectedGraph) {
+        chart.updateOptions({
+            xaxis: {
+                categories: []
+            },
+            series: []
+        });
+        return;
+    }
 
     chart.updateOptions({
         xaxis: {
@@ -306,8 +317,6 @@ function renderCategories() {
 
         const value = document.createElement("input");
         value.type = "number";
-        c
-        onst categoryIndex = selectedDataset.categories.indexOf(category);
         value.value = selectedDataset.series[0].data[categoryIndex] ?? 0; //selectedDataset.series[0]: pega a primeira série do dataset. | .data: acessa os valores dessa série. | [categoryIndex]: pega o valor na posição da categoria atual. | ?? 0: se esse valor for null ou undefined, usa zero.
 
         value.addEventListener("input", () => {
@@ -353,6 +362,13 @@ backDatasets.addEventListener("click", () => {
     selectedDatasetId = null;
     selectedGraphId = null;
 
+    chart.updateSeries([]);
+    chart.updateOptions({
+        xaxis: {
+            categories: []
+        }
+    });
+
     datasetTitle.textContent = "Select a dataset";
     graphTitle.textContent = "Select a graph";
 
@@ -369,8 +385,8 @@ backDatasets.addEventListener("click", () => {
 
     categoryList.innerHTML = "";
 
-    document.querySelector("chart-types").hidden = true;
-    document.querySelector("customization").hidden = true;
+    document.querySelector(".chart-types").hidden = true;
+    document.querySelector(".customization").hidden = true;
 
     chart.updateOptions({
         xaxis: {
