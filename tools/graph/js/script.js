@@ -19,16 +19,6 @@ if (!Array.isArray(datasets)) {
 let selectedDatasetId = null;
 let selectedGraphId = null;
 
-datasets.forEach(dataset => {
-    if (!dataset.graphs || dataset.graphs.length === 0) {
-        dataset.graphs = [{
-            id: crypto.randomUUID(),
-            name: "Graph 1",
-            type: "bar"
-        }]
-    }
-});
-
 const chart = new ApexCharts(
     document.querySelector(".chart"),
     {
