@@ -328,7 +328,10 @@ main {
 
 .dataset-modal,
 .config-modal,
-.delete-confirm-modal {
+.delete-confirm-modal,
+.graph-config-modal,
+.delete-graph-config-modal,
+.category-edit-modal {
     background-color: var(--bg-secondary);
     color: var(--text-primary);
 
@@ -342,19 +345,27 @@ main {
 
 .dataset-modal::backdrop,
 .config-modal::backdrop,
-.delete-confirm-modal::backdrop {
+.delete-confirm-modal::backdrop,
+.graph-config-modal::backdrop,
+.delete-graph-config-modal::backdrop,
+.category-edit-modal::backdrop {
     background-color: rgba(0, 0, 0, 0.65);
     backdrop-filter: blur(3px);
 }
 
 .dataset-modal h2,
 .config-modal h2,
-.delete-confirm-modal h2 {
+.delete-confirm-modal h2,
+.graph-config-modal h2,
+.delete-graph-config-modal h2,
+.category-edit-modal h2 {
     margin-top: 0;
     font-weight: 600;
 }
 
-.dataset-modal input {
+.dataset-modal input,
+.graph-config-modal input,
+.category-edit-modal input {
     width: 100%;
     box-sizing: border-box;
     padding: 12px;
@@ -369,14 +380,18 @@ main {
     font-size: 0.95rem;
 
     outline: 2px solid transparent;
-    transition: outline 0.2 ease;
+    transition: outline 0.2s ease;
 }
 
-.dataset-modal input:focus {
+.dataset-modal input:focus,
+.graph-config-modal input:focus,
+.category-edit-modal input:focus {
     outline-color: var(--accent);
 }
 
-.dataset-modal input::placeholder {
+.dataset-modal input::placeholder,
+.graph-config-modal input::placeholder,
+.category-edit-modal input::placeholder {
     outline-color: var(--text-secondary);
 }
 
@@ -485,6 +500,16 @@ main {
 .add-category {
     margin-top: 8px
 }
+
+.modal-actions .save-category-edit {
+    background-color: var(--accent);
+    color: var(--bg-primary);
+}
+
+.modal-actions .save-category-edit:hover {
+    filter: brightness(1.12);
+}
+
 
 footer {
     background-color: var(--bg-secondary);
