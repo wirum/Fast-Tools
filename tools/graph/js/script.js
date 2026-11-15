@@ -232,6 +232,13 @@ const closeConfigButton = document.querySelector(".close-config");
 const cancelDeleteButton = document.querySelector(".cancel-delete");
 const confirmDeleteButton = document.querySelector(".confirm-delete");
 
+//category edit modal
+
+const categoryEditModal = document.querySelector(".category-edit-modal");
+const categoryNameInput = document.querySelector(".category-name-input");
+const closeCategoryEdit = document.querySelector(".close-category-edit");
+const saveCategoryEdit = document.querySelector(".save-category-edit");
+
 datasetConfig.addEventListener("click", () => {
     const selectedDataset = datasets.find(dataset => dataset.id === selectedDatasetId);
 
@@ -295,6 +302,18 @@ deleteDatasetButton.addEventListener("click", () => {
 
 cancelDeleteButton.addEventListener("click", () => {
     deleteConfirmModal.close();
+});
+
+closeCategoryEdit.addEventListener("click", () => {
+    categoryEditModal.close();
+})
+
+saveCategoryEdit.addEventListener("click", () => {
+    const selectedDataset = datasets.find(dataset => dataset.id === selectedDatasetId);
+
+    if (!selectedDataset) return;
+
+    const newName = categoryNameInput.value
 })
 
 confirmGraphDelete.addEventListener("click", () => {
@@ -401,6 +420,18 @@ function renderCategories() {
         const name = document.createElement("span");
         name.textContent = category;
 
+        const edit = document.createElement("button");
+
+        edit.addEventListener("click", (event) => {
+            event.stopPropagation(); //previne o caos
+
+            categoryNameInput.value = category;
+            categoryEditModal.showModal();
+        });
+
+        edit.classList.add(".btn-flat");
+        edit.innerHTML = '<i class="material-symbols-outlined">edit</i>';
+
         const value = document.createElement("input");
         value.type = "number";
         value.value = selectedDataset.series[0].data[categoryIndex] ?? 0; //selectedDataset.series[0]: pega a primeira série do dataset. | .data: acessa os valores dessa série. | [categoryIndex]: pega o valor na posição da categoria atual. | ?? 0: se esse valor for null ou undefined, usa zero.
@@ -433,7 +464,7 @@ function renderCategories() {
             updateChart();
         });
 
-        item.append(name, value, remove);
+        item.append(name, edit, value, remove);
         categoryList.appendChild(item);
     })
 }
