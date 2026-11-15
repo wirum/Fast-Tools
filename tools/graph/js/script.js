@@ -322,15 +322,33 @@ confirmGraphDelete.addEventListener("click", () => {
 confirmDeleteButton.addEventListener("click", () => {
     datasets = datasets.filter(dataset => dataset.id !== selectedDatasetId);
 
+    selectedGraphId = null;
+    selectedDatasetId = null;
+
     localStorage.setItem("datasets", JSON.stringify(datasets));
 
     renderDatasets();
 
-    selectedDatasetId = null;
 
     datasetTitle.textContent = "Select a dataset";
+    graphTitle.textContent = "Select a graph";
+
+    datasetList.hidden = false;
+    newDatasetButton.hidden = false;
+    emptyState.hidden = false;
+
+    graphList.hidden = true;
+    newGraph.hidden = true;
+    backDatasets.hidden = true;
+
     datasetConfig.hidden = true;
     graphTitle.hidden = true
+    graphConfig.hidden = true;
+
+    document.querySelector(".chart-types").hidden = true;
+    document.querySelector(".customization").hidden = true;
+
+    categoryList.innerHTML = "";
 
     configModal.close();
     deleteConfirmModal.close();
@@ -451,6 +469,9 @@ backDatasets.addEventListener("click", () => {
 
     datasetConfig.hidden = true;
     graphTitle.hidden = true;
+
+    datasetConfig.style.display = "none";
+    graphTitle.style.display = "none";
 
     categoryList.innerHTML = "";
 
