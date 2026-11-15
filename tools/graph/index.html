@@ -86,13 +86,16 @@
     <section class="workspace">
       <h2 class="dataset-title">Select a dataset</h2>
       <!--sempre aparece, fica em cima centralizado com o bloco do container.-->
-      <button class="dataset-config" hidden>
-        <span class="material-symbols-outlined config-button">settings</span> <!--fica no topo superior direito-->
-      </button>
 
-      <button class="graph-config" hidden>
-        <span class="material-symbols-outlined">perm_data_setting</span>
-      </button>
+      <div class="workspace-config">
+        <button class="dataset-config" hidden>
+          <span class="material-symbols-outlined config-button">settings</span> <!--fica no topo superior direito-->
+        </button>
+
+        <button class="graph-config" hidden>
+          <span class="material-symbols-outlined graph-config-button">perm_data_setting</span>
+        </button>
+      </div>
 
       <div class="graph-container"> <!--isso só aparece depois de selecionar um dataset, dentro do container-->
 

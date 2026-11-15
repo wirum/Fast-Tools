@@ -192,12 +192,9 @@ main {
     text-align: center;
 }
 
-.dataset-config {
+.dataset-config,
+.graph-config {
     font-size: 2rem;
-
-    position: absolute;
-    top: 16px;
-    right: 16px;
 
     background-color: transparent;
     color: var(--text-primary);
@@ -213,7 +210,18 @@ main {
     cursor: pointer;
 }
 
-.material-symbols-outlined.config-button {
+.workspace-config {
+    position: absolute;
+    top: 20px;
+    right: 24px;
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.material-symbols-outlined.config-button,
+.material-symbols-outlined.graph-config-button {
     font-size: 2.1rem;
     transition: 0.2s ease-in-out;
     transform-origin: center center;
@@ -221,6 +229,10 @@ main {
 
 .material-symbols-outlined.config-button:hover {
     transform: translateY(1px) rotate(90deg);
+    color: var(--accent);
+}
+
+.material-symbols-outlined.graph-config-button:hover {
     color: var(--accent);
 }
 
@@ -403,7 +415,8 @@ main {
 }
 
 .modal-actions button,
-.config-modal>button {
+.config-modal>button,
+.graph-config-modal>button {
     padding: 9px 18px;
     border: none;
     border-radius: 20px;
@@ -418,20 +431,23 @@ main {
 
 .modal-actions button[type="button"],
 .config-modal button[type="button"],
-.delete-dataset button[type="button"] {
+.delete-dataset button[type="button"],
+.graph-config-modal button[type="button"] {
     background-color: transparent;
     color: var(--text-primary);
 }
 
 .modal-actions button[type="submit"],
 .config-modal button[type="submit"],
-.delete-confirm-modal button[type="submit"] {
+.delete-confirm-modal button[type="submit"],
+.graph-config-modal button[type="submit"] {
     background-color: var(--accent);
     color: var(--bg-primary);
 }
 
 .modal-actions button:hover,
-.config-modal>button:hover {
+.config-modal>button:hover,
+.graph-config-modal>button:hover {
     filter: brightness(1.12);
 }
 

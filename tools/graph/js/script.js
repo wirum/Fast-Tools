@@ -165,6 +165,8 @@ function renderDatasets() {
             selectedGraphId = null;
             graphTitle.textContent = "Select a graph";
 
+            graphConfig.style.display = "none";
+
             document.querySelector(".chart-types").hidden = true;
             document.querySelector(".customization").hidden = true;
 
@@ -216,6 +218,7 @@ function renderGraphs(dataset) {
             selectedGraphId = graph.id;
             graphTitle.textContent = graph.name;
             graphConfig.hidden = false;
+            graphConfig.style.display = "flex";
             document.querySelector(".chart-types").hidden = false;
             document.querySelector(".customization").hidden = false;
 
@@ -350,6 +353,9 @@ confirmGraphDelete.addEventListener("click", () => {
     renderGraphs(selectedDataset);
     updateChart();
 
+    graphConfig.style.display = "none";
+
+
     document.querySelector(".chart-types").hidden = true;
     document.querySelector(".customization").hidden = true;
 
@@ -373,6 +379,7 @@ confirmDeleteButton.addEventListener("click", () => {
     datasetList.hidden = false;
     newDatasetButton.hidden = false;
     emptyState.hidden = false;
+    graphConfig.style.display = "none";
 
     graphList.hidden = true;
     newGraph.hidden = true;
@@ -381,6 +388,7 @@ confirmDeleteButton.addEventListener("click", () => {
     datasetConfig.hidden = true;
     graphTitle.hidden = true
     graphConfig.hidden = true;
+    graphConfig.style.display = "none";
 
     document.querySelector(".chart-types").hidden = true;
     document.querySelector(".customization").hidden = true;
