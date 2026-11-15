@@ -89,6 +89,12 @@ dropdowns.forEach(dropdown => {
     });
 });
 
+// alternando entre dataset e charts
+
+const graphList = document.querySelector(".graph-list");
+const backDatasets = document.querySelector(".back-datasets");
+const newGraph = document.querySelector(".new-graph");
+
 //modal
 
 const modal = document.querySelector(".dataset-modal");
@@ -238,6 +244,7 @@ const categoryEditModal = document.querySelector(".category-edit-modal");
 const categoryNameInput = document.querySelector(".category-name-input");
 const closeCategoryEdit = document.querySelector(".close-category-edit");
 const saveCategoryEdit = document.querySelector(".save-category-edit");
+let editingCategoryIndex = null;
 
 datasetConfig.addEventListener("click", () => {
     const selectedDataset = datasets.find(dataset => dataset.id === selectedDatasetId);
@@ -313,7 +320,18 @@ saveCategoryEdit.addEventListener("click", () => {
 
     if (!selectedDataset) return;
 
-    const newName = categoryNameInput.value
+    const newName = categoryNameInput.value.trim();
+
+    if (!newName) return;
+
+    selectedDataset.categories[editingCategoryIndex] = newName;
+
+    localStorage.setItem("datasets", JSON.stringify(datasets));
+
+    renderCategories();
+    updateChart();
+
+    categoryEditModal.close();
 })
 
 confirmGraphDelete.addEventListener("click", () => {
@@ -371,7 +389,7 @@ confirmDeleteButton.addEventListener("click", () => {
 
     configModal.close();
     deleteConfirmModal.close();
-})
+});
 
 chart.render();
 
@@ -425,7 +443,9 @@ function renderCategories() {
         edit.addEventListener("click", (event) => {
             event.stopPropagation(); //previne o caos
 
+            editingCategoryIndex = categoryIndex;
             categoryNameInput.value = category;
+
             categoryEditModal.showModal();
         });
 
@@ -470,10 +490,6 @@ function renderCategories() {
 }
 
 // alternando entre dataset e charts
-
-const graphList = document.querySelector(".graph-list");
-const backDatasets = document.querySelector(".back-datasets");
-const newGraph = document.querySelector(".new-graph");
 
 backDatasets.addEventListener("click", () => {
     selectedDatasetId = null;
