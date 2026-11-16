@@ -20,7 +20,7 @@ let selectedDatasetId = null;
 let selectedGraphId = null;
 
 function saveDatasets() {
-
+    localStorage.setItem("datasets", JSON.stringify(datasets));
 }
 
 const chart = new ApexCharts(
@@ -138,7 +138,7 @@ datasetForm.addEventListener("submit", (event) => {
         }],
     });
 
-    localStorage.setItem("datasets", JSON.stringify(datasets));
+    saveDatasets();
 
     renderDatasets();
 
@@ -201,7 +201,7 @@ function renderDatasets() {
         datasetList.appendChild(item);
     });
 
-    localStorage.setItem("datasets", JSON.stringify(datasets));
+    saveDatasets();
 
     emptyState.style.display = datasets.length ? "none" : "block"; //inverte
 }
@@ -284,7 +284,7 @@ document.querySelector(".save-graph-name").addEventListener("click", () => {
 
     selectedGraph.name = newName;
 
-    localStorage.setItem("datasets", JSON.stringify(datasets));
+    saveDatasets();
     graphTitle.textContent = newName;
 
     renderGraphs(selectedDataset);
@@ -333,7 +333,7 @@ saveCategoryEdit.addEventListener("click", () => {
 
     selectedDataset.categories[editingCategoryIndex] = newName;
 
-    localStorage.setItem("datasets", JSON.stringify(datasets));
+    saveDatasets();
 
     renderCategories();
     updateChart();
@@ -352,7 +352,7 @@ confirmGraphDelete.addEventListener("click", () => {
     graphTitle.textContent = "Select a graph";
     graphConfig.hidden = true;
 
-    localStorage.setItem("datasets", JSON.stringify(datasets));
+    saveDatasets();
 
     renderGraphs(selectedDataset);
     updateChart();
@@ -372,7 +372,7 @@ confirmDeleteButton.addEventListener("click", () => {
     selectedGraphId = null;
     selectedDatasetId = null;
 
-    localStorage.setItem("datasets", JSON.stringify(datasets));
+    saveDatasets();
 
     renderDatasets();
 
@@ -423,7 +423,7 @@ addCategoryButton.addEventListener("click", () => {
         series.data.push(0);
     })
 
-    localStorage.setItem("datasets", JSON.stringify(datasets));
+    saveDatasets();
     renderCategories();
     updateChart();
     categoryInput.value = "";
@@ -471,7 +471,7 @@ function renderCategories() {
         value.addEventListener("input", () => {
             selectedDataset.series[0].data[categoryIndex] = Number(value.value);
 
-            localStorage.setItem("datasets", JSON.stringify(datasets));
+            saveDatasets();
 
             updateChart();
         })
@@ -490,7 +490,7 @@ function renderCategories() {
                 series.data.splice(categoryIndex, 1);
             });
 
-            localStorage.setItem("datasets", JSON.stringify(datasets));
+            saveDatasets();
 
             renderCategories();
             updateChart();
@@ -560,7 +560,7 @@ newGraph.addEventListener("click", () => {
 
     selectedDataset.graphs.push(graph);
 
-    localStorage.setItem("datasets", JSON.stringify(datasets));
+    saveDatasets();
 
     renderGraphs(selectedDataset);
 });
