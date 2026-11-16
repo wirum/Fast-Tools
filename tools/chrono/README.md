@@ -102,6 +102,10 @@ A bit in the end to review code to improve some faulty logic that i THOUGHT work
 
 And to mask my bad english a bit.. lol (you can clearly see my english isn't of the best)
 
+JS also had some AI help. Not much also.
+
+The most use of AI was to find potential bugs and testing.
+
 ## License
 
 MIT License.

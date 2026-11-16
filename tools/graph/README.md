@@ -86,6 +86,10 @@ All generated suggestions were reviewed before implementation. Code was tested a
 
 And i read through all its awnsers before pasting, and made improvements/changes to its code. No code was pasted without verifying.
 
+JS also had some AI help. Not much also.
+
+The most use of AI was to find potential bugs and testing.
+
 *and also to help with my bad english.*
 
 ## License
