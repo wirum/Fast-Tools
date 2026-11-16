@@ -237,6 +237,7 @@ main {
 }
 
 
+
 .graph-container {
     background-color: var(--bg-surface);
     color: var(--text-primary);
@@ -299,6 +300,20 @@ main {
     transition: 0.2s ease;
 }
 
+.category-item .btn-flat {
+    width: 30px;
+    height: 30px;
+    flex: 0 0 30px;
+    padding: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.category-item .btn-flat .material-symbols-outlined {
+    font-size: 18px;
+}
+
 .category-item .btn-flat,
 .add-category {
     background-color: var(--bg-surface);
@@ -343,7 +358,8 @@ main {
 .delete-confirm-modal,
 .graph-config-modal,
 .delete-graph-config-modal,
-.category-edit-modal {
+.category-edit-modal,
+.delete-graph-confirm-modal {
     background-color: var(--bg-secondary);
     color: var(--text-primary);
 
@@ -360,7 +376,8 @@ main {
 .delete-confirm-modal::backdrop,
 .graph-config-modal::backdrop,
 .delete-graph-config-modal::backdrop,
-.category-edit-modal::backdrop {
+.category-edit-modal::backdrop,
+.delete-graph-confirm-modal::backdrop {
     background-color: rgba(0, 0, 0, 0.65);
     backdrop-filter: blur(3px);
 }
@@ -370,7 +387,8 @@ main {
 .delete-confirm-modal h2,
 .graph-config-modal h2,
 .delete-graph-config-modal h2,
-.category-edit-modal h2 {
+.category-edit-modal h2,
+.delete-graph-confirm-modal h2 {
     margin-top: 0;
     font-weight: 600;
 }
@@ -475,18 +493,22 @@ main {
 .category-item {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 4px;
     margin-bottom: 8px;
 }
 
 .category-item span {
     flex: 1;
     min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .category-item input {
-    width: 80px;
-    padding: 8px;
+    width: 30px;
+    flex: 0 0 56px;
+    padding: 8px 4px;
 
     padding-bottom: 12px;
 
@@ -524,6 +546,11 @@ main {
 
 .modal-actions .save-category-edit:hover {
     filter: brightness(1.12);
+}
+
+.graph-config-modal button[type="button"].delete-graph {
+    background-color: var(--accent);
+    color: var(--bg-primary);
 }
 
 

@@ -457,7 +457,7 @@ function renderCategories() {
             categoryEditModal.showModal();
         });
 
-        edit.classList.add(".btn-flat");
+        edit.classList.add("btn-flat");
         edit.innerHTML = '<i class="material-symbols-outlined">edit</i>';
 
         const value = document.createElement("input");

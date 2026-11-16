@@ -84,6 +84,8 @@ AI tools were used during development for assistance with CSS, debugging and cod
 
 All generated suggestions were reviewed before implementation. Code was tested and adjusted manually to ensure it worked as intended.
 
+And i read through all its awnsers before pasting, and made improvements/changes to its code. No code was pasted without verifying.
+
 *and also to help with my bad english.*
 
 ## License
