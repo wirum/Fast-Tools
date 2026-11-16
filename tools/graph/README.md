@@ -23,6 +23,12 @@ Uses ApexCharts for chart rendering.
 
 Open the direct tool link [Here!](https://wirum.github.io/Fast-Tools/tools/graph/index.html)
 
+To use, create a dataset, open graph 1 or create a new graph
+
+To add data open customization menu and add your categories and values.
+
+The cog in the corner is for the dataset's settings, the graph symbol beside it its for the graph's settings.
+
 ### Datasets
 
 Datasets are the main containers for your data.
@@ -77,6 +83,10 @@ However, data is stored locally on your browser. It won't automatically synchron
 I'm open to suggestions!
 
 If you find something that could be improved, feel free to let me know.
+
+The week's theme is in the "split" since you can have lots of graphics and lots of datasets in the same place (i hope it counts, if it doesn't its alright anyways 😭)
+
+I didn't have much time this week.
 
 ## AI USE
 
