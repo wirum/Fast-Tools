@@ -19,6 +19,10 @@ if (!Array.isArray(datasets)) {
 let selectedDatasetId = null;
 let selectedGraphId = null;
 
+function saveDatasets() {
+
+}
+
 const chart = new ApexCharts(
     document.querySelector(".chart"),
     {

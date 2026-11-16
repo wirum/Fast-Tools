@@ -1,83 +1,96 @@
-# Roadmap do Graph
+# Análise detalhada e roadmap do Graph
 
-## Resultado do teste manual
+## Escopo e resultado dos testes
 
-Testei a página em um servidor local no caminho de implantação (`/tools/graph/index.html`). Consegui criar um dataset, adicionar categorias e valores, renomear uma categoria e um gráfico, criar um segundo gráfico e conferir que categorias e valores continuam salvos após atualizar a página.
+Revisei `index.html`, `css/style.css`, `js/script.js` e o README no clone separado `C:\Users\Lukazz\Desktop\Fast Tools-Graph-Test-Clone`. Também abri o app em navegador local a 1280 × 720 e rodei a suíte do clone com `npm test`.
 
-Encontrei um defeito ao excluir o dataset de teste: a interface volta para “Select a dataset”, mas o gráfico ainda mostra os valores e categorias apagados, e o botão de configurações do dataset continua visível. O dataset criado só para o teste foi removido; nenhum dado preexistente foi alterado.
+O teste manual confirmou criação de datasets e categorias, edição de valores, renomeação e renderização de gráficos. Dados salvos continuam disponíveis após recarregar, embora a seleção do dataset e do gráfico volte ao estado inicial. Digitar `1.5` funciona; apagar o campo numérico salva zero.
 
-Não há testes automatizados no projeto. Os fluxos de exclusão de categoria e gráfico ainda precisam de validação própria.
+Na exclusão de dataset, a tela muda para “Select a dataset”, mas mantém o gráfico com os dados apagados e o botão de configurações visível. Ao excluir o gráfico do meio em uma lista de três, criar outro produz dois itens chamados “Graph 3”. Criar um gráfico também não o seleciona automaticamente. Salvar um nome vazio mantém o modal aberto sem explicar o erro.
 
-## P1 — Corrigir primeiro
+A suíte no clone tem **4 testes aprovados e 5 regressões marcadas como TODO**. O processo termina com código zero porque os casos TODO documentam defeitos conhecidos. Os testes executam o JavaScript real com um DOM e ApexCharts simulados; não substituem testes completos em navegadores reais. O clone está separado do checkout original.
 
-### 1. Limpar a tela ao excluir o dataset
+## Prioridade 1 — integridade dos dados e estados incorretos
 
-No tratamento de exclusão, limpar a série e as categorias do gráfico, remover a lista de categorias e esconder os dois botões de configuração. Hoje o gráfico antigo continua visível e o botão do dataset sobrevive à exclusão.
+### 1. Limpar toda a interface ao excluir o dataset
 
-**Pronto quando:** excluir o último dataset deixa a tela no mesmo estado limpo de uma primeira visita, sem dados antigos, controles ativos ou título selecionado.
+O fluxo limpa títulos e lista de categorias, mas não limpa as séries nem as categorias do ApexCharts e não esconde o botão de configurações do dataset. A evidência manual mostra o valor antigo no gráfico sob o título “Select a dataset”.
 
-### 2. Fazer cada gráfico respeitar sua configuração
+**Pronto quando:** depois de excluir o dataset ativo, não restam dados, títulos ou controles referentes a ele; a tela fica equivalente ao estado inicial.
 
-O menu de tipos só mostra “Coming soon..”. O objeto do gráfico já armazena `type`, mas a renderização inicializa sempre como barras e não usa esse valor. Implementar a escolha de tipo e aplicá-la ao selecionar cada gráfico. Se os dados devem ser independentes por gráfico, mover as séries para o objeto do gráfico; se forem compartilhados pelo dataset, deixar essa relação explícita na interface.
+### 2. Não sobrescrever dados corrompidos sem recuperação
 
-**Pronto quando:** dois gráficos do mesmo dataset podem ter as configurações anunciadas e a seleção realmente atualiza o gráfico.
+Quando o JSON salvo é inválido, o código registra um erro, usa uma lista vazia e chama a renderização inicial. Essa renderização grava `[]` em `localStorage`, substituindo o conteúdo anterior. O teste no clone confirmou `not-json` sendo trocado por `[]` durante a inicialização.
 
-### 3. Implementar a edição do nome do dataset ou corrigir a documentação
+**Pronto quando:** o app preserva uma cópia do dado inválido, informa que não conseguiu carregá-lo e permite recuperar ou exportar o conteúdo antes de resetar.
 
-O README diz que datasets podem ser editados, mas as configurações atuais só permitem excluir. Adicionar edição do nome com salvamento, ou ajustar o README para descrever apenas o que existe.
+### 3. Validar a estrutura carregada antes de renderizar
 
-## P2 — Melhorias importantes
+O código só verifica se o valor raiz é um array. JSON válido como `[null]` faz `renderDatasets()` falhar ao acessar `dataset.id`; objetos sem `graphs`, `categories` ou `series` também podem quebrar ao abrir ou editar o dataset. O teste no clone reproduziu o crash com `[null]`.
 
-### 4. Adaptar a interface para telas pequenas e teclado
+**Pronto quando:** registros incompletos são migrados, ignorados com aviso ou recuperados sem derrubar a página e sem apagar os dados originais.
 
-O layout usa uma sidebar fixa de 250 px ao lado de um gráfico largo e não define breakpoints. Em telas estreitas isso tende a comprimir ou estourar o conteúdo. Datasets, gráficos e cabeçalhos expansíveis também dependem de `div` clicável, e os botões de ícone não têm nomes acessíveis claros.
+### 4. Tratar indisponibilidade e erros de `localStorage`
 
-- Empilhar ou recolher a sidebar em telas estreitas e manter o gráfico utilizável.
-- Usar botões para itens clicáveis e controles expansíveis, com `aria-expanded`.
-- Adicionar `aria-label` aos botões de editar e excluir e rótulos associados aos campos de valor.
-- Validar navegação por Tab, ativação por Enter/Espaço e foco visível.
+Há gravações sem `try/catch`, inclusive durante a inicialização da página. Um erro de quota ou armazenamento bloqueado interrompe a renderização; a suíte reproduziu falha de startup quando `setItem` lança erro.
 
-### 5. Proteger os dados locais e oferecer backup
+**Pronto quando:** falhas de leitura e gravação geram uma mensagem útil e o app continua utilizável enquanto a página estiver aberta.
 
-O app confia que o conteúdo de `localStorage` tem o formato esperado. Um JSON válido, mas incompleto ou antigo, pode quebrar a renderização; falhas de leitura, gravação ou quota também não são apresentadas ao usuário.
+## Prioridade 2 — funcionalidades e uso diário
 
-- Validar e normalizar datasets carregados antes de renderizar.
-- Tratar falhas de leitura/gravação com uma mensagem recuperável.
-- Versionar o formato salvo e definir migrações para mudanças futuras.
-- Adicionar exportação e importação de dataset em JSON para backup e transferência entre navegadores.
+### 5. Fazer a configuração de cada gráfico funcionar
 
-### 6. Melhorar validação e edição de valores
+O menu de tipos mostra “Coming soon..”. Cada registro salva `type: "bar"`, mas `updateChart()` não usa esse campo e o ApexCharts é criado sempre como barra. Hoje os gráficos do dataset compartilham as mesmas categorias e séries. Defina se essa partilha é intencional e permita configurar o tipo de visualização por gráfico.
 
-Os botões de salvar nomes são `type="button"`, então `required` não aciona a validação nativa nem Enter envia o formulário. Os nomes também podem ficar duplicados. O campo numérico usa o passo padrão de inteiro.
+**Pronto quando:** cada gráfico selecionado mostra a configuração salva, ou a interface deixa claro que os gráficos são apenas vistas nomeadas do mesmo conjunto de dados.
 
-- Usar formulários com submissão por Enter e mensagens de validação claras.
-- Impedir nomes vazios após remover espaços e decidir se nomes repetidos são permitidos.
-- Definir o comportamento para valores decimais, negativos e campos vazios; usar `step="any"` se decimais forem aceitos.
+### 6. Corrigir nomes duplicados e selecionar o gráfico recém-criado
 
-### 7. Evitar nomes repetidos ao recriar gráficos
+O nome novo é calculado por `graphs.length + 1`. Depois de apagar `Graph 2` da sequência `Graph 1`, `Graph 2`, `Graph 3`, o próximo item também recebe `Graph 3`. Além disso, `New graph` cria o item mas mantém “Select a graph” no painel.
 
-O próximo nome é calculado como `quantidade de gráficos + 1`. Depois de uma exclusão, isso pode reutilizar um nome que ainda está em uso.
+**Pronto quando:** a criação escolhe um nome ainda livre e abre o gráfico novo imediatamente.
 
-**Pronto quando:** criar gráficos após excluir qualquer gráfico gera um nome livre e previsível.
+### 7. Alinhar edição de dataset e documentação
 
-### 8. Permitir mais de uma série de dados
+O README promete que datasets podem ser editados, mas o modal de configurações só mostra o nome e permite exclusão. Implemente a renomeação ou corrija a promessa na documentação.
 
-O modelo e o ApexCharts aceitam várias séries, mas a interface só cria e edita `series[0]`. Adicionar controles para criar, renomear e remover séries caso o objetivo seja comparar várias métricas no mesmo gráfico.
+### 8. Melhorar validação dos formulários
 
-### 9. Selecionar o gráfico recém-criado
+Os botões de salvar nome são `type="button"`; portanto `required` não aciona a validação nativa e Enter não envia o formulário. O código ignora texto vazio silenciosamente. Também não há decisão explícita sobre nomes repetidos.
 
-“New graph” cria o item, mas não o abre. Selecionar o novo gráfico automaticamente reduz um passo e confirma que ele foi criado.
+**Pronto quando:** salvar vazio mostra um erro junto ao campo; Enter salva; e a regra para nomes duplicados é consistente.
 
-## P3 — Acabamento e manutenção
+### 9. Ajustar layout e acessibilidade
 
-### 10. Criar uma rotina de regressão
+O CSS não tem breakpoints; a sidebar mede 250 px e o gráfico ocupa 85% do workspace. Isso cria risco de aperto ou rolagem horizontal em celular; não fiz uma medição real em viewport móvel. Dataset, gráfico e cabeçalhos expansíveis são `div`s clicáveis, sem semântica de botão. Campos de categoria/valor não têm rótulos associados, e botões de ícone não têm nomes acessíveis descritivos.
 
-Adicionar testes para criação, edição, exclusão, valores inválidos, dados corrompidos no armazenamento, persistência após atualização e layout estreito. O teste de exclusão de dataset deve verificar que o gráfico e os controles somem.
+- Criar layout que empilhe ou recolha a sidebar em telas estreitas.
+- Usar botões e controles expansíveis com estado acessível.
+- Rotular campos e botões de editar/excluir.
+- Validar foco, Tab, Enter/Espaço e leitor de tela.
 
-### 11. Revisar dependências e recursos externos
+### 10. Definir o comportamento de valores numéricos vazios
 
-ApexCharts, Google Fonts e Material Symbols vêm de CDNs. Definir o comportamento quando a rede ou um CDN não estiver disponível e manter as versões de dependência controladas.
+Valores decimais digitados são aceitos e aparecem no gráfico. Ao apagar o campo, `Number("")` salva zero. Decida se campo vazio significa zero ou dado ausente e deixe o comportamento visível; use `step="any"` se os controles de incremento também precisarem aceitar decimais.
 
-### 12. Polir textos e estados vazios
+## Prioridade 3 — evolução e manutenção
 
-Revisar os textos do README e da interface, explicar que o armazenamento é local e adicionar estados vazios para datasets sem gráficos e datasets sem categorias. Mostrar feedback quando salvar ou importar dados falhar.
+### 11. Oferecer backup e transferência do dataset
+
+A barra do ApexCharts já permite baixar o gráfico como CSV, SVG e PNG. Adicione exportação/importação em JSON para preservar o dataset completo, incluindo categorias, valores e vários gráficos.
+
+### 12. Suportar várias séries editáveis
+
+O modelo e o ApexCharts aceitam uma lista de séries, mas a interface só edita `series[0]`. Se comparação entre métricas fizer parte do objetivo, adicione criação, renomeação e remoção de séries.
+
+### 13. Completar a cobertura de testes
+
+A suíte do clone já cobre criação, edição, persistência, JSON inválido, estrutura malformada, erro de storage, exclusão e nomes após exclusão. Manter esses casos como regressões e adicionar testes reais de navegador, teclado e viewports móveis. A suíte continua no clone; integrá-la ao checkout original deve ser uma decisão separada.
+
+### 14. Reforçar estados e recursos auxiliares
+
+- Restaurar a última seleção após recarregar, se isso fizer sentido para o fluxo.
+- Informar quando não há gráficos ou categorias e quando uma gravação falha.
+- Definir fallback se ApexCharts ou as fontes externas do CDN não carregarem; sem ApexCharts, o script atual não inicializa.
+- Evitar serializar todo o dataset e atualizar o gráfico a cada tecla quando o volume de dados crescer.
+- Remover regras CSS duplicadas e estilos de modais que não existem no HTML.
