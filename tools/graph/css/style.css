@@ -553,6 +553,16 @@ main {
     color: var(--bg-primary);
 }
 
+.graph-config-modal label[for="graph-name-input"] {
+    display: block;
+    margin-bottom: 8px;
+}
+
+.graph-config-modal .modal-actions button.delete-graph {
+    background-color: var(--accent);
+    color: var(--bg-primary);
+    margin-right: auto;
+}
 
 footer {
     background-color: var(--bg-secondary);
