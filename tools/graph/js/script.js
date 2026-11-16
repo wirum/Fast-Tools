@@ -1,6 +1,8 @@
 //graph
 
 const categoryList = document.querySelector(".category-list");
+const chartTypes = document.querySelector(".chart-types");
+const customization = document.querySelector(".customization");
 
 
 let datasets = [];
@@ -16,11 +18,30 @@ if (!Array.isArray(datasets)) {
     console.error("Invalid datasets format.");
     datasets = [];
 }
+
 let selectedDatasetId = null;
 let selectedGraphId = null;
 
+function resetSelection() {
+    selectedDatasetId = null;
+    selectedGraphId = null;
+}
+
 function saveDatasets() {
     localStorage.setItem("datasets", JSON.stringify(datasets));
+}
+
+function getSelectedDataset() {
+    return datasets.find(dataset => dataset.id === selectedDatasetId);
+}
+
+function clearChart() {
+    chart.updateOptions({
+        xaxis: {
+            categories: []
+        },
+        series: []
+    });
 }
 
 const chart = new ApexCharts(
@@ -42,17 +63,12 @@ const chart = new ApexCharts(
 );
 
 function updateChart() {
-    const selectedDataset = datasets.find(dataset => dataset.id === selectedDatasetId);
+    const selectedDataset = getSelectedDataset();
 
     const selectedGraph = selectedDataset?.graphs.find(graph => graph.id === selectedGraphId); //o ? ali faz sacessar somente se tiver algo, pra nao dar null
 
     if (!selectedDataset || !selectedGraph) {
-        chart.updateOptions({
-            xaxis: {
-                categories: []
-            },
-            series: []
-        });
+        clearChart();
         return;
     }
 
@@ -62,6 +78,16 @@ function updateChart() {
         },
         series: selectedDataset.series
     });
+}
+
+function hideGraphControls() {
+    chartTypes.hidden = true;
+    customization.hidden = true;
+}
+
+function showGraphControls() {
+    chartTypes.hidden = false;
+    customization.hidden = false;
 }
 
 //graph config
@@ -171,8 +197,7 @@ function renderDatasets() {
 
             graphConfig.style.display = "none";
 
-            document.querySelector(".chart-types").hidden = true;
-            document.querySelector(".customization").hidden = true;
+            hideGraphControls();
 
             selectedDatasetId = dataset.id;
             datasetTitle.textContent = dataset.name;
@@ -223,8 +248,7 @@ function renderGraphs(dataset) {
             graphTitle.textContent = graph.name;
             graphConfig.hidden = false;
             graphConfig.style.display = "flex";
-            document.querySelector(".chart-types").hidden = false;
-            document.querySelector(".customization").hidden = false;
+            showGraphControls();
 
             updateChart();
         })
@@ -254,7 +278,7 @@ const saveCategoryEdit = document.querySelector(".save-category-edit");
 let editingCategoryIndex = null;
 
 datasetConfig.addEventListener("click", () => {
-    const selectedDataset = datasets.find(dataset => dataset.id === selectedDatasetId);
+    const selectedDataset = getSelectedDataset();
 
     if (!selectedDataset) return;
 
@@ -263,7 +287,7 @@ datasetConfig.addEventListener("click", () => {
 });
 
 graphConfig.addEventListener("click", () => {
-    const selectedDataset = datasets.find(dataset => dataset.id === selectedDatasetId);
+    const selectedDataset = getSelectedDataset();
     const selectedGraph = selectedDataset?.graphs.find(graph => graph.id === selectedGraphId);
 
     if (!selectedGraphId) return;
@@ -273,7 +297,7 @@ graphConfig.addEventListener("click", () => {
 });
 
 document.querySelector(".save-graph-name").addEventListener("click", () => {
-    const selectedDataset = datasets.find(dataset => dataset.id === selectedDatasetId);
+    const selectedDataset = getSelectedDataset();
     const selectedGraph = selectedDataset?.graphs.find(graph => graph.id === selectedGraphId);
 
     if (!selectedGraph) return;
@@ -323,7 +347,7 @@ closeCategoryEdit.addEventListener("click", () => {
 })
 
 saveCategoryEdit.addEventListener("click", () => {
-    const selectedDataset = datasets.find(dataset => dataset.id === selectedDatasetId);
+    const selectedDataset = getSelectedDataset();
 
     if (!selectedDataset) return;
 
@@ -342,7 +366,7 @@ saveCategoryEdit.addEventListener("click", () => {
 })
 
 confirmGraphDelete.addEventListener("click", () => {
-    const selectedDataset = datasets.find(dataset => dataset.id === selectedDatasetId);
+    const selectedDataset = getSelectedDataset();
 
     if (!selectedDataset) return
 
@@ -360,8 +384,7 @@ confirmGraphDelete.addEventListener("click", () => {
     graphConfig.style.display = "none";
 
 
-    document.querySelector(".chart-types").hidden = true;
-    document.querySelector(".customization").hidden = true;
+    hideGraphControls();
 
     graphDeleteModal.close();
 });
@@ -369,8 +392,7 @@ confirmGraphDelete.addEventListener("click", () => {
 confirmDeleteButton.addEventListener("click", () => {
     datasets = datasets.filter(dataset => dataset.id !== selectedDatasetId);
 
-    selectedGraphId = null;
-    selectedDatasetId = null;
+    resetSelection();
 
     saveDatasets();
 
@@ -394,8 +416,7 @@ confirmDeleteButton.addEventListener("click", () => {
     graphConfig.hidden = true;
     graphConfig.style.display = "none";
 
-    document.querySelector(".chart-types").hidden = true;
-    document.querySelector(".customization").hidden = true;
+    hideGraphControls();
 
     categoryList.innerHTML = "";
 
@@ -415,7 +436,7 @@ addCategoryButton.addEventListener("click", () => {
 
     if (!categoryName || !selectedDatasetId) return;
 
-    const selectedDataset = datasets.find(dataset => dataset.id === selectedDatasetId);
+    const selectedDataset = getSelectedDataset();
 
     selectedDataset.categories.push(categoryName);
 
@@ -432,7 +453,7 @@ addCategoryButton.addEventListener("click", () => {
 function renderCategories() {
     categoryList.innerHTML = "";
 
-    const selectedDataset = datasets.find(dataset => dataset.id === selectedDatasetId);
+    const selectedDataset = getSelectedDataset();
 
     if (!selectedDataset) return;
 
@@ -504,16 +525,8 @@ function renderCategories() {
 // alternando entre dataset e charts
 
 backDatasets.addEventListener("click", () => {
-    selectedDatasetId = null;
-    selectedGraphId = null;
+    resetSelection();
     graphConfig.hidden = true;
-
-    chart.updateSeries([]);
-    chart.updateOptions({
-        xaxis: {
-            categories: []
-        }
-    });
 
     datasetTitle.textContent = "Select a dataset";
     graphTitle.textContent = "Select a graph";
@@ -534,19 +547,13 @@ backDatasets.addEventListener("click", () => {
 
     categoryList.innerHTML = "";
 
-    document.querySelector(".chart-types").hidden = true;
-    document.querySelector(".customization").hidden = true;
+    hideGraphControls();
 
-    chart.updateOptions({
-        xaxis: {
-            categories: []
-        },
-        series: []
-    });
+    clearChart();
 });
 
 newGraph.addEventListener("click", () => {
-    const selectedDataset = datasets.find(dataset => dataset.id === selectedDatasetId);
+    const selectedDataset = getSelectedDataset();
 
     if (!selectedDataset) return;
 
