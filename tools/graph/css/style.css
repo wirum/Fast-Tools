@@ -606,18 +606,22 @@ main {
 
 .storage-error-panel h2 {
     font-size: 3rem;
+    font-weight: 800;
+    margin: 10px 0 10px 0px;
 }
 
 .storage-error-panel p {
     margin-bottom: 0;
     margin-top: 0;
     font-size: 1.5rem;
+    font-weight: 600;
 }
 
 .storage-error-panel .comment {
     text-align: center;
     font-size: 1.2rem;
     color: var(--accent);
+    font-style: oblique;
 }
 
 .storage-error-panel button {

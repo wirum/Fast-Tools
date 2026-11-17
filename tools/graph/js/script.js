@@ -8,6 +8,7 @@ const customization = document.querySelector(".customization");
 let datasets = [];
 let storageError = false;
 let corruptedData = null;
+let downloadedData = false;
 
 try {
     const savedData = localStorage.getItem("datasets");
@@ -49,8 +50,22 @@ exportCorruptedData.addEventListener("click", () => {
 
     link.click();
 
-    URL.revokeObjectURL(url)
+
+    setTimeout(() => { URL.revokeObjectURL(url); }, 1000);
+
+    downloadedData = true;
 })
+
+const resetGraph = document.querySelector(".restart-graph");
+
+resetGraph.addEventListener("click", () => {
+    if (!downloadedData) {
+        const confirmed = confirm("Are you sure? You have not downloaded your data.");
+        if (!confirmed) return;
+    }
+    localStorage.removeItem("datasets");
+    location.reload();
+});
 
 let selectedDatasetId = null;
 let selectedGraphId = null;
