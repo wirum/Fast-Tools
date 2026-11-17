@@ -6,18 +6,51 @@ const customization = document.querySelector(".customization");
 
 
 let datasets = [];
+let storageError = false;
+let corruptedData = null;
 
 try {
-    datasets = JSON.parse(localStorage.getItem("datasets")) || [];
+    const savedData = localStorage.getItem("datasets");
+
+    datasets = savedData ? JSON.parse(savedData) : []; //if savedData == true -> parseData, else []
+
+    if (!Array.isArray(datasets)) {
+        throw new Error("Invalid datasets Format");
+    }
 }
 catch (error) {
     console.error("Error loading datasets:", error);
-}
 
-if (!Array.isArray(datasets)) {
-    console.error("Invalid datasets format.");
+    storageError = true;
+    corruptedData = localStorage.getItem("datasets");
     datasets = [];
 }
+
+const storageErrorModal = document.querySelector(".storage-error-modal");
+
+if (storageError) {
+    storageErrorModal.showModal();
+}
+
+const exportCorruptedData = document.querySelector(".export-corrupted-data");
+
+exportCorruptedData.addEventListener("click", () => {
+    if (corruptedData === null) return;
+
+    const blob = new Blob([corruptedData], {
+        type: "application/json"
+    });
+
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "graph-backup-corrupted"
+
+    link.click();
+
+    URL.revokeObjectURL(url)
+})
 
 let selectedDatasetId = null;
 let selectedGraphId = null;
@@ -28,6 +61,8 @@ function resetSelection() {
 }
 
 function saveDatasets() {
+    if (storageError) return
+
     localStorage.setItem("datasets", JSON.stringify(datasets));
 }
 
