@@ -102,7 +102,7 @@ const chart = new ApexCharts(
 function updateChart() {
     const selectedDataset = getSelectedDataset();
 
-    const selectedGraph = getSelectedGraph();
+    const selectedGraph = selectedDataset?.graphs.find(graph => graph.id === selectedGraphId); //o ? ali faz sacessar somente se tiver algo, pra nao dar null
 
     if (!selectedDataset || !selectedGraph) {
         clearChart();
@@ -219,7 +219,7 @@ function renderDatasets() {
     datasetList.innerHTML = "";
     let updatedIds = false;
 
-    datasets.forEach(dataset => {
+    for (const dataset of datasets) {
 
         if (!dataset.id) {
             dataset.id = crypto.randomUUID();
@@ -262,7 +262,7 @@ function renderDatasets() {
         name.textContent = dataset.name;
         item.appendChild(name);
         datasetList.appendChild(item);
-    });
+    };
 
     if (updatedIds) {
         saveDatasets();
@@ -513,7 +513,11 @@ function renderCategories() {
 
             saveDatasets();
 
-            updateChart();
+            chart.updateSeries(selectedDataset.series);
+        })
+
+        value.addEventListener("change", () => {
+            saveDatasets();
         })
 
 
