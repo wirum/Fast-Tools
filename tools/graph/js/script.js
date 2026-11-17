@@ -38,7 +38,7 @@ function getSelectedDataset() {
 function getSelectedGraph() {
     const selectedDataset = getSelectedDataset();
 
-    return selectedDataset?.find(graph => graph.id === selectedGraphId);
+    return selectedDataset?.find(graph => graph.id === selectedGraphId); //o ? ali faz sacessar somente se tiver algo, pra nao dar null
 }
 
 function clearChart() {
@@ -55,6 +55,30 @@ function createElement(tag, className) {
     element.classList.add(className);
 
     return element;
+}
+
+function showDataset(type) {
+    datasetList.hidden = false;
+    newDatasetButton.hidden = false;
+    emptyState.hidden = false;
+
+    graphList.hidden = true;
+    newGraph.hidden = true;
+    backDatasets.hidden = true;
+
+    datasetConfig.hidden = true;
+    graphTitle.hidden = true;
+    graphConfig.hidden = true;
+
+    graphConfig.style.display = "none";
+    datasetConfig.style.display = "none";
+    graphTitle.style.display = "none";
+
+    datasetTitle.textContent = "Select a dataset";
+    graphTitle.textContent = "Select a graph";
+    categoryList.innerHTML = "";
+
+    hideGraphControls();
 }
 
 const chart = new ApexCharts(
@@ -78,7 +102,7 @@ const chart = new ApexCharts(
 function updateChart() {
     const selectedDataset = getSelectedDataset();
 
-    const selectedGraph = selectedDataset?.graphs.find(graph => graph.id === selectedGraphId); //o ? ali faz sacessar somente se tiver algo, pra nao dar null
+    const selectedGraph = getSelectedGraph();
 
     if (!selectedDataset || !selectedGraph) {
         clearChart();
@@ -301,8 +325,7 @@ datasetConfig.addEventListener("click", () => {
 });
 
 graphConfig.addEventListener("click", () => {
-    const selectedDataset = getSelectedDataset();
-    const selectedGraph = selectedDataset?.graphs.find(graph => graph.id === selectedGraphId);
+    const selectedGraph = getSelectedGraph();
 
     if (!selectedGraph) return;
 
@@ -312,7 +335,7 @@ graphConfig.addEventListener("click", () => {
 
 document.querySelector(".save-graph-name").addEventListener("click", () => {
     const selectedDataset = getSelectedDataset();
-    const selectedGraph = selectedDataset?.graphs.find(graph => graph.id === selectedGraphId);
+    const selectedGraph = getSelectedDataset();
 
     if (!selectedGraph) return;
 
@@ -410,26 +433,7 @@ confirmDeleteButton.addEventListener("click", () => {
 
     renderDatasets();
 
-
-    datasetTitle.textContent = "Select a dataset";
-    graphTitle.textContent = "Select a graph";
-
-    datasetList.hidden = false;
-    newDatasetButton.hidden = false;
-    emptyState.hidden = false;
-    graphConfig.style.display = "none";
-
-    graphList.hidden = true;
-    newGraph.hidden = true;
-    backDatasets.hidden = true;
-
-    datasetConfig.hidden = true;
-    graphTitle.hidden = true
-    graphConfig.hidden = true;
-
-    hideGraphControls();
-
-    categoryList.innerHTML = "";
+    showDataset();
 
     configModal.close();
     deleteConfirmModal.close();
@@ -536,28 +540,7 @@ function renderCategories() {
 
 backDatasets.addEventListener("click", () => {
     resetSelection();
-    graphConfig.hidden = true;
-
-    datasetTitle.textContent = "Select a dataset";
-    graphTitle.textContent = "Select a graph";
-
-    datasetList.hidden = false;
-    newDatasetButton.hidden = false;
-    emptyState.hidden = false;
-
-    graphList.hidden = true;
-    newGraph.hidden = true;
-    backDatasets.hidden = true;
-
-    datasetConfig.hidden = true;
-    graphTitle.hidden = true;
-
-    datasetConfig.style.display = "none";
-    graphTitle.style.display = "none";
-
-    categoryList.innerHTML = "";
-
-    hideGraphControls();
+    showDataset();
 
     clearChart();
 });
