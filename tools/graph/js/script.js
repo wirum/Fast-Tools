@@ -38,7 +38,7 @@ function getSelectedDataset() {
 function getSelectedGraph() {
     const selectedDataset = getSelectedDataset();
 
-    return selectedDataset?.find(graph => graph.id === selectedGraphId); //o ? ali faz sacessar somente se tiver algo, pra nao dar null
+    return selectedDataset?.graphs.find(graph => graph.id === selectedGraphId); //o ? ali faz sacessar somente se tiver algo, pra nao dar null
 }
 
 function clearChart() {
@@ -430,6 +430,8 @@ confirmDeleteButton.addEventListener("click", () => {
     datasets = datasets.filter(dataset => dataset.id !== selectedDatasetId);
 
     resetSelection();
+
+    saveDatasets();
 
     renderDatasets();
 
