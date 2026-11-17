@@ -335,7 +335,7 @@ graphConfig.addEventListener("click", () => {
 
 document.querySelector(".save-graph-name").addEventListener("click", () => {
     const selectedDataset = getSelectedDataset();
-    const selectedGraph = getSelectedDataset();
+    const selectedGraph = getSelectedGraph();
 
     if (!selectedGraph) return;
 
