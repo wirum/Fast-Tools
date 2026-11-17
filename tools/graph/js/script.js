@@ -35,6 +35,12 @@ function getSelectedDataset() {
     return datasets.find(dataset => dataset.id === selectedDatasetId);
 }
 
+function getSelectedGraph() {
+    const selectedDataset = getSelectedDataset();
+
+    return selectedDataset?.find(graph => graph.id === selectedGraphId);
+}
+
 function clearChart() {
     chart.updateOptions({
         xaxis: {
@@ -42,6 +48,13 @@ function clearChart() {
         },
         series: []
     });
+}
+
+function createElement(tag, className) {
+    const element = document.createElement(tag);
+    element.classList.add(className);
+
+    return element;
 }
 
 const chart = new ApexCharts(
@@ -164,8 +177,6 @@ datasetForm.addEventListener("submit", (event) => {
         }],
     });
 
-    saveDatasets();
-
     renderDatasets();
 
     datasetForm.reset();
@@ -181,14 +192,15 @@ const graphTitle = document.querySelector(".graph-title");
 
 function renderDatasets() {
     datasetList.innerHTML = "";
+    let updatedIds = false;
 
     datasets.forEach(dataset => {
 
         if (!dataset.id) {
             dataset.id = crypto.randomUUID();
+            updatedIds = true;
         }
-        const item = document.createElement("div");
-        item.classList.add("dataset-item");
+        const item = createElement("div", "dataset-item");
         item.dataset.id = dataset.id
         const name = document.createElement("span");
         item.addEventListener("click", () => {
@@ -221,12 +233,15 @@ function renderDatasets() {
             renderCategories();
             updateChart();
         });
+
         name.textContent = dataset.name;
         item.appendChild(name);
         datasetList.appendChild(item);
     });
 
-    saveDatasets();
+    if (updatedIds) {
+        saveDatasets();
+    }
 
     emptyState.style.display = datasets.length ? "none" : "block"; //inverte
 }
@@ -235,8 +250,7 @@ function renderGraphs(dataset) {
     graphList.innerHTML = "";
 
     dataset.graphs.forEach(graph => {
-        const item = document.createElement("div");
-        item.classList.add("graph-item");
+        const item = createElement("div", "graph-item");
 
         const name = document.createElement("span");
         name.textContent = graph.name;
@@ -290,7 +304,7 @@ graphConfig.addEventListener("click", () => {
     const selectedDataset = getSelectedDataset();
     const selectedGraph = selectedDataset?.graphs.find(graph => graph.id === selectedGraphId);
 
-    if (!selectedGraphId) return;
+    if (!selectedGraph) return;
 
     graphNameInput.value = selectedGraph.name;
     graphConfigModal.showModal();
@@ -394,8 +408,6 @@ confirmDeleteButton.addEventListener("click", () => {
 
     resetSelection();
 
-    saveDatasets();
-
     renderDatasets();
 
 
@@ -414,7 +426,6 @@ confirmDeleteButton.addEventListener("click", () => {
     datasetConfig.hidden = true;
     graphTitle.hidden = true
     graphConfig.hidden = true;
-    graphConfig.style.display = "none";
 
     hideGraphControls();
 
@@ -465,8 +476,7 @@ function renderCategories() {
     }
 
     selectedDataset.categories.forEach((category, categoryIndex) => {
-        const item = document.createElement("div");
-        item.classList.add("category-item");
+        const item = createElement("div", "category-item");
 
         const name = document.createElement("span");
         name.textContent = category;
