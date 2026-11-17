@@ -511,8 +511,6 @@ function renderCategories() {
         value.addEventListener("input", () => {
             selectedDataset.series[0].data[categoryIndex] = Number(value.value);
 
-            saveDatasets();
-
             chart.updateSeries(selectedDataset.series);
         })
 
