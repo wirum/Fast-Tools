@@ -70,6 +70,24 @@ This means your data stays available after refreshing or reopening the page.
 
 However, data is stored locally on your browser. It won't automatically synchronize across different devices or browsers.
 
+### Testing the Data Error Screen
+
+To simulate corrupted localStorage data:
+
+1. Open the Graph application.
+2. Open the browser developer console (`F12`).
+3. Execute the following command:
+
+   ```js
+   localStorage.setItem("datasets", "not-json");
+   ```
+
+4. Reload the page (`Ctrl + R`).
+
+The Orange Screen of Death should appear, allowing you to test the data recovery interface.
+
+**Warning:** This command overwrites the current `datasets` entry in localStorage. Use it only in a test environment.
+
 ## Screenshots
 
 ### Current
