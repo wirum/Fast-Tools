@@ -57,7 +57,7 @@ function createElement(tag, className) {
     return element;
 }
 
-function showDataset(type) {
+function showDataset() {
     datasetList.hidden = false;
     newDatasetButton.hidden = false;
     emptyState.hidden = false;
@@ -201,6 +201,7 @@ datasetForm.addEventListener("submit", (event) => {
         }],
     });
 
+    saveDatasets();
     renderDatasets();
 
     datasetForm.reset();
@@ -337,7 +338,7 @@ document.querySelector(".save-graph-name").addEventListener("click", () => {
     const selectedDataset = getSelectedDataset();
     const selectedGraph = getSelectedGraph();
 
-    if (!selectedGraph) return;
+    if (!selectedGraph || !selectedDataset) return;
 
     const newName = graphNameInput.value.trim();
 
@@ -479,7 +480,9 @@ function renderCategories() {
             name: "Series 1",
             data: selectedDataset.categories.map(() => 0)
         });
+        saveDatasets();
     }
+
 
     selectedDataset.categories.forEach((category, categoryIndex) => {
         const item = createElement("div", "category-item");
