@@ -26,11 +26,24 @@ Quando o JSON salvo é inválido, o código registra um erro, usa uma lista vazi
 
 ### 3. Validar a estrutura carregada antes de renderizar
 
-O código só verifica se o valor raiz é um array. JSON válido como `[null]` faz `renderDatasets()` falhar ao acessar `dataset.id`; objetos sem `graphs`, `categories` ou `series` também podem quebrar ao abrir ou editar o dataset. O teste no clone reproduziu o crash com `[null]`.
+O código só verifica se o valor raiz é um array. JSON válido como `[null]` faz `renderDatasets()` falhar ao acessar `dataset.id`; objetos sem `graphs`, `categories` ou `series` também podem quebrar ao abrir ou editar o dataset.
 
-**Pronto quando:** registros incompletos são migrados, ignorados com aviso ou recuperados sem derrubar a página e sem apagar os dados originais.
+**Pronto quando:** registros incompletos são identificados antes da renderização, sem derrubar a página e sem apagar os dados originais.
 
-### 4. Tratar indisponibilidade e erros de `localStorage`
+### 4. Implementar recuperação automática de dados inválidos
+
+Quando o usuário acionar o retry na OSOD, o Graph deve tentar recuperar os datasets inválidos automaticamente antes de descartá-los.
+
+- Identificar quais campos estão ausentes ou incompatíveis com a estrutura atual.
+- Aplicar migrações seguras quando possível, como preencher `categories` e `series` ausentes com arrays vazios.
+- Preservar os campos e gráficos existentes durante a recuperação.
+- Validar novamente cada dataset após a tentativa de reparo.
+- Se a recuperação falhar, descartar somente o registro irrecuperável, mantendo os demais datasets válidos.
+- Manter os dados originais disponíveis para exportação antes de qualquer alteração destrutiva.
+
+**Pronto quando:** o retry consegue recuperar registros incompletos sem intervenção manual; registros irrecuperáveis não impedem o carregamento dos demais datasets e o usuário é informado sobre o que foi recuperado ou descartado.
+
+### 5. Tratar indisponibilidade e erros de `localStorage`
 
 Há gravações sem `try/catch`, inclusive durante a inicialização da página. Um erro de quota ou armazenamento bloqueado interrompe a renderização; a suíte reproduziu falha de startup quando `setItem` lança erro.
 
@@ -38,29 +51,29 @@ Há gravações sem `try/catch`, inclusive durante a inicialização da página.
 
 ## Prioridade 2 — funcionalidades e uso diário
 
-### 5. Fazer a configuração de cada gráfico funcionar
+### 6. Fazer a configuração de cada gráfico funcionar
 
 O menu de tipos mostra “Coming soon..”. Cada registro salva `type: "bar"`, mas `updateChart()` não usa esse campo e o ApexCharts é criado sempre como barra. Hoje os gráficos do dataset compartilham as mesmas categorias e séries. Defina se essa partilha é intencional e permita configurar o tipo de visualização por gráfico.
 
 **Pronto quando:** cada gráfico selecionado mostra a configuração salva, ou a interface deixa claro que os gráficos são apenas vistas nomeadas do mesmo conjunto de dados.
 
-### 6. Corrigir nomes duplicados e selecionar o gráfico recém-criado
+### 7. Corrigir nomes duplicados e selecionar o gráfico recém-criado
 
 O nome novo é calculado por `graphs.length + 1`. Depois de apagar `Graph 2` da sequência `Graph 1`, `Graph 2`, `Graph 3`, o próximo item também recebe `Graph 3`. Além disso, `New graph` cria o item mas mantém “Select a graph” no painel.
 
 **Pronto quando:** a criação escolhe um nome ainda livre e abre o gráfico novo imediatamente.
 
-### 7. Alinhar edição de dataset e documentação
+### 8. Alinhar edição de dataset e documentação
 
 O README promete que datasets podem ser editados, mas o modal de configurações só mostra o nome e permite exclusão. Implemente a renomeação ou corrija a promessa na documentação.
 
-### 8. Melhorar validação dos formulários
+### 9. Melhorar validação dos formulários
 
 Os botões de salvar nome são `type="button"`; portanto `required` não aciona a validação nativa e Enter não envia o formulário. O código ignora texto vazio silenciosamente. Também não há decisão explícita sobre nomes repetidos.
 
 **Pronto quando:** salvar vazio mostra um erro junto ao campo; Enter salva; e a regra para nomes duplicados é consistente.
 
-### 9. Ajustar layout e acessibilidade
+### 10. Ajustar layout e acessibilidade
 
 O CSS não tem breakpoints; a sidebar mede 250 px e o gráfico ocupa 85% do workspace. Isso cria risco de aperto ou rolagem horizontal em celular; não fiz uma medição real em viewport móvel. Dataset, gráfico e cabeçalhos expansíveis são `div`s clicáveis, sem semântica de botão. Campos de categoria/valor não têm rótulos associados, e botões de ícone não têm nomes acessíveis descritivos.
 
@@ -69,25 +82,27 @@ O CSS não tem breakpoints; a sidebar mede 250 px e o gráfico ocupa 85% do work
 - Rotular campos e botões de editar/excluir.
 - Validar foco, Tab, Enter/Espaço e leitor de tela.
 
-### 10. Definir o comportamento de valores numéricos vazios
+### 11. Definir o comportamento de valores numéricos vazios
 
 Valores decimais digitados são aceitos e aparecem no gráfico. Ao apagar o campo, `Number("")` salva zero. Decida se campo vazio significa zero ou dado ausente e deixe o comportamento visível; use `step="any"` se os controles de incremento também precisarem aceitar decimais.
 
 ## Prioridade 3 — evolução e manutenção
 
-### 11. Oferecer backup e transferência do dataset
+### 12. Oferecer backup e transferência do dataset
 
 A barra do ApexCharts já permite baixar o gráfico como CSV, SVG e PNG. Adicione exportação/importação em JSON para preservar o dataset completo, incluindo categorias, valores e vários gráficos.
 
-### 12. Suportar várias séries editáveis
+### 13. Suportar várias séries editáveis
 
 O modelo e o ApexCharts aceitam uma lista de séries, mas a interface só edita `series[0]`. Se comparação entre métricas fizer parte do objetivo, adicione criação, renomeação e remoção de séries.
 
-### 13. Completar a cobertura de testes
+### 14. Completar a cobertura de testes
 
 A suíte do clone já cobre criação, edição, persistência, JSON inválido, estrutura malformada, erro de storage, exclusão e nomes após exclusão. Manter esses casos como regressões e adicionar testes reais de navegador, teclado e viewports móveis. A suíte continua no clone; integrá-la ao checkout original deve ser uma decisão separada.
 
-### 14. Reforçar estados e recursos auxiliares
+Adicionar testes específicos para a recuperação automática, incluindo migrações bem-sucedidas, registros irrecuperáveis, preservação dos dados originais e manutenção dos datasets válidos.
+
+### 15. Reforçar estados e recursos auxiliares
 
 - Restaurar a última seleção após recarregar, se isso fizer sentido para o fluxo.
 - Informar quando não há gráficos ou categorias e quando uma gravação falha.
