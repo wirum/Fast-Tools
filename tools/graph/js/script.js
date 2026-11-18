@@ -25,8 +25,10 @@ let storageErrorType = null;
 let corruptedData = null;
 let downloadedData = false;
 
+let savedData = null;
+
 try {
-    const savedData = localStorage.getItem("datasets");
+    savedData = localStorage.getItem("datasets");
 
     datasets = savedData ? JSON.parse(savedData) : []; //if savedData == true -> parseData, else []
 
@@ -38,8 +40,14 @@ catch (error) {
     console.error("Error loading datasets:", error);
 
     storageError = true;
-    storageErrorType = "corrupted-data";
-    corruptedData = localStorage.getItem("datasets");
+
+    if (error instanceof SyntaxError || error.message === "Invalid datasets format") {
+        storageErrorType = "corrupted-data";
+        corruptedData = savedData;
+    } else {
+        storageErrorType = "storage-unavaliable";
+    }
+
     datasets = [];
 }
 
@@ -70,6 +78,14 @@ function validateDataset(dataset) {
     return true;
 }
 
+function showStorageError() {
+    configureStorageError();
+
+    if (!storageErrorModal.open) {
+        storageErrorModal.showModal();
+    }
+}
+
 function configureStorageError() {
     if (storageErrorType === "corrupted-data") {
         storageErrorIcon1.textContent = "running_with_errors";
@@ -79,11 +95,14 @@ function configureStorageError() {
         storageErrorDescription.textContent = "Could not load your saved datasets";
         storageErrorDetails.textContent = "Your original data has been preserved";
 
-        storageErrorWarning.textContent = 'After clicking "reset" your data WILL BE DELETED without ANY WAY to recover it.';
+        storageErrorWarning.textContent = "After clicking RESET your data WILL BE DELETED without ANY WAY to recover it.";
         storageErrorRecommendation.textContent = "We highly recommend exporting your data";
 
         exportCorruptedData.textContent = "Export preserved data";
         resetGraph.textContent = "Reset";
+
+        exportCorruptedData.hidden = false;
+        resetGraph.hidden = false;
     }
 
     if (storageErrorType === "save-failure") {
@@ -94,22 +113,57 @@ function configureStorageError() {
         storageErrorDescription.textContent = "Could not save your changes";
         storageErrorDetails.textContent = "Your latest changes may not have been saved";
 
-        storageErrorWarning.textContent = "Do not reset or close the application before securing your data.";
-        storageErrorRecommendation.textContent = "Try exporting your current data if possible.";
+        storageErrorWarning.textContent = "After clicking RESET your data WILL BE DELETED without ANY WAY to recover it.";
+        storageErrorRecommendation.textContent = "We highly recommend exporting your data";
 
-        exportCorruptedData.hidden = true;
-        resetGraph.hidden = true;
+        exportCorruptedData.textContent = "Export preserved data";
+        resetGraph.textContent = "Reset";
+
+        exportCorruptedData.hidden = false;
+        resetGraph.hidden = false;
+    }
+
+    if (storageErrorType === "storage-unavailable") {
+        storageErrorIcon1.textContent = "storage";
+        storageErrorIcon2.textContent = "error";
+
+        storageErrorTitle.textContent = "Storage unavailable";
+        storageErrorDescription.textContent = "Could not access your local storage";
+        storageErrorDetails.textContent = "Graph cannot read or write your saved data"
+
+        storageErrorWarning.textContent = "After clicking RESET your data WILL BE DELETED without ANY WAY to recover it.";
+        storageErrorRecommendation.textContent = "We highly recommend exporting your data";
+
+        exportCorruptedData.textContent = "Export preserved data";
+        resetGraph.textContent = "Reset";
+
+        exportCorruptedData.hidden = false;
+        resetGraph.hidden = false;
     }
 }
 
 if (storageError) {
+    configureStorageError();
     storageErrorModal.showModal();
 }
 
 exportCorruptedData.addEventListener("click", () => {
-    if (corruptedData === null) return;
+    let dataToExport;
 
-    const blob = new Blob([corruptedData], {
+    if (storageErrorType === "corrupted-data") {
+        dataToExport = corruptedData;
+    } else {
+        dataToExport = JSON.stringify(datasets, null, 2)
+    }
+
+    console.log({
+        errorType: storageErrorType,
+        exportedData: dataToExport
+    });
+
+    if (dataToExport === null) return;
+
+    const blob = new Blob([dataToExport], {
         type: "application/json"
     });
 
@@ -117,7 +171,7 @@ exportCorruptedData.addEventListener("click", () => {
 
     const link = document.createElement("a");
     link.href = url;
-    link.download = "graph-backup-corrupted"
+    link.download = "graph-backup"
 
     link.click();
 
@@ -159,6 +213,8 @@ function saveDatasets() {
         console.error("Error saving datasets:", error);
         storageError = true;
         storageErrorType = "save-failure"
+
+        showStorageError();
 
         return false;
     }
