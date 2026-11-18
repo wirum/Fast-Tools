@@ -4,9 +4,24 @@ const categoryList = document.querySelector(".category-list");
 const chartTypes = document.querySelector(".chart-types");
 const customization = document.querySelector(".customization");
 
+const storageErrorModal = document.querySelector(".storage-error-modal");
+
+const storageErrorIcon1 = document.querySelector(".icon1");
+const storageErrorIcon2 = document.querySelector(".icon2");
+
+const storageErrorTitle = document.querySelector(".storage-error-title");
+const storageErrorDescription = document.querySelector(".storage-error-description");
+const storageErrorDetails = document.querySelector(".storage-error-details");
+const storageErrorWarning = document.querySelector(".storage-error-warning");
+const storageErrorRecommendation = document.querySelector(".storage-error-recommendation");
+
+const exportCorruptedData = document.querySelector(".export-corrupted-data");
+const resetGraph = document.querySelector(".restart-graph");
+
 
 let datasets = [];
 let storageError = false;
+let storageErrorType = null;
 let corruptedData = null;
 let downloadedData = false;
 
@@ -23,6 +38,7 @@ catch (error) {
     console.error("Error loading datasets:", error);
 
     storageError = true;
+    storageErrorType = "corrupted-data";
     corruptedData = localStorage.getItem("datasets");
     datasets = [];
 }
@@ -54,13 +70,41 @@ function validateDataset(dataset) {
     return true;
 }
 
-const storageErrorModal = document.querySelector(".storage-error-modal");
+function configureStorageError() {
+    if (storageErrorType === "corrupted-data") {
+        storageErrorIcon1.textContent = "running_with_errors";
+        storageErrorIcon2.textContent = "bug_report";
+
+        storageErrorTitle.textContent = "Data error";
+        storageErrorDescription.textContent = "Could not load your saved datasets";
+        storageErrorDetails.textContent = "Your original data has been preserved";
+
+        storageErrorWarning.textContent = 'After clicking "reset" your data WILL BE DELETED without ANY WAY to recover it.';
+        storageErrorRecommendation.textContent = "We highly recommend exporting your data";
+
+        exportCorruptedData.textContent = "Export preserved data";
+        resetGraph.textContent = "Reset";
+    }
+
+    if (storageErrorType === "save-failure") {
+        storageErrorIcon1.textContent = "cloud_off";
+        storageErrorIcon2.textContent = "save";
+
+        storageErrorTitle.textContent = "Storage failure";
+        storageErrorDescription.textContent = "Could not save your changes";
+        storageErrorDetails.textContent = "Your latest changes may not have been saved";
+
+        storageErrorWarning.textContent = "Do not reset or close the application before securing your data.";
+        storageErrorRecommendation.textContent = "Try exporting your current data if possible.";
+
+        exportCorruptedData.hidden = true;
+        resetGraph.hidden = true;
+    }
+}
 
 if (storageError) {
     storageErrorModal.showModal();
 }
-
-const exportCorruptedData = document.querySelector(".export-corrupted-data");
 
 exportCorruptedData.addEventListener("click", () => {
     if (corruptedData === null) return;
@@ -85,8 +129,6 @@ exportCorruptedData.addEventListener("click", () => {
     downloadedData = true;
 })
 
-const resetGraph = document.querySelector(".restart-graph");
-
 resetGraph.addEventListener("click", () => {
     if (!downloadedData) {
         const confirmed = confirm("Are you sure? You have not downloaded your data.");
@@ -95,6 +137,8 @@ resetGraph.addEventListener("click", () => {
     localStorage.removeItem("datasets");
     location.reload();
 });
+
+
 
 let selectedDatasetId = null;
 let selectedGraphId = null;
@@ -107,7 +151,17 @@ function resetSelection() {
 function saveDatasets() {
     if (storageError) return
 
-    localStorage.setItem("datasets", JSON.stringify(datasets));
+    try {
+        localStorage.setItem("datasets", JSON.stringify(datasets));
+        return true;
+    }
+    catch (error) {
+        console.error("Error saving datasets:", error);
+        storageError = true;
+        storageErrorType = "save-failure"
+
+        return false;
+    }
 }
 
 function getSelectedDataset() {

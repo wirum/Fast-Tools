@@ -12,24 +12,6 @@ A suíte no clone tem **4 testes aprovados e 5 regressões marcadas como TODO**.
 
 ## Prioridade 1 — integridade dos dados e estados incorretos
 
-### 1. Limpar toda a interface ao excluir o dataset
-
-O fluxo limpa títulos e lista de categorias, mas não limpa as séries nem as categorias do ApexCharts e não esconde o botão de configurações do dataset. A evidência manual mostra o valor antigo no gráfico sob o título “Select a dataset”.
-
-**Pronto quando:** depois de excluir o dataset ativo, não restam dados, títulos ou controles referentes a ele; a tela fica equivalente ao estado inicial.
-
-### 2. Não sobrescrever dados corrompidos sem recuperação
-
-Quando o JSON salvo é inválido, o código registra um erro, usa uma lista vazia e chama a renderização inicial. Essa renderização grava `[]` em `localStorage`, substituindo o conteúdo anterior. O teste no clone confirmou `not-json` sendo trocado por `[]` durante a inicialização.
-
-**Pronto quando:** o app preserva uma cópia do dado inválido, informa que não conseguiu carregá-lo e permite recuperar ou exportar o conteúdo antes de resetar.
-
-### 3. Validar a estrutura carregada antes de renderizar
-
-O código só verifica se o valor raiz é um array. JSON válido como `[null]` faz `renderDatasets()` falhar ao acessar `dataset.id`; objetos sem `graphs`, `categories` ou `series` também podem quebrar ao abrir ou editar o dataset.
-
-**Pronto quando:** registros incompletos são identificados antes da renderização, sem derrubar a página e sem apagar os dados originais.
-
 ### 4. Implementar recuperação automática de dados inválidos
 
 Quando o usuário acionar o retry na OSOD, o Graph deve tentar recuperar os datasets inválidos automaticamente antes de descartá-los.
