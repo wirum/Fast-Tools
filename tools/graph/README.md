@@ -88,6 +88,10 @@ The Orange Screen of Death should appear, allowing you to test the data recovery
 
 **Warning:** This command overwrites the current `datasets` entry in localStorage. Use it only in a test environment.
 
+### OSOD COUNTER (mid development)
+
+- OSOD COUNTER: 1 
+
 ## Screenshots
 
 ### Current

@@ -15,8 +15,8 @@ try {
 
     datasets = savedData ? JSON.parse(savedData) : []; //if savedData == true -> parseData, else []
 
-    if (!Array.isArray(datasets)) {
-        throw new Error("Invalid datasets Format");
+    if (!Array.isArray(datasets) || !datasets.every(validateDataset)) {
+        throw new Error("Invalid datasets format");
     }
 }
 catch (error) {
@@ -25,6 +25,33 @@ catch (error) {
     storageError = true;
     corruptedData = localStorage.getItem("datasets");
     datasets = [];
+}
+
+function validateDataset(dataset) {
+    if (!dataset || typeof dataset !== "object" || Array.isArray(dataset)) {
+        return false;
+    }
+
+    if (typeof dataset.id !== "string" || typeof dataset.name !== "string" || !Array.isArray(dataset.categories) || !Array.isArray(dataset.series) || !Array.isArray(dataset.graphs)) {
+        return false;
+    }
+
+    for (const serie of dataset.series) {
+        if (!serie || typeof serie !== "object" || Array.isArray(serie) || typeof serie.name !== "string" || !Array.isArray(serie.data) || !serie.data.every(value => typeof value === "number" && Number.isFinite(value))) {
+            return false;
+        }
+    }
+
+    for (const graph of dataset.graphs) {
+        if (!graph || typeof graph !== "object" || Array.isArray(graph) || typeof graph.id !== "string" || typeof graph.name !== "string" || typeof graph.type !== "string") {
+            return false;
+        }
+    }
+
+    if (!dataset.categories.every(category => typeof category === "string")) {
+        return false;
+    }
+    return true;
 }
 
 const storageErrorModal = document.querySelector(".storage-error-modal");
@@ -50,8 +77,10 @@ exportCorruptedData.addEventListener("click", () => {
 
     link.click();
 
+    //aqui ele criou o link, jogou o blob nesse link, e clicou nele pra baixar.
+    //porém ele não baixa sozinho
 
-    setTimeout(() => { URL.revokeObjectURL(url); }, 1000);
+    setTimeout(() => { URL.revokeObjectURL(url); }, 1000); //dá um intervalo
 
     downloadedData = true;
 })
