@@ -43,6 +43,11 @@ let downloadedData = false;
 
 let savedData = null;
 
+
+//test area
+
+//
+
 try {
     savedData = localStorage.getItem("datasets");
 
@@ -158,7 +163,9 @@ function configureStorageError() {
     }
 }
 
-if (storageError) {
+if (storageErrorType === "storage-unavailable") {
+    showNonCrashModal("Storage Unavaliable", "Could not acess your local storage", "Graph cannot read or write your saved data", "Check your browser settings and enable local storage", true)
+} else if (storageError) {
     configureStorageError();
     storageErrorModal.showModal();
 }
@@ -315,6 +322,10 @@ function showNonCrashModal(title, description, details = "", recommendation = ""
 nonCrashClose.addEventListener("click", () => {
     nonCrashModal.close();
 });
+
+nonCrashRetry.addEventListener("click", () => {
+    location.reload();
+})
 
 const chart = new ApexCharts(
     document.querySelector(".chart"),
@@ -584,6 +595,7 @@ importDatasetInput.addEventListener("change", () => {
         }
 
         catch (error) {
+            showNonCrashModal("Import error", "Could not import this dataset", "The selected file is either invalid or has an unsupported dataset structure");
             console.log("Import error:", error);
         }
     }
