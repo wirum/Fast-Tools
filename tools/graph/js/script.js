@@ -18,6 +18,7 @@ const storageErrorRecommendation = document.querySelector(".storage-error-recomm
 const exportCorruptedData = document.querySelector(".export-corrupted-data");
 const resetGraph = document.querySelector(".restart-graph");
 
+const exportDatasetButton = document.querySelector(".export-dataset");
 
 let datasets = [];
 let storageError = false;
@@ -504,6 +505,22 @@ const categoryNameInput = document.querySelector(".category-name-input");
 const closeCategoryEdit = document.querySelector(".close-category-edit");
 const saveCategoryEdit = document.querySelector(".save-category-edit");
 let editingCategoryIndex = null;
+
+exportDatasetButton.addEventListener("click", () => {
+    const selectedDataset = getSelectedDataset();
+    if (!selectedDataset) return;
+
+    const data = JSON.stringify(selectedDataset, null, 2);
+    const blob = new Blob([data], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `${selectedDataset.name}.json`;
+    link.click();
+
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+})
 
 datasetConfig.addEventListener("click", () => {
     const selectedDataset = getSelectedDataset();
