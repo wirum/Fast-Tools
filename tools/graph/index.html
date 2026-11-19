@@ -224,24 +224,23 @@
   </dialog>
 
   <dialog class="noncrash-modal">
-    <div class="storage-error-panel">
+    <div class="noncrash-panel">
 
-      <h2 class="storage-error-title">Data error</h2>
+      <h2 class="noncrash-title"></h2>
 
 
-      <p class="storage-error-description">Could not load your saved datasets</p>
-      <p class="storage-error-details">Your original data has been preserved</p>
+      <p class="noncrash-description"></p>
+      <p class="noncrash-details"></p>
 
-      <p class="comment storage-error-warning">After clicking "reset" your data WILL BE DELETED without ANY WAY to
-        recover it.</p>
-      <strong class="comment storage-error-recommendation">We highly recommend exporting your data</strong>
+      <strong class="comment noncrash-recommendation"></strong>
 
       <div class="modal-actions">
-        <button class="export-corrupted-data" type="export">
-          Export preserved data
+        <button class="noncrash-close" type="warning">
+          Close
         </button>
-        <button class="restart-graph" type="warning">
-          Reset
+        <button class="noncrash-retry" type="export" hidden>
+          Retry
+          <!--esse caso é pra caso o venha storage unavaliable a pessoa ser instruida e ativar e recarregar pelo retry, se ela quiser ela ativa e aperta retry ele recarrega e segue a vida, se não só fecha-->
         </button>
       </div>
     </div>

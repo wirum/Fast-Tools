@@ -27,6 +27,14 @@ const saveDatasetName = document.querySelector(".save-dataset-name");
 const importDatasetButton = document.querySelector(".import-dataset");
 const importDatasetInput = document.querySelector(".import-dataset-input");
 
+const nonCrashModal = document.querySelector(".noncrash-modal");
+const nonCrashTitle = document.querySelector(".noncrash-title");
+const nonCrashDescription = document.querySelector(".noncrash-description");
+const nonCrashDetails = document.querySelector(".noncrash-details");
+const nonCrashRecommendation = document.querySelector(".noncrash-recommendation");
+const nonCrashClose = document.querySelector(".noncrash-close");
+const nonCrashRetry = document.querySelector(".noncrash-retry");
+
 let datasets = [];
 let storageError = false;
 let storageErrorType = null;
@@ -292,6 +300,21 @@ function showDataset() {
 
     hideGraphControls();
 }
+
+function showNonCrashModal(title, description, details = "", recommendation = "", showRetry = false) {
+    nonCrashTitle.textContent = title;
+    nonCrashDescription.textContent = description;
+    nonCrashDetails.textContent = details
+    nonCrashRecommendation.textContent = recommendation
+
+    nonCrashRetry.hidden = !showRetry; //kkk parece um not gate
+
+    nonCrashModal.showModal();
+}
+
+nonCrashClose.addEventListener("click", () => {
+    nonCrashModal.close();
+});
 
 const chart = new ApexCharts(
     document.querySelector(".chart"),
