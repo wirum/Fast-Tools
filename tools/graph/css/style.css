@@ -194,7 +194,9 @@ main {
 }
 
 .dataset-config,
-.graph-config {
+.graph-config,
+.export-dataset,
+.import-dataset {
     font-size: 2rem;
 
     background-color: transparent;
@@ -221,8 +223,14 @@ main {
     gap: 8px;
 }
 
+.import-dataset {
+    display: flex;
+}
+
 .material-symbols-outlined.config-button,
-.material-symbols-outlined.graph-config-button {
+.material-symbols-outlined.graph-config-button,
+.material-symbols-outlined.import,
+.material-symbols-outlined.export {
     font-size: 2.1rem;
     transition: 0.2s ease-in-out;
     transform-origin: center center;
@@ -233,7 +241,9 @@ main {
     color: var(--accent);
 }
 
-.material-symbols-outlined.graph-config-button:hover {
+.material-symbols-outlined.graph-config-button:hover,
+.material-symbols-outlined.import:hover,
+.material-symbols-outlined.export:hover {
     color: var(--accent);
 }
 

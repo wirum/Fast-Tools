@@ -289,6 +289,9 @@ function showDataset() {
     newDatasetButton.hidden = false;
     emptyState.hidden = false;
 
+    exportDatasetButton.hidden = true;
+    exportDatasetButton.style.display = "none";
+
     graphList.hidden = true;
     newGraph.hidden = true;
     backDatasets.hidden = true;
@@ -488,6 +491,9 @@ function renderDatasets() {
             datasetList.hidden = true;
             emptyState.hidden = true;
             newDatasetButton.hidden = true;
+
+            exportDatasetButton.hidden = false;
+            exportDatasetButton.style.display = "flex";
 
             graphList.hidden = false;
             newGraph.hidden = false;

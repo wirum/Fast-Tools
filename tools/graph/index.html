@@ -96,6 +96,16 @@
         <button class="graph-config" hidden>
           <span class="material-symbols-outlined graph-config-button">perm_data_setting</span>
         </button>
+
+        <button class="export-dataset" type="button" hidden>
+          <span class="material-symbols-outlined export">download</span>
+        </button>
+
+        <button class="import-dataset" type="button">
+          <span class="material-symbols-outlined import">upload</span>
+        </button>
+
+        <input type="file" class="import-dataset-input" accept=".json, application/json" hidden>
       </div>
 
       <div class="graph-container"> <!--isso só aparece depois de selecionar um dataset, dentro do container-->
@@ -133,11 +143,7 @@
 
     <button class="save-dataset-name" type="submit">Save changes</button>
 
-    <button class="export-dataset" type="button">Export dataset</button>
 
-    <button class="import-dataset" type="button">Import dataset</button>
-
-    <input type="file" class="import-dataset-input" accept=".json, application/json" hidden>
 
     <button class="delete-dataset" type="submit">Delete dataset</button>
 
