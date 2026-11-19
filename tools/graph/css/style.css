@@ -605,21 +605,27 @@ main {
 }
 
 .storage-error-panel h2 {
-    font-size: 3rem;
+    width: 100%;
+    font-size: 2.7rem;
+    line-height: 1.1;
+    text-align: center;
     font-weight: 800;
     margin: 10px 0 10px 0px;
 }
 
 .storage-error-panel p {
-    margin-bottom: 0;
-    margin-top: 0;
-    font-size: 1.5rem;
+    margin: 0;
+    font-size: 1.3rem;
+    text-align: center;
+    line-height: 1.35;
     font-weight: 600;
 }
 
 .storage-error-panel .comment {
+    width: 100%;
     text-align: center;
-    font-size: 1.2rem;
+    font-size: 1.05rem;
+    line-height: 1.35;
     color: var(--accent);
     font-style: oblique;
 }

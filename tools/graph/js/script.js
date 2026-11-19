@@ -45,7 +45,7 @@ catch (error) {
         storageErrorType = "corrupted-data";
         corruptedData = savedData;
     } else {
-        storageErrorType = "storage-unavaliable";
+        storageErrorType = "storage-unavailable";
     }
 
     datasets = [];
