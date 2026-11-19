@@ -20,6 +20,13 @@ const resetGraph = document.querySelector(".restart-graph");
 
 const exportDatasetButton = document.querySelector(".export-dataset");
 
+const renameDatasetInput = document.querySelector(".rename-dataset");
+
+const saveDatasetName = document.querySelector(".save-dataset-name");
+
+const importDatasetButton = document.querySelector(".import-dataset");
+const importDatasetInput = document.querySelector(".import-dataset-input");
+
 let datasets = [];
 let storageError = false;
 let storageErrorType = null;
@@ -220,6 +227,21 @@ function saveDatasets() {
         return false;
     }
 }
+
+saveDatasetName.addEventListener("click", () => {
+    const selectedDataset = getSelectedDataset();
+    if (!selectedDataset) return;
+
+    const newName = renameDatasetInput.value.trim();
+    if (!newName) return;
+
+    selectedDataset.name = newName;
+    configDatasetName.textContent = newName;
+    datasetTitle.textContent = newName;
+    saveDatasets();
+    renderDatasets();
+    configModal.close();
+});
 
 function getSelectedDataset() {
     return datasets.find(dataset => dataset.id === selectedDatasetId);
@@ -506,6 +528,47 @@ const closeCategoryEdit = document.querySelector(".close-category-edit");
 const saveCategoryEdit = document.querySelector(".save-category-edit");
 let editingCategoryIndex = null;
 
+importDatasetButton.addEventListener("click", () => {
+    importDatasetInput.click();
+});
+
+importDatasetInput.addEventListener("change", () => {
+    const file = importDatasetInput.files[0];
+
+    if (!file) return;
+
+    const reader = new FileReader();
+
+    reader.onload = () => {
+        try {
+            const importedDataset = JSON.parse(reader.result);
+
+            if (!validateDataset(importedDataset)) {
+                throw new Error("Invalid dataset format");
+            }
+            console.log("Valid dataset:", importedDataset)
+
+            importedDataset.id = crypto.randomUUID();
+
+            importedDataset.graphs.forEach(graph => {
+                graph.id = crypto.randomUUID();
+            })
+
+            datasets.push(importedDataset);
+
+            saveDatasets();
+            renderDatasets();
+        }
+
+        catch (error) {
+            console.log("Import error:", error);
+        }
+    }
+
+    reader.readAsText(file);
+
+})
+
 exportDatasetButton.addEventListener("click", () => {
     const selectedDataset = getSelectedDataset();
     if (!selectedDataset) return;
@@ -528,6 +591,8 @@ datasetConfig.addEventListener("click", () => {
     if (!selectedDataset) return;
 
     configDatasetName.textContent = selectedDataset.name;
+    renameDatasetInput.value = selectedDataset.name;
+
     configModal.showModal();
 });
 
