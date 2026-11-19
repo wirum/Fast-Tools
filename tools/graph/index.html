@@ -138,16 +138,19 @@
 
     <p class="config-dataset-name"></p>
 
-    <label for="rename-dataset">Dataset name</label>
-    <input type="text" id="rename-dataset" class="rename-dataset" placeholder="Enter a new name">
+    <div class="dataset-rename">
+      <label for="rename-dataset">Dataset name</label>
+      <input type="text" id="rename-dataset" class="rename-dataset" placeholder="Enter a new name">
+    </div>
 
-    <button class="save-dataset-name" type="submit">Save changes</button>
+    <div class="modal-actions">
+      <button class="delete-dataset" type="button">Delete dataset</button>
 
+      <button class="close-config" type="button">Close</button>
 
+      <button class="save-dataset-name" type="submit">Save changes</button>
+    </div>
 
-    <button class="delete-dataset" type="submit">Delete dataset</button>
-
-    <button class="close-config" type="button">Close</button>
   </dialog>
 
   <dialog class="graph-config-modal">

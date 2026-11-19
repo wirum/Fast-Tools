@@ -408,7 +408,8 @@ main {
 
 .dataset-modal input,
 .graph-config-modal input,
-.category-edit-modal input {
+.category-edit-modal input,
+.rename-dataset {
     width: 100%;
     box-sizing: border-box;
     padding: 12px;
@@ -428,14 +429,21 @@ main {
 
 .dataset-modal input:focus,
 .graph-config-modal input:focus,
-.category-edit-modal input:focus {
+.category-edit-modal input:focus,
+.rename-dataset:focus {
     outline-color: var(--accent);
 }
 
 .dataset-modal input::placeholder,
 .graph-config-modal input::placeholder,
-.category-edit-modal input::placeholder {
+.category-edit-modal input::placeholder,
+.rename-dataset::placeholder {
     outline-color: var(--text-secondary);
+}
+
+.dataset-rename {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
 }
 
 .modal-actions {
@@ -708,6 +716,11 @@ main {
 .noncrash-recommendation {
     color: var(--accent);
     font-weight: 500;
+}
+
+.config-modal {
+    width: 420px;
+    max-width: 90vw;
 }
 
 footer {
