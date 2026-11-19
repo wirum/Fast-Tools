@@ -360,7 +360,8 @@ main {
 .graph-config-modal,
 .delete-graph-config-modal,
 .category-edit-modal,
-.delete-graph-confirm-modal {
+.delete-graph-confirm-modal,
+.noncrash-modal {
     background-color: var(--bg-secondary);
     color: var(--text-primary);
 
@@ -378,7 +379,8 @@ main {
 .graph-config-modal::backdrop,
 .delete-graph-config-modal::backdrop,
 .category-edit-modal::backdrop,
-.delete-graph-confirm-modal::backdrop {
+.delete-graph-confirm-modal::backdrop,
+.noncrash-modal::backdrop {
     background-color: rgba(0, 0, 0, 0.65);
     backdrop-filter: blur(3px);
 }
@@ -665,7 +667,38 @@ main {
     font-size: 5rem;
 }
 
+.noncrash-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
 
+    text-align: center;
+}
+
+.material-symbols-outlined.noncrash-icon {
+    font-size: 3.5rem;
+    color: var(--accent);
+}
+
+
+.noncrash-title {
+    margin: 0;
+    font-size: 1.6rem;
+    font-weight: 600;
+}
+
+.noncrash-description,
+.noncrash-details {
+    margin: 0;
+    line-height: 1.4;
+    color: var(--text-secondary);
+}
+
+.noncrash-recommendation {
+    color: var(--accent);
+    font-weight: 500;
+}
 
 footer {
     background-color: var(--bg-secondary);
