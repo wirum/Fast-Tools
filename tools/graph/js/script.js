@@ -777,6 +777,7 @@ confirmDeleteButton.addEventListener("click", () => {
     renderDatasets();
 
     showDataset();
+    clearChart();
 
     configModal.close();
     deleteConfirmModal.close();
