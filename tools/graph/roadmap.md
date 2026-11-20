@@ -25,12 +25,6 @@ Quando o usuário acionar o retry na OSOD, o Graph deve tentar recuperar os data
 
 **Pronto quando:** o retry consegue recuperar registros incompletos sem intervenção manual; registros irrecuperáveis não impedem o carregamento dos demais datasets e o usuário é informado sobre o que foi recuperado ou descartado.
 
-### 6. Fazer a configuração de cada gráfico funcionar
-
-O menu de tipos mostra “Coming soon..”. Cada registro salva `type: "bar"`, mas `updateChart()` não usa esse campo e o ApexCharts é criado sempre como barra. Hoje os gráficos do dataset compartilham as mesmas categorias e séries. Defina se essa partilha é intencional e permita configurar o tipo de visualização por gráfico.
-
-**Pronto quando:** cada gráfico selecionado mostra a configuração salva, ou a interface deixa claro que os gráficos são apenas vistas nomeadas do mesmo conjunto de dados.
-
 ### 9. Melhorar validação dos formulários
 
 Os botões de salvar nome são `type="button"`; portanto `required` não aciona a validação nativa e Enter não envia o formulário. O código ignora texto vazio silenciosamente. Também não há decisão explícita sobre nomes repetidos.
@@ -43,7 +37,6 @@ O CSS não tem breakpoints; a sidebar mede 250 px e o gráfico ocupa 85% do work
 
 - Criar layout que empilhe ou recolha a sidebar em telas estreitas.
 - Usar botões e controles expansíveis com estado acessível.
-- Rotular campos e botões de editar/excluir.
 - Validar foco, Tab, Enter/Espaço e leitor de tela.
 
 ### 11. Definir o comportamento de valores numéricos vazios
@@ -51,10 +44,6 @@ O CSS não tem breakpoints; a sidebar mede 250 px e o gráfico ocupa 85% do work
 Valores decimais digitados são aceitos e aparecem no gráfico. Ao apagar o campo, `Number("")` salva zero. Decida se campo vazio significa zero ou dado ausente e deixe o comportamento visível; use `step="any"` se os controles de incremento também precisarem aceitar decimais.
 
 ## Prioridade 3 — evolução e manutenção
-
-### 12. Oferecer backup e transferência do dataset
-
-A barra do ApexCharts já permite baixar o gráfico como CSV, SVG e PNG. Adicione exportação/importação em JSON para preservar o dataset completo, incluindo categorias, valores e vários gráficos.
 
 ### 13. Suportar várias séries editáveis
 
