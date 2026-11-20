@@ -77,25 +77,43 @@ function validateDataset(dataset) {
         return false;
     }
 
-    if (typeof dataset.id !== "string" || typeof dataset.name !== "string" || !Array.isArray(dataset.categories) || !Array.isArray(dataset.series) || !Array.isArray(dataset.graphs)) {
+    if (
+        typeof dataset.id !== "string" ||
+        typeof dataset.name !== "string" ||
+        !Array.isArray(dataset.graphs)
+    ) {
         return false;
-    }
-
-    for (const serie of dataset.series) {
-        if (!serie || typeof serie !== "object" || Array.isArray(serie) || typeof serie.name !== "string" || !Array.isArray(serie.data) || !serie.data.every(value => typeof value === "number" && Number.isFinite(value))) {
-            return false;
-        }
     }
 
     for (const graph of dataset.graphs) {
-        if (!graph || typeof graph !== "object" || Array.isArray(graph) || typeof graph.id !== "string" || typeof graph.name !== "string" || typeof graph.type !== "string") {
+        if (
+            !graph ||
+            typeof graph !== "object" ||
+            Array.isArray(graph) ||
+            typeof graph.id !== "string" ||
+            typeof graph.name !== "string" ||
+            typeof graph.type !== "string" ||
+            !Array.isArray(graph.categories) ||
+            !graph.categories.every(category => typeof category === "string") ||
+            !Array.isArray(graph.series)
+        ) {
             return false;
+        }
+
+        for (const serie of graph.series) {
+            if (
+                !serie ||
+                typeof serie !== "object" ||
+                Array.isArray(serie) ||
+                typeof serie.name !== "string" ||
+                !Array.isArray(serie.data) ||
+                !serie.data.every(value => typeof value === "number" && Number.isFinite(value))
+            ) {
+                return false;
+            }
         }
     }
 
-    if (!dataset.categories.every(category => typeof category === "string")) {
-        return false;
-    }
     return true;
 }
 
@@ -359,10 +377,13 @@ function updateChart() {
     }
 
     chart.updateOptions({
-        xaxis: {
-            categories: selectedDataset.categories
+        chart: {
+            type: selectedGraph.type
         },
-        series: selectedDataset.series
+        xaxis: {
+            categories: selectedGraph.categories
+        },
+        series: selectedGraph.series
     });
 }
 
@@ -441,12 +462,15 @@ datasetForm.addEventListener("submit", (event) => {
     datasets.push({
         id: crypto.randomUUID(),
         name: name,
-        categories: [],
-        series: [],
         graphs: [{
             id: crypto.randomUUID(),
             name: "Graph 1",
-            type: "bar"
+            type: "bar",
+            categories: [],
+            series: [{
+                name: "Series 1",
+                data: []
+            }]
         }],
     });
 
@@ -540,7 +564,7 @@ function renderGraphs(dataset) {
             graphConfig.hidden = false;
             graphConfig.style.display = "flex";
             showGraphControls();
-
+            renderCategories();
             updateChart();
         })
         graphList.appendChild(item);
@@ -581,20 +605,23 @@ importDatasetInput.addEventListener("change", () => {
 
     reader.onload = () => {
         try {
-            const importedDataset = JSON.parse(reader.result);
+            const parsedData = JSON.parse(reader.result);
 
-            if (!validateDataset(importedDataset)) {
+            const importedDatasets = Array.isArray(parsedData) ? parsedData : [parsedData];
+
+            if (importedDatasets.length === 0 || !importedDatasets.every(validateDataset)) {
                 throw new Error("Invalid dataset format");
             }
-            console.log("Valid dataset:", importedDataset)
 
-            importedDataset.id = crypto.randomUUID();
+            importedDatasets.forEach(dataset => {
+                dataset.id = crypto.randomUUID();
 
-            importedDataset.graphs.forEach(graph => {
-                graph.id = crypto.randomUUID();
-            })
+                dataset.graphs.forEach(graph => {
+                    graph.id = crypto.randomUUID();
+                });
+            });
 
-            datasets.push(importedDataset);
+            datasets.push(...importedDatasets);
 
             saveDatasets();
             renderDatasets();
@@ -697,15 +724,15 @@ closeCategoryEdit.addEventListener("click", () => {
 })
 
 saveCategoryEdit.addEventListener("click", () => {
-    const selectedDataset = getSelectedDataset();
+    const selectedGraph = getSelectedGraph();
 
-    if (!selectedDataset) return;
+    if (!selectedGraph) return;
 
     const newName = categoryNameInput.value.trim();
 
     if (!newName) return;
 
-    selectedDataset.categories[editingCategoryIndex] = newName;
+    selectedGraph.categories[editingCategoryIndex] = newName;
 
     saveDatasets();
 
@@ -729,6 +756,7 @@ confirmGraphDelete.addEventListener("click", () => {
     saveDatasets();
 
     renderGraphs(selectedDataset);
+    renderCategories();
     updateChart();
 
     graphConfig.style.display = "none";
@@ -764,15 +792,15 @@ const addCategoryButton = document.querySelector(".add-category");
 addCategoryButton.addEventListener("click", () => {
     const categoryName = categoryInput.value.trim();
 
-    if (!categoryName || !selectedDatasetId) return;
+    const selectedGraph = getSelectedGraph();
 
-    const selectedDataset = getSelectedDataset();
+    if (!categoryName || !selectedGraph) return;
 
-    selectedDataset.categories.push(categoryName);
+    selectedGraph.categories.push(categoryName);
 
-    selectedDataset.series.forEach(series => {
+    selectedGraph.series.forEach(series => {
         series.data.push(0);
-    })
+    });
 
     saveDatasets();
     renderCategories();
@@ -783,20 +811,19 @@ addCategoryButton.addEventListener("click", () => {
 function renderCategories() {
     categoryList.innerHTML = "";
 
-    const selectedDataset = getSelectedDataset();
+    const selectedGraph = getSelectedGraph();
 
-    if (!selectedDataset) return;
+    if (!selectedGraph) return;
 
-    if (selectedDataset.series.length === 0) {
-        selectedDataset.series.push({
+    if (selectedGraph.series.length === 0) {
+        selectedGraph.series.push({
             name: "Series 1",
-            data: selectedDataset.categories.map(() => 0)
+            data: selectedGraph.categories.map(() => 0)
         });
         saveDatasets();
     }
 
-
-    selectedDataset.categories.forEach((category, categoryIndex) => {
+    selectedGraph.categories.forEach((category, categoryIndex) => {
         const item = createElement("div", "category-item");
 
         const name = document.createElement("span");
@@ -818,19 +845,19 @@ function renderCategories() {
 
         const value = document.createElement("input");
         value.type = "number";
-        value.value = selectedDataset.series[0].data[categoryIndex] ?? 0; //selectedDataset.series[0]: pega a primeira série do dataset. | .data: acessa os valores dessa série. | [categoryIndex]: pega o valor na posição da categoria atual. | ?? 0: se esse valor for null ou undefined, usa zero.
+        value.value = selectedGraph.series[0]?.data[categoryIndex] ?? 0;
 
         value.addEventListener("input", () => {
-            selectedDataset.series[0].data[categoryIndex] = Number(value.value);
+            if (!selectedGraph.series[0]) return;
 
-            chart.updateSeries(selectedDataset.series);
+            selectedGraph.series[0].data[categoryIndex] = Number(value.value);
+
+            chart.updateSeries(selectedGraph.series);
         })
 
         value.addEventListener("change", () => {
             saveDatasets();
         })
-
-
 
         const remove = document.createElement("button");
         remove.classList.add("btn-flat");
@@ -838,9 +865,10 @@ function renderCategories() {
 
         remove.addEventListener("click", (event) => {
             event.stopPropagation();
-            selectedDataset.categories.splice(categoryIndex, 1);
 
-            selectedDataset.series.forEach(series => {
+            selectedGraph.categories.splice(categoryIndex, 1);
+
+            selectedGraph.series.forEach(series => {
                 series.data.splice(categoryIndex, 1);
             });
 
@@ -874,7 +902,12 @@ newGraph.addEventListener("click", () => {
     const graph = {
         id: crypto.randomUUID(),
         name: `Graph ${graphNumber}`,
-        type: "bar"
+        type: "bar",
+        categories: [],
+        series: [{
+            name: "Series 1",
+            data: []
+        }]
     }
 
     selectedDataset.graphs.push(graph);
