@@ -107,6 +107,7 @@ function validateDataset(dataset) {
                 Array.isArray(serie) ||
                 typeof serie.name !== "string" ||
                 !Array.isArray(serie.data) ||
+                serie.data.length !== graph.categories.length ||
                 !serie.data.every(value => typeof value === "number" && Number.isFinite(value))
             ) {
                 return false;
