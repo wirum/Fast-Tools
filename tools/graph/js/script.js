@@ -913,7 +913,17 @@ newGraph.addEventListener("click", () => {
 
     saveDatasets();
 
+    selectedGraphId = graph.id;
+    graphTitle.textContent = graph.name;
+
     renderGraphs(selectedDataset);
+
+    graphConfig.hidden = false;
+    graphConfig.style.display = "flex";
+
+    showGraphControls();
+    renderCategories();
+    updateChart();
 });
 
 
