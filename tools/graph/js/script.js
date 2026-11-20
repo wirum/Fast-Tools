@@ -898,11 +898,9 @@ newGraph.addEventListener("click", () => {
 
     if (!selectedDataset) return;
 
-    const graphNumber = selectedDataset.graphs.length + 1;
-
     const graph = {
         id: crypto.randomUUID(),
-        name: `Graph ${graphNumber}`,
+        name: "Graph",
         type: "bar",
         categories: [],
         series: [{

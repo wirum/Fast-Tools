@@ -25,29 +25,11 @@ Quando o usuário acionar o retry na OSOD, o Graph deve tentar recuperar os data
 
 **Pronto quando:** o retry consegue recuperar registros incompletos sem intervenção manual; registros irrecuperáveis não impedem o carregamento dos demais datasets e o usuário é informado sobre o que foi recuperado ou descartado.
 
-### 5. Tratar indisponibilidade e erros de `localStorage`
-
-Há gravações sem `try/catch`, inclusive durante a inicialização da página. Um erro de quota ou armazenamento bloqueado interrompe a renderização; a suíte reproduziu falha de startup quando `setItem` lança erro.
-
-**Pronto quando:** falhas de leitura e gravação geram uma mensagem útil e o app continua utilizável enquanto a página estiver aberta.
-
-## Prioridade 2 — funcionalidades e uso diário
-
 ### 6. Fazer a configuração de cada gráfico funcionar
 
 O menu de tipos mostra “Coming soon..”. Cada registro salva `type: "bar"`, mas `updateChart()` não usa esse campo e o ApexCharts é criado sempre como barra. Hoje os gráficos do dataset compartilham as mesmas categorias e séries. Defina se essa partilha é intencional e permita configurar o tipo de visualização por gráfico.
 
 **Pronto quando:** cada gráfico selecionado mostra a configuração salva, ou a interface deixa claro que os gráficos são apenas vistas nomeadas do mesmo conjunto de dados.
-
-### 7. Corrigir nomes duplicados e selecionar o gráfico recém-criado
-
-O nome novo é calculado por `graphs.length + 1`. Depois de apagar `Graph 2` da sequência `Graph 1`, `Graph 2`, `Graph 3`, o próximo item também recebe `Graph 3`. Além disso, `New graph` cria o item mas mantém “Select a graph” no painel.
-
-**Pronto quando:** a criação escolhe um nome ainda livre e abre o gráfico novo imediatamente.
-
-### 8. Alinhar edição de dataset e documentação
-
-O README promete que datasets podem ser editados, mas o modal de configurações só mostra o nome e permite exclusão. Implemente a renomeação ou corrija a promessa na documentação.
 
 ### 9. Melhorar validação dos formulários
 
@@ -86,8 +68,6 @@ Adicionar testes específicos para a recuperação automática, incluindo migra�
 
 ### 15. Reforçar estados e recursos auxiliares
 
-- Restaurar a última seleção após recarregar, se isso fizer sentido para o fluxo.
-- Informar quando não há gráficos ou categorias e quando uma gravação falha.
 - Definir fallback se ApexCharts ou as fontes externas do CDN não carregarem; sem ApexCharts, o script atual não inicializa.
 - Evitar serializar todo o dataset e atualizar o gráfico a cada tecla quando o volume de dados crescer.
 - Remover regras CSS duplicadas e estilos de modais que não existem no HTML.
