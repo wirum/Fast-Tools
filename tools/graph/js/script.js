@@ -266,8 +266,8 @@ saveDatasetName.addEventListener("click", () => {
     const selectedDataset = getSelectedDataset();
     if (!selectedDataset) return;
 
+    if (!requireValue(renameDatasetInput)) return
     const newName = renameDatasetInput.value.trim();
-    if (!newName) return;
 
     selectedDataset.name = newName;
     configDatasetName.textContent = newName;
@@ -285,6 +285,38 @@ function getSelectedGraph() {
     const selectedDataset = getSelectedDataset();
 
     return selectedDataset?.graphs.find(graph => graph.id === selectedGraphId); //o ? ali faz sacessar somente se tiver algo, pra nao dar null
+}
+
+function getNextGraphName(dataset) {
+    const usedNames = new Set(dataset.graphs.map(graph => graph.name));
+
+    let number = 1;
+
+    while (usedNames.has(`Graph ${number}`)) {
+        number++;
+    }
+
+    return `Graph ${number}`;
+}
+
+function requireValue(input) {
+    if (!input.value.trim()) {
+        input.setCustomValidity("Please enter a name");
+        input.reportValidity();
+        return false;
+    }
+
+    input.setCustomValidity("");
+    return true;
+}
+
+function submitOnEnter(input, button) {
+    input.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            button.click();
+        }
+    });
 }
 
 function clearChart() {
@@ -680,9 +712,8 @@ document.querySelector(".save-graph-name").addEventListener("click", () => {
 
     if (!selectedGraph || !selectedDataset) return;
 
+    if (!requireValue(graphNameInput)) return;
     const newName = graphNameInput.value.trim();
-
-    if (!newName) return;
 
     selectedGraph.name = newName;
 
@@ -729,9 +760,8 @@ saveCategoryEdit.addEventListener("click", () => {
 
     if (!selectedGraph) return;
 
+    if (!requireValue(categoryNameInput)) return
     const newName = categoryNameInput.value.trim();
-
-    if (!newName) return;
 
     selectedGraph.categories[editingCategoryIndex] = newName;
 
@@ -847,6 +877,7 @@ function renderCategories() {
 
         const value = document.createElement("input");
         value.type = "number";
+        value.step = "any";
         value.value = selectedGraph.series[0]?.data[categoryIndex] ?? 0;
 
         value.addEventListener("input", () => {
@@ -901,7 +932,7 @@ newGraph.addEventListener("click", () => {
 
     const graph = {
         id: crypto.randomUUID(),
-        name: "Graph",
+        name: getNextGraphName(selectedDataset),
         type: "bar",
         categories: [],
         series: [{
@@ -927,6 +958,8 @@ newGraph.addEventListener("click", () => {
     updateChart();
 });
 
-
+submitOnEnter(renameDatasetInput, saveDatasetName);
+submitOnEnter(graphNameInput, document.querySelector(".save-graph-name"));
+submitOnEnter(categoryNameInput, saveCategoryEdit);
 
 
