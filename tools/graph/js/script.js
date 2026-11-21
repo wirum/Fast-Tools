@@ -381,23 +381,33 @@ nonCrashRetry.addEventListener("click", () => {
     location.reload();
 })
 
-const chart = new ApexCharts(
-    document.querySelector(".chart"),
-    {
-        chart: {
-            type: "bar",
-            height: "100%",
-            width: "100%",
-            foreColor: "#E3E2E6",
-            fontFamily: "Google Sans Flex, sans-serif"
-        },
-        series: [],
-        xaxis: {
-            categories: []
-        }
-
+const chartOptions = {
+    chart: {
+        type: "bar",
+        height: "100%",
+        width: "100%",
+        foreColor: "#E3E2E6",
+        fontFamily: "Google Sans Flex, sans-serif"
+    },
+    series: [],
+    xaxis: {
+        categories: []
     }
-);
+};
+
+const chartLibraryLoaded = typeof ApexCharts !== "undefined";
+
+let chart;
+
+if (chartLibraryLoaded) {
+    chart = new ApexCharts(document.querySelector(".chart"), chartOptions);
+} else {
+    chart = { updateOptions() { }, updateSeries() { }, render() { } }; //cria um "gráfico falso" pra não quebrar tudo depois
+}
+
+if (!chartLibraryLoaded && !nonCrashModal.open) {
+    showNonCrashModal("Chart unavailable", "Could not load the chart library", "You can still edit your data, but graphs will not be displayed", "Check your internet connection and try again", true);
+}
 
 function updateChart() {
     const selectedDataset = getSelectedDataset();
