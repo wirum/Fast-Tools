@@ -35,6 +35,9 @@ const nonCrashRecommendation = document.querySelector(".noncrash-recommendation"
 const nonCrashClose = document.querySelector(".noncrash-close");
 const nonCrashRetry = document.querySelector(".noncrash-retry");
 
+const chartTypeSelect = document.querySelector(".chart-type-select");
+const allowedChartTypes = ["bar", "line", "area"];
+
 let datasets = [];
 let storageError = false;
 let storageErrorType = null;
@@ -92,7 +95,7 @@ function validateDataset(dataset) {
             Array.isArray(graph) ||
             typeof graph.id !== "string" ||
             typeof graph.name !== "string" ||
-            typeof graph.type !== "string" ||
+            !allowedChartTypes.includes(graph.type) ||
             !Array.isArray(graph.categories) ||
             !graph.categories.every(category => typeof category === "string") ||
             !Array.isArray(graph.series)
@@ -299,6 +302,16 @@ function getNextGraphName(dataset) {
     return `Graph ${number}`;
 }
 
+function ChartSelect() {
+    const selectedGraph = getSelectedGraph();
+
+    if (!selectedGraph) {
+        return
+    }
+
+    chartTypeSelect.value = selectedGraph.type;
+}
+
 function requireValue(input) {
     if (!input.value.trim()) {
         input.setCustomValidity("Please enter a name");
@@ -422,6 +435,9 @@ function updateChart() {
     chart.updateOptions({
         chart: {
             type: selectedGraph.type
+        },
+        stroke: {
+            width: selectedGraph.type === "bar" ? 0 : 3
         },
         xaxis: {
             categories: selectedGraph.categories
@@ -607,6 +623,7 @@ function renderGraphs(dataset) {
             graphConfig.hidden = false;
             graphConfig.style.display = "flex";
             showGraphControls();
+            ChartSelect();
             renderCategories();
             updateChart();
         })
@@ -964,6 +981,7 @@ newGraph.addEventListener("click", () => {
     graphConfig.style.display = "flex";
 
     showGraphControls();
+    ChartSelect();
     renderCategories();
     updateChart();
 });
@@ -972,4 +990,14 @@ submitOnEnter(renameDatasetInput, saveDatasetName);
 submitOnEnter(graphNameInput, document.querySelector(".save-graph-name"));
 submitOnEnter(categoryNameInput, saveCategoryEdit);
 
+chartTypeSelect.addEventListener("change", () => {
+    const selectedGraph = getSelectedGraph();
+
+    if (!selectedGraph) return;
+
+    selectedGraph.type = chartTypeSelect.value;
+
+    saveDatasets();
+    updateChart();
+});
 
