@@ -1,52 +1,77 @@
-# Roadmap do Graph
+# Graph v2: checklist do roadmap
 
-## Estado atual
-
-Cada gráfico tem suas próprias `categories` e `series`, e o dataset funciona só como contêiner de gráficos. O tipo do gráfico (bar, line, area) é configurável e salvo por gráfico. Não há migração de dados antigos: dados em formato antigo geram o modal "Data error" e o usuário pode exportar ou resetar.
+Estado conferido contra o branch `Graph-v2` (21/11/2026).
 
 ## Concluído
 
-- **Independência dos gráficos:** `categories` e `series` movidas para dentro de cada gráfico; validação, criação, edição e remoção de categorias adaptadas.
-- **Item 6, tipo de gráfico:** seletor no menu Chart Types, salvo em `graph.type`, validado por lista (`allowedChartTypes`), com `stroke` ajustado ao tipo.
-- **Item 9, validação dos formulários (parcial):** salvar nome vazio mostra erro junto ao campo e Enter salva nos 3 modais de renomear. Nomes de gráfico novos nunca se repetem (menor número livre).
-- **Item 11, valores numéricos:** campo vazio significa `0` (decisão tomada) e os campos aceitam decimais (`step="any"`).
-- **Item 12, backup:** exportar e importar dataset em JSON.
-- **Item 15, fallback do ApexCharts:** se a biblioteca não carregar, o app avisa com o modal "Chart unavailable" e continua utilizável.
-- **Bugs de estado corrigidos:** excluir dataset limpa o gráfico; criar gráfico já o seleciona; a validação confere se `series[].data` tem o mesmo tamanho de `categories`.
+- [x] Independência dos gráficos: `categories` e `series` dentro de cada gráfico
+- [x] Item 6: seletor de tipo (bar, line, area) salvo em `graph.type`, validado por `allowedChartTypes`
+- [x] Item 9 (parcial): nome vazio mostra erro junto ao campo e Enter salva nos 3 modais
+- [x] Item 9 (parcial): nome de gráfico novo usa o menor número livre
+- [x] Item 11: campo vazio vale `0` e os campos aceitam decimais (`step="any"`)
+- [x] Item 12: exportar e importar dataset em JSON
+- [x] Item 15: fallback quando o ApexCharts não carrega
+- [x] Validação confere o tamanho de `series[].data` contra `categories`
+- [x] Excluir dataset limpa o gráfico, e criar gráfico já o seleciona
+- [x] Salvamento acontece no `change`, não a cada tecla (debounce não é necessário)
 
-## Prioridade 1 — integridade dos dados
+## Item 13: várias séries editáveis (próximo)
 
-### 9. Nomes duplicados ao renomear (restante)
+Os dados já suportam várias séries. Falta só a interface.
 
-Novos gráficos não repetem nome, mas renomear ainda permite duplicar (gráficos, datasets e categorias). Definir a regra e aplicá-la nos 3 modais.
+- [x] Adicionar e remover categoria percorrem todas as séries
+- [x] Validação confere cada série e o tamanho de `data`
+- [x] `updateSeries` recebe a lista inteira
+- [ ] Botão para criar série (nasce com `data` do tamanho das categorias)
+- [ ] Renomear série
+- [ ] Remover série
+- [ ] Escolher qual série está sendo editada
+- [ ] Campo de valor deixar de usar `series[0]` fixo (linhas ~908 a 915)
 
-**Pronto quando:** a regra de nomes repetidos é a mesma em todos os lugares e o erro aparece junto ao campo.
+## Item 9: nomes repetidos ao renomear (restante)
 
-### 4. Recuperação automática de dados inválidos (adiado para V3)
+- [ ] Definir a regra para nomes repetidos
+- [ ] Aplicar ao renomear gráfico
+- [ ] Aplicar ao renomear dataset
+- [ ] Aplicar ao renomear categoria
+- [ ] Mostrar o erro junto ao campo, igual ao de nome vazio
 
-Adiado de propósito: contradiz a decisão de não migrar dados antigos, e o projeto não tem usuários dependendo do formato anterior. Reavaliar só se surgirem dados reais a preservar. Se for feito, tratar o alinhamento entre `series[].data` e `categories` ao preencher campos ausentes.
+## Item 10: layout e acessibilidade
 
-## Prioridade 2 — interface
+Já existe:
 
-### 10. Layout e acessibilidade
+- [x] Ações são `<button>` de verdade
+- [x] Modais e select de tipo têm `<label for>`
+- [x] `:focus-visible` global
+- [x] `lang` e `viewport` no HTML
 
-- O CSS não tem breakpoints; a sidebar mede 250 px e o gráfico ocupa 85% do workspace. Medir em viewport móvel e criar layout que empilhe ou recolha a sidebar.
-- Dataset, gráfico e cabeçalhos expansíveis são `div`s clicáveis; trocar por botões com estado acessível.
-- Campos de categoria/valor não têm rótulos associados, e botões de ícone (editar, excluir, configurações) não têm nomes acessíveis.
-- Validar foco, Tab, Enter/Espaço e leitor de tela.
+Falta:
 
-## Prioridade 3 — evolução e manutenção
+- [ ] Os 3 `dropdown-header` virarem botões com estado (`aria-expanded`)
+- [ ] `dataset-item` e `graph-item` virarem botões
+- [ ] Nome acessível nos botões de ícone do HTML (configurações, config do gráfico, exportar, importar)
+- [ ] Nome acessível nos botões de editar e excluir categoria (criados no JS)
+- [ ] Rótulo nos campos de valor das categorias
+- [ ] Criar `@media` para empilhar ou recolher a sidebar em telas estreitas
+- [ ] Validar Tab, Enter/Espaço e leitor de tela
 
-### 13. Várias séries editáveis (próximo)
+## Item 15: estados e recursos auxiliares (restante)
 
-O modelo e o ApexCharts aceitam várias séries, mas a interface só edita `series[0]`. Adicionar criar, renomear e remover séries, e escolher qual série está sendo editada. Garantir que toda série nova nasça com `data` do tamanho das categorias.
+- [ ] Fallback para os ícones Material Symbols
+- [ ] Remover o CSS órfão `.delete-graph-config-modal` (sem elemento no HTML)
+- [ ] Mesclar os dois blocos de `body` e de `.import-dataset` (opcional, inofensivo)
 
-### 14. Cobertura de testes
+## Item 14: testes
 
-Criar testes para criação, edição, persistência, JSON inválido, estrutura malformada, erro de storage, exclusão, nomes únicos e troca de tipo. Adicionar testes reais de navegador, teclado e viewports móveis.
+- [ ] Criar pasta de testes do Graph (copiar o padrão do Calcify)
+- [ ] Casos: criação, edição, persistência, JSON inválido, estrutura malformada, erro de storage
+- [ ] Casos: exclusão, nomes únicos, troca de tipo
+- [ ] Testes reais de navegador, teclado e viewport móvel
 
-### 15. Estados e recursos auxiliares (restante)
+## Adiado
 
-- Definir fallback para as fontes externas do CDN (Material Symbols).
-- Evitar serializar todo o dataset a cada tecla quando o volume de dados crescer (salvar com debounce).
-- Remover regras CSS duplicadas e estilos de modais que não existem no HTML.
+- [ ] Item 4: recuperação automática de dados inválidos (V3, só se surgirem dados reais a preservar)
+
+## Detalhes opcionais
+
+- [ ] Renomear `ChartSelect()` para `syncChartSelect()` (padrão dos outros nomes de função)

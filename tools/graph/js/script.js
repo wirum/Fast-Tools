@@ -332,6 +332,28 @@ function submitOnEnter(input, button) {
     });
 }
 
+function isNameTaken(name, existingNames) {
+    const normalized = name.trim().toLowerCase();
+
+    for (const existing of existingNames) {
+        if (existing.trim().toLowerCase() === normalized) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+function requireUniqueName(input, existingNames, label) {
+    if (!isNameTaken(input.value, existingNames)) {
+        return true;
+    }
+
+    input.setCustomValidity(`A ${label} with this name already exists`);
+    input.reportValidity();
+    return false;
+}
+
 function clearChart() {
     chart.updateOptions({
         xaxis: {
@@ -740,6 +762,17 @@ document.querySelector(".save-graph-name").addEventListener("click", () => {
     if (!selectedGraph || !selectedDataset) return;
 
     if (!requireValue(graphNameInput)) return;
+
+    const otherGraphNames = [];
+
+    for (const graph of selectedDataset.graphs) {
+        if (graph.id !== selectedGraph.id) {
+            otherGraphNames.push(graph.name);
+        }
+    }
+
+    if (!requireUniqueName(graphNameInput, otherGraphNames, "graph")) return;
+
     const newName = graphNameInput.value.trim();
 
     selectedGraph.name = newName;
@@ -989,6 +1022,16 @@ newGraph.addEventListener("click", () => {
 submitOnEnter(renameDatasetInput, saveDatasetName);
 submitOnEnter(graphNameInput, document.querySelector(".save-graph-name"));
 submitOnEnter(categoryNameInput, saveCategoryEdit);
+
+function clearErrorOnInput(input) {
+    input.addEventListener("input", () => {
+        input.setCustomValidity("");
+    });
+}
+
+clearErrorOnInput(renameDatasetInput);
+clearErrorOnInput(graphNameInput);
+clearErrorOnInput(categoryNameInput);
 
 chartTypeSelect.addEventListener("change", () => {
     const selectedGraph = getSelectedGraph();
