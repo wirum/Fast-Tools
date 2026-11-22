@@ -1,62 +1,52 @@
-# Análise detalhada e roadmap do Graph
+# Roadmap do Graph
 
-## Escopo e resultado dos testes
+## Estado atual
 
-Revisei `index.html`, `css/style.css`, `js/script.js` e o README no clone separado `C:\Users\Lukazz\Desktop\Fast Tools-Graph-Test-Clone`. Também abri o app em navegador local a 1280 × 720 e rodei a suíte do clone com `npm test`.
+Cada gráfico tem suas próprias `categories` e `series`, e o dataset funciona só como contêiner de gráficos. O tipo do gráfico (bar, line, area) é configurável e salvo por gráfico. Não há migração de dados antigos: dados em formato antigo geram o modal "Data error" e o usuário pode exportar ou resetar.
 
-O teste manual confirmou criação de datasets e categorias, edição de valores, renomeação e renderização de gráficos. Dados salvos continuam disponíveis após recarregar, embora a seleção do dataset e do gráfico volte ao estado inicial. Digitar `1.5` funciona; apagar o campo numérico salva zero.
+## Concluído
 
-Na exclusão de dataset, a tela muda para “Select a dataset”, mas mantém o gráfico com os dados apagados e o botão de configurações visível. Ao excluir o gráfico do meio em uma lista de três, criar outro produz dois itens chamados “Graph 3”. Criar um gráfico também não o seleciona automaticamente. Salvar um nome vazio mantém o modal aberto sem explicar o erro.
+- **Independência dos gráficos:** `categories` e `series` movidas para dentro de cada gráfico; validação, criação, edição e remoção de categorias adaptadas.
+- **Item 6, tipo de gráfico:** seletor no menu Chart Types, salvo em `graph.type`, validado por lista (`allowedChartTypes`), com `stroke` ajustado ao tipo.
+- **Item 9, validação dos formulários (parcial):** salvar nome vazio mostra erro junto ao campo e Enter salva nos 3 modais de renomear. Nomes de gráfico novos nunca se repetem (menor número livre).
+- **Item 11, valores numéricos:** campo vazio significa `0` (decisão tomada) e os campos aceitam decimais (`step="any"`).
+- **Item 12, backup:** exportar e importar dataset em JSON.
+- **Item 15, fallback do ApexCharts:** se a biblioteca não carregar, o app avisa com o modal "Chart unavailable" e continua utilizável.
+- **Bugs de estado corrigidos:** excluir dataset limpa o gráfico; criar gráfico já o seleciona; a validação confere se `series[].data` tem o mesmo tamanho de `categories`.
 
-A suíte no clone tem **4 testes aprovados e 5 regressões marcadas como TODO**. O processo termina com código zero porque os casos TODO documentam defeitos conhecidos. Os testes executam o JavaScript real com um DOM e ApexCharts simulados; não substituem testes completos em navegadores reais. O clone está separado do checkout original.
+## Prioridade 1 — integridade dos dados
 
-## Prioridade 1 — integridade dos dados e estados incorretos
+### 9. Nomes duplicados ao renomear (restante)
 
-### 4. Implementar recuperação automática de dados inválidos
+Novos gráficos não repetem nome, mas renomear ainda permite duplicar (gráficos, datasets e categorias). Definir a regra e aplicá-la nos 3 modais.
 
-Quando o usuário acionar o retry na OSOD, o Graph deve tentar recuperar os datasets inválidos automaticamente antes de descartá-los.
+**Pronto quando:** a regra de nomes repetidos é a mesma em todos os lugares e o erro aparece junto ao campo.
 
-- Identificar quais campos estão ausentes ou incompatíveis com a estrutura atual.
-- Aplicar migrações seguras quando possível, como preencher `categories` e `series` ausentes com arrays vazios.
-- Preservar os campos e gráficos existentes durante a recuperação.
-- Validar novamente cada dataset após a tentativa de reparo.
-- Se a recuperação falhar, descartar somente o registro irrecuperável, mantendo os demais datasets válidos.
-- Manter os dados originais disponíveis para exportação antes de qualquer alteração destrutiva.
+### 4. Recuperação automática de dados inválidos (adiado para V3)
 
-**Pronto quando:** o retry consegue recuperar registros incompletos sem intervenção manual; registros irrecuperáveis não impedem o carregamento dos demais datasets e o usuário é informado sobre o que foi recuperado ou descartado.
+Adiado de propósito: contradiz a decisão de não migrar dados antigos, e o projeto não tem usuários dependendo do formato anterior. Reavaliar só se surgirem dados reais a preservar. Se for feito, tratar o alinhamento entre `series[].data` e `categories` ao preencher campos ausentes.
 
-### 9. Melhorar validação dos formulários
+## Prioridade 2 — interface
 
-Os botões de salvar nome são `type="button"`; portanto `required` não aciona a validação nativa e Enter não envia o formulário. O código ignora texto vazio silenciosamente. Também não há decisão explícita sobre nomes repetidos.
+### 10. Layout e acessibilidade
 
-**Pronto quando:** salvar vazio mostra um erro junto ao campo; Enter salva; e a regra para nomes duplicados é consistente.
-
-### 10. Ajustar layout e acessibilidade
-
-O CSS não tem breakpoints; a sidebar mede 250 px e o gráfico ocupa 85% do workspace. Isso cria risco de aperto ou rolagem horizontal em celular; não fiz uma medição real em viewport móvel. Dataset, gráfico e cabeçalhos expansíveis são `div`s clicáveis, sem semântica de botão. Campos de categoria/valor não têm rótulos associados, e botões de ícone não têm nomes acessíveis descritivos.
-
-- Criar layout que empilhe ou recolha a sidebar em telas estreitas.
-- Usar botões e controles expansíveis com estado acessível.
+- O CSS não tem breakpoints; a sidebar mede 250 px e o gráfico ocupa 85% do workspace. Medir em viewport móvel e criar layout que empilhe ou recolha a sidebar.
+- Dataset, gráfico e cabeçalhos expansíveis são `div`s clicáveis; trocar por botões com estado acessível.
+- Campos de categoria/valor não têm rótulos associados, e botões de ícone (editar, excluir, configurações) não têm nomes acessíveis.
 - Validar foco, Tab, Enter/Espaço e leitor de tela.
-
-### 11. Definir o comportamento de valores numéricos vazios
-
-Valores decimais digitados são aceitos e aparecem no gráfico. Ao apagar o campo, `Number("")` salva zero. Decida se campo vazio significa zero ou dado ausente e deixe o comportamento visível; use `step="any"` se os controles de incremento também precisarem aceitar decimais.
 
 ## Prioridade 3 — evolução e manutenção
 
-### 13. Suportar várias séries editáveis
+### 13. Várias séries editáveis (próximo)
 
-O modelo e o ApexCharts aceitam uma lista de séries, mas a interface só edita `series[0]`. Se comparação entre métricas fizer parte do objetivo, adicione criação, renomeação e remoção de séries.
+O modelo e o ApexCharts aceitam várias séries, mas a interface só edita `series[0]`. Adicionar criar, renomear e remover séries, e escolher qual série está sendo editada. Garantir que toda série nova nasça com `data` do tamanho das categorias.
 
-### 14. Completar a cobertura de testes
+### 14. Cobertura de testes
 
-A suíte do clone já cobre criação, edição, persistência, JSON inválido, estrutura malformada, erro de storage, exclusão e nomes após exclusão. Manter esses casos como regressões e adicionar testes reais de navegador, teclado e viewports móveis. A suíte continua no clone; integrá-la ao checkout original deve ser uma decisão separada.
+Criar testes para criação, edição, persistência, JSON inválido, estrutura malformada, erro de storage, exclusão, nomes únicos e troca de tipo. Adicionar testes reais de navegador, teclado e viewports móveis.
 
-Adicionar testes específicos para a recuperação automática, incluindo migrações bem-sucedidas, registros irrecuperáveis, preservação dos dados originais e manutenção dos datasets válidos.
+### 15. Estados e recursos auxiliares (restante)
 
-### 15. Reforçar estados e recursos auxiliares
-
-- Definir fallback se ApexCharts ou as fontes externas do CDN não carregarem; sem ApexCharts, o script atual não inicializa.
-- Evitar serializar todo o dataset e atualizar o gráfico a cada tecla quando o volume de dados crescer.
+- Definir fallback para as fontes externas do CDN (Material Symbols).
+- Evitar serializar todo o dataset a cada tecla quando o volume de dados crescer (salvar com debounce).
 - Remover regras CSS duplicadas e estilos de modais que não existem no HTML.
