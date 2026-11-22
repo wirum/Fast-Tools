@@ -749,6 +749,16 @@ main {
     font-size: 5rem;
 }
 
+.noncrash-panel button[type="warning"] {
+    background-color: transparent;
+    color: var(--text-primary);
+}
+
+.noncrash-panel button[type="export"] {
+    background-color: var(--accent);
+    color: var(--bg-primary);
+}
+
 .noncrash-panel {
     display: flex;
     flex-direction: column;
