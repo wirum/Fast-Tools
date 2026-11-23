@@ -115,17 +115,14 @@ localStorage.setItem("datasets", '[{"id":"1","name":"x","graphs":[{"id":"2","nam
 
 ### OSOD COUNTER (mid development)
 
-- OSOD COUNTER: 1 
+- OSOD COUNTER: 2
 
 ## What's missing (for V3)
 
 - Several series per graph (only the first one is editable for now)
 - Responsive layout
 - Better accessibility
-- Automated tests
-- Icon fallback if the CDN is down
 - Auto-recovery for invalid data
-- Warning for duplicate names when importing
 - Remembering the selected dataset and graph after reloading
 
 ## Screenshots

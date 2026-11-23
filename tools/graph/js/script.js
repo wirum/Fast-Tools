@@ -313,7 +313,7 @@ function getNextGraphName(dataset) {
     return `Graph ${number}`;
 }
 
-function ChartSelect() {
+function syncChartSelect() {
     const selectedGraph = getSelectedGraph();
 
     if (!selectedGraph) {
@@ -670,7 +670,7 @@ function renderGraphs(dataset) {
             graphConfig.hidden = false;
             graphConfig.style.display = "flex";
             showGraphControls();
-            ChartSelect();
+            syncChartSelect();
             renderCategories();
             updateChart();
         })
@@ -1039,7 +1039,7 @@ newGraph.addEventListener("click", () => {
     graphConfig.style.display = "flex";
 
     showGraphControls();
-    ChartSelect();
+    syncChartSelect();
     renderCategories();
     updateChart();
 });
