@@ -853,6 +853,16 @@ saveCategoryEdit.addEventListener("click", () => {
     if (!requireValue(categoryNameInput)) return
     const newName = categoryNameInput.value.trim();
 
+    const otherCategoryNames = [];
+
+    for (let i = 0; i < selectedGraph.categories.length; i++) {
+        if (i !== editingCategoryIndex) {
+            otherCategoryNames.push(selectedGraph.categories[i]);
+        }
+    }
+
+    if (!requireUniqueName(categoryNameInput, otherCategoryNames, "category")) return;
+
     selectedGraph.categories[editingCategoryIndex] = newName;
 
     saveDatasets();
@@ -862,6 +872,8 @@ saveCategoryEdit.addEventListener("click", () => {
 
     categoryEditModal.close();
 })
+
+
 
 confirmGraphDelete.addEventListener("click", () => {
     const selectedDataset = getSelectedDataset();
@@ -912,11 +924,15 @@ const categoryInput = document.querySelector(".category-input");
 const addCategoryButton = document.querySelector(".add-category");
 
 addCategoryButton.addEventListener("click", () => {
-    const categoryName = categoryInput.value.trim();
-
     const selectedGraph = getSelectedGraph();
 
-    if (!categoryName || !selectedGraph) return;
+    if (!selectedGraph) return;
+
+    if (!requireValue(categoryInput)) return;
+
+    if (!requireUniqueName(categoryInput, selectedGraph.categories, "category")) return;
+
+    const categoryName = categoryInput.value.trim();
 
     selectedGraph.categories.push(categoryName);
 
@@ -1063,6 +1079,7 @@ clearErrorOnInput(renameDatasetInput);
 clearErrorOnInput(graphNameInput);
 clearErrorOnInput(categoryNameInput);
 clearErrorOnInput(datasetInput);
+clearErrorOnInput(categoryInput);
 
 chartTypeSelect.addEventListener("change", () => {
     const selectedGraph = getSelectedGraph();
