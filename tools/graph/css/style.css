@@ -368,7 +368,7 @@ main {
 .config-modal,
 .delete-confirm-modal,
 .graph-config-modal,
-.delete-graph-config-modal,
+
 .category-edit-modal,
 .delete-graph-confirm-modal,
 .noncrash-modal {
@@ -387,7 +387,6 @@ main {
 .config-modal::backdrop,
 .delete-confirm-modal::backdrop,
 .graph-config-modal::backdrop,
-.delete-graph-config-modal::backdrop,
 .category-edit-modal::backdrop,
 .delete-graph-confirm-modal::backdrop,
 .noncrash-modal::backdrop {
@@ -399,7 +398,6 @@ main {
 .config-modal h2,
 .delete-confirm-modal h2,
 .graph-config-modal h2,
-.delete-graph-config-modal h2,
 .category-edit-modal h2,
 .delete-graph-confirm-modal h2 {
     margin-top: 0;
@@ -617,7 +615,7 @@ main {
     font-size: 20px;
 
     pointer-events: none;
-    transition: color 0.2 ease;
+    transition: color 0.2s ease;
 }
 
 .select-wrapper:hover .select-icon {
