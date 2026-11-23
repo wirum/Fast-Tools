@@ -538,6 +538,11 @@ cancelbutton.addEventListener("click", () => {
     modal.close();
 });
 
+modal.addEventListener("close", () => {
+    datasetInput.setCustomValidity("");
+    datasetForm.reset();
+});
+
 //forms
 // põe e trás os treco do porão do localstorage
 
