@@ -455,6 +455,25 @@ if (!chartLibraryLoaded && !nonCrashModal.open) {
     showNonCrashModal("Chart unavailable", "Could not load the chart library", "You can still edit your data, but graphs will not be displayed", "Check your internet connection and try again", true);
 }
 
+//netfly check
+
+const isTemporaryDeployment =
+    window.location.hostname === "lukazzdev-temp.netlify.app";
+
+if (
+    isTemporaryDeployment &&
+    !storageError &&
+    chartLibraryLoaded &&
+    !nonCrashModal.open
+) {
+    showNonCrashModal(
+        "Temporary deployment",
+        "This version of Graph is temporarily hosted on Netlify.",
+        "The official GitHub Pages deployment remains unchanged while the previous Terra submission is under review.",
+        "This temporary environment allows development and testing without affecting the previously submitted version."
+    );
+}
+
 function updateChart() {
     const selectedDataset = getSelectedDataset();
 
