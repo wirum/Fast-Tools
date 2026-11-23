@@ -270,6 +270,17 @@ saveDatasetName.addEventListener("click", () => {
     if (!selectedDataset) return;
 
     if (!requireValue(renameDatasetInput)) return
+
+    const otherDatasetNames = [];
+
+    for (const dataset of datasets) {
+        if (dataset.id !== selectedDatasetId) {
+            otherDatasetNames.push(dataset.name);
+        }
+    }
+
+    if (!requireUniqueName(renameDatasetInput, otherDatasetNames, "dataset")) return;
+
     const newName = renameDatasetInput.value.trim();
 
     selectedDataset.name = newName;
@@ -521,7 +532,11 @@ const cancelbutton = modal.querySelector("button[type='button']"); //especifica 
 
 newDatasetButton.addEventListener("click", () => { modal.showModal(); });
 
-cancelbutton.addEventListener("click", () => { modal.close(); });
+cancelbutton.addEventListener("click", () => {
+    datasetInput.setCustomValidity("");
+    datasetForm.reset();
+    modal.close();
+});
 
 //forms
 // põe e trás os treco do porão do localstorage
@@ -537,6 +552,16 @@ datasetForm.addEventListener("submit", (event) => {
     const name = datasetInput.value.trim();
 
     if (!name) {
+        return;
+    }
+
+    const allDatasetNames = [];
+
+    for (const dataset of datasets) {
+        allDatasetNames.push(dataset.name);
+    }
+
+    if (!requireUniqueName(datasetInput, allDatasetNames, "dataset")) {
         return;
     }
 
@@ -1032,6 +1057,7 @@ function clearErrorOnInput(input) {
 clearErrorOnInput(renameDatasetInput);
 clearErrorOnInput(graphNameInput);
 clearErrorOnInput(categoryNameInput);
+clearErrorOnInput(datasetInput);
 
 chartTypeSelect.addEventListener("change", () => {
     const selectedGraph = getSelectedGraph();
