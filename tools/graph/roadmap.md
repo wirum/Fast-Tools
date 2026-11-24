@@ -23,18 +23,18 @@ Os dados já suportam várias séries. Falta só a interface.
 - [x] Validação confere cada série e o tamanho de `data`
 - [x] `updateSeries` recebe a lista inteira
 - [x] Botão para criar série (nasce com `data` do tamanho das categorias) --> 24/11
-- [ ] Renomear série --> 24/11
-- [ ] Remover série --> 24/11
+- [x] Renomear série --> 24/11
+- [x] Remover série --> 24/11
 - [x] Escolher qual série está sendo editada --> 24/11
 - [x] Campo de valor deixar de usar `series[0]` fixo (linhas ~908 a 915) --> ?
 
 ## Item 9: nomes repetidos ao renomear (restante)
 
 - [ ] Definir a regra para nomes repetidos --> 24/11
-- [ ] Aplicar ao renomear gráfico
-- [ ] Aplicar ao renomear dataset
-- [ ] Aplicar ao renomear categoria
-- [ ] Mostrar o erro junto ao campo, igual ao de nome vazio
+- [ ] Aplicar ao renomear gráfico --> 24/11
+- [ ] Aplicar ao renomear dataset --> 24/11
+- [ ] Aplicar ao renomear categoria --> 24/11
+- [ ] Mostrar o erro junto ao campo, igual ao de nome vazio --> 24/11
 
 ## Item 10: layout e acessibilidade
 
@@ -66,7 +66,7 @@ Falta:
 - [ ] Casos: exclusão, nomes únicos, troca de tipo
 - [ ] Testes reais de navegador, teclado e viewport móvel
 
-## Adiado
+## Adiado 
 
 - [ ] Item 4: recuperação automática de dados inválidos (V3, só se surgirem dados reais a preservar)
 

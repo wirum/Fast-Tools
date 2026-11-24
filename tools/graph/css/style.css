@@ -15,18 +15,18 @@
 }
 
 :root {
-    --bg-primary: #131314;
-    --bg-secondary: #1E1F20;
-    --bg-surface: #28292A;
-    --bg-accent-surface: #363738;
+    --bg-primary: #0B0E14;
+    --bg-secondary: #0F131A;
+    --bg-surface: #131721;
+    --bg-accent-surface: #1B2030;
 
-    --text-primary: #E3E2E6;
-    --text-secondary: #C4C6D0;
+    --text-primary: #EDEBE4;
+    --text-secondary: #AEB4BF;
 
     --accent: #ffa726;
     --bg-error: #EA580C;
 
-    --border: #383a398c;
+    --border: #1B20308c;
 }
 
 body {
