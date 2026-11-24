@@ -1,6 +1,6 @@
 # Graph v2: checklist do roadmap
 
-Estado conferido contra o branch `Graph-v2` (21/11/2026).
+Estado conferido contra o branch `Graph-v2` (24/11/2026).
 
 ## Concluído
 
@@ -15,7 +15,7 @@ Estado conferido contra o branch `Graph-v2` (21/11/2026).
 - [x] Excluir dataset limpa o gráfico, e criar gráfico já o seleciona
 - [x] Salvamento acontece no `change`, não a cada tecla (debounce não é necessário)
 
-## Item 13: várias séries editáveis (próximo)
+## Item 13: várias séries editáveis
 
 Os dados já suportam várias séries. Falta só a interface.
 
@@ -30,11 +30,11 @@ Os dados já suportam várias séries. Falta só a interface.
 
 ## Item 9: nomes repetidos ao renomear (restante)
 
-- [ ] Definir a regra para nomes repetidos --> 24/11
-- [ ] Aplicar ao renomear gráfico --> 24/11
-- [ ] Aplicar ao renomear dataset --> 24/11
-- [ ] Aplicar ao renomear categoria --> 24/11
-- [ ] Mostrar o erro junto ao campo, igual ao de nome vazio --> 24/11
+- [x] Definir a regra para nomes repetidos: nomes únicos dentro do mesmo nível, ignorando maiúsculas/minúsculas e espaços externos --> 24/11
+- [x] Aplicar ao renomear gráfico --> 24/11
+- [x] Aplicar ao renomear dataset --> 24/11
+- [x] Aplicar ao renomear categoria --> 24/11
+- [x] Mostrar o erro junto ao campo, igual ao de nome vazio --> 24/11
 
 ## Item 10: layout e acessibilidade
 
