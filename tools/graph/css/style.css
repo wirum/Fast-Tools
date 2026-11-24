@@ -368,7 +368,7 @@ main {
 .config-modal,
 .delete-confirm-modal,
 .graph-config-modal,
-
+.series-create-modal,
 .category-edit-modal,
 .delete-graph-confirm-modal,
 .noncrash-modal {
@@ -389,7 +389,8 @@ main {
 .graph-config-modal::backdrop,
 .category-edit-modal::backdrop,
 .delete-graph-confirm-modal::backdrop,
-.noncrash-modal::backdrop {
+.noncrash-modal::backdrop,
+.series-create-modal::backdrop {
     background-color: rgba(0, 0, 0, 0.65);
     backdrop-filter: blur(3px);
 }
@@ -399,7 +400,8 @@ main {
 .delete-confirm-modal h2,
 .graph-config-modal h2,
 .category-edit-modal h2,
-.delete-graph-confirm-modal h2 {
+.delete-graph-confirm-modal h2,
+.series-create-modal h2 {
     margin-top: 0;
     font-weight: 600;
 }
@@ -407,7 +409,8 @@ main {
 .dataset-modal input,
 .graph-config-modal input,
 .category-edit-modal input,
-.rename-dataset {
+.rename-dataset,
+.series-create-modal input {
     width: 100%;
     box-sizing: border-box;
     padding: 12px;
@@ -428,6 +431,7 @@ main {
 .dataset-modal input:focus,
 .graph-config-modal input:focus,
 .category-edit-modal input:focus,
+.series-create-modal input:focus,
 .rename-dataset:focus {
     outline-color: var(--accent);
 }
@@ -435,7 +439,8 @@ main {
 .dataset-modal input::placeholder,
 .graph-config-modal input::placeholder,
 .category-edit-modal input::placeholder,
-.rename-dataset::placeholder {
+.rename-dataset::placeholder,
+.series-create-modal input::placeholder {
     outline-color: var(--text-secondary);
 }
 
@@ -567,7 +572,8 @@ main {
     font-size: 0.9rem;
 }
 
-.chart-type-select {
+.chart-type-select,
+.series-select {
     width: 100%;
     padding: 8px 32px 8px 8px;
 
@@ -586,17 +592,20 @@ main {
     appearance: none;
 }
 
-.chart-type-select:hover {
+.chart-type-select:hover,
+.series-select:hover {
     border-color: var(--accent);
     color: var(--accent);
 }
 
-.chart-type-select:focus-visible {
+.chart-type-select:focus-visible,
+.series-select:focus-visible {
     outline: none;
     box-shadow: inset 0 0 0 2px var(--accent);
 }
 
-.chart-type-select option {
+.chart-type-select option,
+.series-select option {
     background-color: var(--bg-surface);
     color: var(--text-primary);
 }

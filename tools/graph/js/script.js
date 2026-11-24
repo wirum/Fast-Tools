@@ -38,6 +38,12 @@ const nonCrashRetry = document.querySelector(".noncrash-retry");
 const chartTypeSelect = document.querySelector(".chart-type-select");
 const allowedChartTypes = ["bar", "line", "area"];
 
+const seriesSelect = document.querySelector(".series-select");
+const seriesCreateModal = document.querySelector(".series-create-modal");
+const seriesNameInput = document.querySelector(".series-name-input");
+const closeSeriesCreate = document.querySelector(".close-series-create");
+const saveSeriesCreate = document.querySelector(".save-series-create");
+
 let datasets = [];
 let storageError = false;
 let storageErrorType = null;
@@ -242,6 +248,8 @@ resetGraph.addEventListener("click", () => {
 let selectedDatasetId = null;
 let selectedGraphId = null;
 
+let selectedSeriesIndex = 0;
+
 function resetSelection() {
     selectedDatasetId = null;
     selectedGraphId = null;
@@ -323,6 +331,31 @@ function syncChartSelect() {
     chartTypeSelect.value = selectedGraph.type;
 }
 
+function renderSeriesSelect() {
+    const selectedGraph = getSelectedGraph();
+
+    if (!selectedGraph) return;
+
+    seriesSelect.innerHTML = "";
+
+    selectedGraph.series.forEach((series, index) => {
+        const option = document.createElement("option");
+
+        option.value = index;
+        option.textContent = series.name;
+
+        seriesSelect.appendChild(option);
+    });
+
+    const createOption = document.createElement("option");
+
+    createOption.value = "create";
+    createOption.textContent = "Create Series";
+
+    seriesSelect.appendChild(createOption);
+    seriesSelect.value = selectedSeriesIndex;
+}
+
 function requireValue(input) {
     if (!input.value.trim()) {
         input.setCustomValidity("Please enter a name");
@@ -333,6 +366,34 @@ function requireValue(input) {
     input.setCustomValidity("");
     return true;
 }
+
+saveSeriesCreate.addEventListener("click", () => {
+    const selectedGraph = getSelectedGraph();
+
+    if (!selectedGraph) return;
+
+    const seriesName = seriesNameInput.value.trim();
+
+    if (!seriesName) {
+        seriesNameInput.focus();
+        return;
+    }
+
+    const newSeries = {
+        name: seriesName,
+        data: selectedGraph.categories.map(() => 0)
+    };
+
+    selectedGraph.series.push(newSeries);
+
+    selectedSeriesIndex = selectedGraph.series.length - 1;
+
+    seriesCreateModal.close();
+
+    renderSeriesSelect();
+    renderCategories();
+    chart.updateSeries(selectedGraph.series);
+});
 
 function submitOnEnter(input, button) {
     input.addEventListener("keydown", (event) => {
@@ -864,6 +925,10 @@ closeCategoryEdit.addEventListener("click", () => {
     categoryEditModal.close();
 })
 
+closeSeriesCreate.addEventListener("click", () => {
+    seriesCreateModal.close();
+})
+
 saveCategoryEdit.addEventListener("click", () => {
     const selectedGraph = getSelectedGraph();
 
@@ -980,6 +1045,8 @@ function renderCategories() {
         saveDatasets();
     }
 
+    renderSeriesSelect();
+
     selectedGraph.categories.forEach((category, categoryIndex) => {
         const item = createElement("div", "category-item");
 
@@ -1003,12 +1070,20 @@ function renderCategories() {
         const value = document.createElement("input");
         value.type = "number";
         value.step = "any";
-        value.value = selectedGraph.series[0]?.data[categoryIndex] ?? 0;
+        const selectedSeries = selectedGraph.series[selectedSeriesIndex];
+
+        if (selectedSeries) {
+            value.value = selectedSeries.data[categoryIndex];
+        } else {
+            value.value = 0;
+        }
 
         value.addEventListener("input", () => {
-            if (!selectedGraph.series[0]) return;
+            const selectedSeries = selectedGraph.series[selectedSeriesIndex];
 
-            selectedGraph.series[0].data[categoryIndex] = Number(value.value);
+            if (!selectedSeries) return;
+
+            selectedSeries.data[categoryIndex] = Number(value.value);
 
             chart.updateSeries(selectedGraph.series);
         })
@@ -1111,3 +1186,21 @@ chartTypeSelect.addEventListener("change", () => {
     updateChart();
 });
 
+seriesSelect.addEventListener("change", () => {
+    const selectedGraph = getSelectedGraph();
+
+    if (!selectedGraph) return;
+
+    if (seriesSelect.value === "create") {
+        seriesSelect.value = String(selectedSeriesIndex);
+
+        seriesNameInput.value = "";
+        seriesCreateModal.showModal();
+
+        return;
+    }
+
+    selectedSeriesIndex = Number(seriesSelect.value);
+
+    renderCategories();
+});

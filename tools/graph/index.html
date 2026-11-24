@@ -81,7 +81,11 @@
         </div>
 
         <div class="dropdown-content">
-          <h3>Data</h3>
+          <div class="series-selector">
+            <select class="series-select">
+              <option value="create">Create Series</option>
+            </select>
+          </div>
 
           <div class="data-editor">
             <div class="category-list"></div>
@@ -266,6 +270,18 @@
           <!--esse caso é pra caso o venha storage unavaliable a pessoa ser instruida e ativar e recarregar pelo retry, se ela quiser ela ativa e aperta retry ele recarrega e segue a vida, se não só fecha-->
         </button>
       </div>
+    </div>
+  </dialog>
+
+  <dialog class="series-create-modal">
+    <h2>Create series</h2>
+
+    <label for="series-name-input">Series name</label>
+    <input type="text" id="series-name-input" class="series-name-input" placeholder="Series name" required>
+
+    <div class="modal-actions">
+      <button class="close-series-create" type="button">Cancel</button>
+      <button class="save-series-create" type="button">Create</button>
     </div>
   </dialog>
 
