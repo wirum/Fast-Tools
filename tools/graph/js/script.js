@@ -44,6 +44,11 @@ const seriesNameInput = document.querySelector(".series-name-input");
 const closeSeriesCreate = document.querySelector(".close-series-create");
 const saveSeriesCreate = document.querySelector(".save-series-create");
 
+const editSeriesButton = document.querySelector(".edit-series");
+const seriesEditModal = document.querySelector(".series-edit-modal");
+const seriesEditList = document.querySelector(".series-edit-list");
+const closeSeriesEdit = document.querySelector(".close-series-edit");
+
 let datasets = [];
 let storageError = false;
 let storageErrorType = null;
@@ -356,6 +361,73 @@ function renderSeriesSelect() {
     seriesSelect.value = selectedSeriesIndex;
 }
 
+function renderSeriesEditList() {
+    const selectedGraph = getSelectedGraph();
+
+    if (!selectedGraph) return;
+
+    seriesEditList.innerHTML = "";
+
+    selectedGraph.series.forEach((series, index) => {
+        const item = createElement("div", "series-edit-item");
+
+        const name = document.createElement("span");
+        name.textContent = series.name;
+
+        const edit = document.createElement("button");
+        edit.classList.add("btn-flat");
+        edit.innerHTML = '<i class="material-symbols-outlined">edit</i>'
+
+        edit.addEventListener("click", () => {
+            const input = document.createElement("input");
+            input.value = series.name;
+
+            const save = document.createElement("button");
+            save.classList.add("btn-flat");
+            save.innerHTML = '<i class="material-symbols-outlined">check</i>';
+
+            save.addEventListener("click", () => {
+                const newName = input.value.trim();
+
+                if (!newName) return;
+
+                series.name = newName;
+
+                saveDatasets();
+                renderSeriesEditList();
+                renderSeriesSelect();
+                chart.updateSeries(selectedGraph.series);
+            });
+
+            item.replaceChild(input, name);
+            edit.replaceWith(save);
+        })
+
+        const remove = document.createElement("button");
+        remove.classList.add("btn-flat");
+        remove.innerHTML = '<i class="material-symbols-outlined">delete</i>'
+
+        remove.addEventListener("click", () => {
+            if (selectedGraph.series.length <= 1) return;
+
+            selectedGraph.series.splice(index, 1);
+
+            if (selectedSeriesIndex >= selectedGraph.series.length) {
+                selectedSeriesIndex = selectedGraph.series.length - 1;
+            }
+
+            saveDatasets();
+            renderSeriesEditList();
+            renderSeriesSelect();
+            renderCategories();
+            chart.updateSeries(selectedGraph.series);
+        });
+
+        item.append(name, edit, remove);
+        seriesEditList.appendChild(item);
+    });
+}
+
 function requireValue(input) {
     if (!input.value.trim()) {
         input.setCustomValidity("Please enter a name");
@@ -394,6 +466,11 @@ saveSeriesCreate.addEventListener("click", () => {
     renderCategories();
     chart.updateSeries(selectedGraph.series);
 });
+
+editSeriesButton.addEventListener("click", () => {
+    renderSeriesEditList();
+    seriesEditModal.showModal();
+})
 
 function submitOnEnter(input, button) {
     input.addEventListener("keydown", (event) => {
@@ -927,6 +1004,10 @@ closeCategoryEdit.addEventListener("click", () => {
 
 closeSeriesCreate.addEventListener("click", () => {
     seriesCreateModal.close();
+})
+
+closeSeriesEdit.addEventListener("click", () => {
+    seriesEditModal.close();
 })
 
 saveCategoryEdit.addEventListener("click", () => {

@@ -85,6 +85,9 @@
             <select class="series-select">
               <option value="create">Create Series</option>
             </select>
+            <button class="edit-series btn-flat" type="button">
+              <i class="material-symbols-outlined">edit</i>
+            </button>
           </div>
 
           <div class="data-editor">
@@ -282,6 +285,16 @@
     <div class="modal-actions">
       <button class="close-series-create" type="button">Cancel</button>
       <button class="save-series-create" type="button">Create</button>
+    </div>
+  </dialog>
+
+  <dialog class="series-edit-modal">
+    <h2>Edit series</h2>
+
+    <div class="series-edit-list"></div>
+
+    <div class="modal-actions">
+      <button class="close-series-edit btn-flat" type="button">Cancel</button>
     </div>
   </dialog>
 

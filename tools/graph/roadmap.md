@@ -22,15 +22,15 @@ Os dados já suportam várias séries. Falta só a interface.
 - [x] Adicionar e remover categoria percorrem todas as séries
 - [x] Validação confere cada série e o tamanho de `data`
 - [x] `updateSeries` recebe a lista inteira
-- [ ] Botão para criar série (nasce com `data` do tamanho das categorias) --> 24/11
+- [x] Botão para criar série (nasce com `data` do tamanho das categorias) --> 24/11
 - [ ] Renomear série --> 24/11
 - [ ] Remover série --> 24/11
-- [ ] Escolher qual série está sendo editada --> 24/11
-- [ ] Campo de valor deixar de usar `series[0]` fixo (linhas ~908 a 915) --> ?
+- [x] Escolher qual série está sendo editada --> 24/11
+- [x] Campo de valor deixar de usar `series[0]` fixo (linhas ~908 a 915) --> ?
 
 ## Item 9: nomes repetidos ao renomear (restante)
 
-- [ ] Definir a regra para nomes repetidos --> 23/11
+- [ ] Definir a regra para nomes repetidos --> 24/11
 - [ ] Aplicar ao renomear gráfico
 - [ ] Aplicar ao renomear dataset
 - [ ] Aplicar ao renomear categoria
@@ -73,3 +73,4 @@ Falta:
 ## Detalhes opcionais
 
 - [ ] Renomear `ChartSelect()` para `syncChartSelect()` (padrão dos outros nomes de função)
+- [ ] Confirmar se import funciona com backup da OSOD
