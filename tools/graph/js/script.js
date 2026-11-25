@@ -1285,3 +1285,28 @@ seriesSelect.addEventListener("change", () => {
 
     renderCategories();
 });
+
+const mobileMenuButton = document.querySelector(".mobile-menu");
+const main = document.querySelector("main");
+
+mobileMenuButton.addEventListener("click", () => {
+    const isOpen = main.classList.toggle("mobile-sidebar-open");
+
+    mobileMenuButton.setAttribute("aria-expanded", isOpen);
+    mobileMenuButton.setAttribute(
+        "aria-label",
+        isOpen ? "Close sidebar" : "Open sidebar"
+
+        // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        // Atualiza o texto do aria-label conforme o estado da sidebar:
+        // se estiver aberta, o botão anuncia "Close sidebar";
+        // se estiver fechada, anuncia "Open sidebar".
+    );
+
+    mobileMenuButton.querySelector(".material-symbols-outlined").textContent = isOpen ? "close" : "menu";
+
+    //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    // Atualiza o ícone do botão conforme o estado da sidebar:
+    // se estiver aberta, mostra "close";
+    // se estiver fechada, mostra "menu".
+});

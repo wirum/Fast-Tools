@@ -86,7 +86,7 @@
               <option value="create">Create Series</option>
             </select>
             <button class="edit-series btn-flat" type="button">
-              <i class="material-symbols-outlined">edit</i>
+              <i class="material-symbols-outlined edit-series-icon">edit</i>
             </button>
           </div>
 
@@ -100,6 +100,11 @@
     </aside>
 
     <section class="workspace">
+
+      <button class="mobile-menu" type="button" aria-label="open-sidebar" aria-expanded="false">
+        <span class="material-symbols-outlined">menu</span>
+      </button>
+
       <h2 class="dataset-title">Select a dataset</h2>
       <!--sempre aparece, fica em cima centralizado com o bloco do container.-->
 
@@ -289,7 +294,9 @@
   </dialog>
 
   <dialog class="series-edit-modal">
-    <h2>Edit series</h2>
+    <div class="series-edit-header">
+      <h2>Edit series</h2>
+    </div>
 
     <div class="series-edit-list"></div>
 
