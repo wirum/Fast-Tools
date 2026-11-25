@@ -375,17 +375,20 @@ function renderSeriesEditList() {
         name.textContent = series.name;
 
         const edit = document.createElement("button");
+        edit.type = "button"
         edit.classList.add("btn-flat");
-        edit.title = "Edit series"
-        edit.innerHTML = '<i class="material-symbols-outlined">edit</i>'
+        edit.setAttribute("aria-label", `Edit series ${series.name}`)
+        edit.innerHTML = '<i class="material-symbols-outlined" aria-hidden="true">edit</i>';
 
         edit.addEventListener("click", () => {
             const input = document.createElement("input");
             input.value = series.name;
 
             const save = document.createElement("button");
+            save.type = "button"
             save.classList.add("btn-flat");
-            save.innerHTML = '<i class="material-symbols-outlined">check</i>';
+            save.setAttribute("aria-label", `Save series name for ${series.name}`);
+            save.innerHTML = '<i class="material-symbols-outlined" aria-hidden="true">check</i>';
 
             save.addEventListener("click", () => {
                 const newName = input.value.trim();
@@ -405,9 +408,10 @@ function renderSeriesEditList() {
         })
 
         const remove = document.createElement("button");
+        remove.type = "button";
         remove.classList.add("btn-flat");
-        remove.title = "Delete series";
-        remove.innerHTML = '<i class="material-symbols-outlined">delete</i>'
+        remove.setAttribute("aria-label", `Delete series ${series.name}`);
+        remove.innerHTML = '<i class="material-symbols-outlined" aria-hidden="true">delete</i>'
 
         remove.addEventListener("click", () => {
             if (selectedGraph.series.length <= 1) return;
@@ -1148,12 +1152,15 @@ function renderCategories() {
         });
 
         edit.classList.add("btn-flat");
-        edit.innerHTML = '<i class="material-symbols-outlined">edit</i>';
+        edit.setAttribute("aria-label", `Edit category ${category}`);
+        edit.innerHTML = '<i class="material-symbols-outlined" aria-hidden="true">edit</i>';
 
         const value = document.createElement("input");
         value.type = "number";
         value.step = "any";
         const selectedSeries = selectedGraph.series[selectedSeriesIndex];
+
+        value.setAttribute("aria-label", `Value for ${category} in series ${selectedSeries?.name ?? "selected series"}`)
 
         if (selectedSeries) {
             value.value = selectedSeries.data[categoryIndex];
@@ -1177,7 +1184,8 @@ function renderCategories() {
 
         const remove = document.createElement("button");
         remove.classList.add("btn-flat");
-        remove.innerHTML = '<i class="material-symbols-outlined">delete</i>';
+        remove.setAttribute("aria-label", `Delete category ${category}`);
+        remove.innerHTML = '<i class="material-symbols-outlined" aria-hidden="true">delete</i>';
 
         remove.addEventListener("click", (event) => {
             event.stopPropagation();

@@ -47,11 +47,9 @@ Já existe:
 
 Falta:
 
-- [x] Os 3 `dropdown-header` virarem botões com estado (`aria-expanded`)
-- [x] `dataset-item` e `graph-item` virarem botões
 - [x] Nome acessível nos botões de ícone do HTML (configurações, config do gráfico, exportar, importar)
-- [ ] Nome acessível nos botões de editar e excluir categoria e série (criados no JS)
-- [ ] Rótulo nos campos de valor das categorias
+- [x] Nome acessível nos botões de editar e excluir categoria e série (criados no JS)
+- [x] Rótulo nos campos de valor das categorias
 - [x] Criar `@media` para empilhar ou recolher a sidebar em telas estreitas
 - [ ] Validar Tab, Enter/Espaço e leitor de tela
 
