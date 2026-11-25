@@ -85,8 +85,8 @@
             <select class="series-select">
               <option value="create">Create Series</option>
             </select>
-            <button class="edit-series btn-flat" type="button">
-              <i class="material-symbols-outlined edit-series-icon">edit</i>
+            <button class="edit-series btn-flat" type="button" aria-label="Edit series">
+              <i class="material-symbols-outlined edit-series-icon" aria-hidden="true">edit</i>
             </button>
           </div>
 
@@ -109,20 +109,21 @@
       <!--sempre aparece, fica em cima centralizado com o bloco do container.-->
 
       <div class="workspace-config">
-        <button class="dataset-config" hidden>
-          <span class="material-symbols-outlined config-button">settings</span> <!--fica no topo superior direito-->
+        <button class="dataset-config" aria-label="Dataset settings" hidden>
+          <span class="material-symbols-outlined config-button" aria-hidden="true">settings</span>
+          <!--fica no topo superior direito-->
         </button>
 
-        <button class="graph-config" hidden>
-          <span class="material-symbols-outlined graph-config-button">perm_data_setting</span>
+        <button class="graph-config" aria-label="Graph settings" hidden>
+          <span class="material-symbols-outlined graph-config-button" aria-hidden="true">perm_data_setting</span>
         </button>
 
-        <button class="export-dataset" type="button" hidden>
-          <span class="material-symbols-outlined export">download</span>
+        <button class="export-dataset" type="button" aria-label="Export dataset" hidden>
+          <span class="material-symbols-outlined export" aria-hidden="true">download</span>
         </button>
 
-        <button class="import-dataset" type="button">
-          <span class="material-symbols-outlined import">upload</span>
+        <button class="import-dataset" type="button" aria-label="Import dataset">
+          <span class="material-symbols-outlined import" aria-hidden="true">upload</span>
         </button>
 
         <input type="file" class="import-dataset-input" accept=".json, application/json" hidden>

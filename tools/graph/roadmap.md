@@ -1,6 +1,6 @@
 # Graph v2: checklist do roadmap
 
-Estado conferido contra o branch `Graph-v2` (24/11/2026).
+Estado conferido contra o branch `Graph-v3` (25/11/2026).
 
 ## Concluído
 
@@ -47,12 +47,12 @@ Já existe:
 
 Falta:
 
-- [ ] Os 3 `dropdown-header` virarem botões com estado (`aria-expanded`)
-- [ ] `dataset-item` e `graph-item` virarem botões
-- [ ] Nome acessível nos botões de ícone do HTML (configurações, config do gráfico, exportar, importar)
-- [ ] Nome acessível nos botões de editar e excluir categoria (criados no JS)
+- [x] Os 3 `dropdown-header` virarem botões com estado (`aria-expanded`)
+- [x] `dataset-item` e `graph-item` virarem botões
+- [x] Nome acessível nos botões de ícone do HTML (configurações, config do gráfico, exportar, importar)
+- [ ] Nome acessível nos botões de editar e excluir categoria e série (criados no JS)
 - [ ] Rótulo nos campos de valor das categorias
-- [ ] Criar `@media` para empilhar ou recolher a sidebar em telas estreitas
+- [x] Criar `@media` para empilhar ou recolher a sidebar em telas estreitas
 - [ ] Validar Tab, Enter/Espaço e leitor de tela
 
 ## Item 15: estados e recursos auxiliares (restante)
@@ -72,5 +72,5 @@ Falta:
 
 ## Detalhes opcionais
 
-- [ ] Renomear `ChartSelect()` para `syncChartSelect()` (padrão dos outros nomes de função)
+- [x] Renomear `ChartSelect()` para `syncChartSelect()` (padrão dos outros nomes de função)
 - [ ] Confirmar se import funciona com backup da OSOD
