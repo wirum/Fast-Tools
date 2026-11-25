@@ -23,7 +23,9 @@
     --text-primary: #EDEBE4;
     --text-secondary: #AEB4BF;
 
-    --accent: #ffa726;
+    --accent: #81d1ff;
+
+    --accent-error: #ffa726;
     --bg-error: #EA580C;
 
     --border: #1B20308c;
@@ -723,7 +725,7 @@ main {
     text-align: center;
     font-size: 1.05rem;
     line-height: 1.35;
-    color: var(--accent);
+    color: var(--accent-error);
     font-style: oblique;
 }
 
@@ -922,6 +924,11 @@ main {
 
 .series-edit-list {
     padding: 16px 24px;
+}
+
+.close-series-edit {
+    margin-bottom: 10px;
+    margin-right: 10px;
 }
 
 footer {
