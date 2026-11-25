@@ -376,6 +376,7 @@ function renderSeriesEditList() {
 
         const edit = document.createElement("button");
         edit.classList.add("btn-flat");
+        edit.title = "Edit series"
         edit.innerHTML = '<i class="material-symbols-outlined">edit</i>'
 
         edit.addEventListener("click", () => {
@@ -405,6 +406,7 @@ function renderSeriesEditList() {
 
         const remove = document.createElement("button");
         remove.classList.add("btn-flat");
+        remove.title = "Delete series";
         remove.innerHTML = '<i class="material-symbols-outlined">delete</i>'
 
         remove.addEventListener("click", () => {

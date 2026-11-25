@@ -854,7 +854,20 @@ main {
     display: flex;
     align-items: center;
     gap: 8px;
+
+    padding: 10px 12px;
     margin-bottom: 8px;
+
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.series-edit-item:hover {
+    color: var(--accent);
+    background-color: var(--bg-accent-surface);
 }
 
 .series-edit-item span {
@@ -877,11 +890,11 @@ main {
     background-color: var(--bg-surface);
     color: var(--text-primary);
 
-    border: 2px solid var(--border);
+    border: 1px solid var(--border);
     border-radius: 8px;
 
     cursor: pointer;
-    transition: 0.2 ease;
+    transition: 0.2s ease;
 }
 
 .series-edit-item .btn-flat:hover {
@@ -891,6 +904,24 @@ main {
 
 .series-edit-item .material-symbols-outlined {
     font-size: 18px;
+}
+
+.series-edit-header {
+    padding: 20px 24px 16px;
+    border-bottom: 1px solid var(--border);
+}
+
+.series-edit-header h2 {
+    margin: 0;
+}
+
+.series-edit-modal {
+    padding: 0;
+    overflow: hidden;
+}
+
+.series-edit-list {
+    padding: 16px 24px;
 }
 
 footer {
