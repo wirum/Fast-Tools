@@ -1036,4 +1036,27 @@ footer img {
         margin-top: 16px;
         margin-bottom: 12px;
     }
+
+    .storage-error-panel {
+        width: calc(100% - 32px);
+        min-height: auto;
+        padding: 24px 18px;
+        gap: 16px;
+    }
+
+    .storage-error-panel h2 {
+        font-size: 2rem;
+    }
+
+    .storage-error-panel p {
+        font-size: 1.05rem;
+    }
+
+    .storage-error-panel .comment {
+        font-size: 0.95rem
+    }
+
+    .storage-error-panel .material-symbols-outlined {
+        font-size: 4rem;
+    }
 }

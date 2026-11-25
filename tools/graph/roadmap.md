@@ -51,7 +51,8 @@ Falta:
 - [x] Nome acessível nos botões de editar e excluir categoria e série (criados no JS)
 - [x] Rótulo nos campos de valor das categorias
 - [x] Criar `@media` para empilhar ou recolher a sidebar em telas estreitas
-- [ ] Validar Tab, Enter/Espaço e leitor de tela
+- [x] Validar Tab, Enter/Espaço
+- [ ] Leitor de tela
 
 ## Item 15: estados e recursos auxiliares (restante)
 

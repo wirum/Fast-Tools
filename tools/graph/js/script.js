@@ -60,6 +60,39 @@ let savedData = null;
 
 //test area
 
+let forceDataError = false;
+let forceStorageUnavailable = false;
+let forceNonCrashError = false;
+
+function testOSOD() {
+    if (forceDataError) {
+        storageErrorType = "corrupted-data";
+        showStorageError();
+        forceDataError = false;
+    }
+
+    if (forceStorageUnavailable) {
+        showNonCrashModal(
+            "Storage Unavailable",
+            "Could not access your local storage",
+            "Graph cannot read or write your saved data",
+            "Check your browser settings and enable local storage",
+            true
+        );
+        forceStorageUnavailable = false;
+    }
+
+    if (forceNonCrashError) {
+        showNonCrashModal(
+            "Test error",
+            "This is a test error",
+            "Testing the Non-Crash modal",
+            "No action is required"
+        );
+        forceNonCrashError = false;
+    }
+}
+
 //
 
 try {
