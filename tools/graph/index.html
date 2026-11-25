@@ -24,15 +24,15 @@
     <aside class="sidebar">
       <div class="datasets">
 
-        <div class="dropdown-header">
+        <div class="dropdown-header" tabindex="0" role="button" aria-expanded="false" aria-controls="dataset-content">
           <h2>Datasets</h2>
-          <span class="material-symbols-outlined">expand_more</span>
+          <span class="material-symbols-outlined" aria-hidden="true">expand_more</span>
         </div>
 
-        <div class="dropdown-content">
+        <div class="dropdown-content" id="dataset-content">
 
           <button class="back-datasets" hidden>
-            <span class="material-symbols-outlined">arrow_back</span>
+            <span class="material-symbols-outlined" aria-hidden="true">arrow_back</span>
             Back
           </button>
 
@@ -51,12 +51,12 @@
 
       <div class="chart-types" hidden>
 
-        <div class="dropdown-header">
+        <div class="dropdown-header" tabindex="0" role="button" aria-expanded="false" aria-controls="chart-content">
           <h2>Chart Types</h2>
-          <span class="material-symbols-outlined">expand_more</span>
+          <span class="material-symbols-outlined" aria-hidden="true">expand_more</span>
         </div>
 
-        <div class="dropdown-content">
+        <div class="dropdown-content" id="chart-content">
           <label for="chart-type-select">Type</label>
           <div class="select-wrapper">
             <select id="chart-type-select" class="chart-type-select">
@@ -64,7 +64,7 @@
               <option value="line">Line</option>
               <option value="area">Area</option>
             </select>
-            <span class="material-symbols-outlined select-icon">expand_more</span>
+            <span class="material-symbols-outlined select-icon" aria-hidden="true">expand_more</span>
           </div>
         </div>
 
@@ -74,13 +74,14 @@
 
       <div class="customization" hidden>
 
-        <div class="dropdown-header">
+        <div class="dropdown-header" tabindex="0" role="button" aria-expanded="false"
+          aria-controls="customization-content">
 
           <h2>Customization</h2>
-          <span class="material-symbols-outlined">expand_more</span>
+          <span class="material-symbols-outlined" aria-hidden="true">expand_more</span>
         </div>
 
-        <div class="dropdown-content">
+        <div class="dropdown-content" id="customization-content">
           <div class="series-selector">
             <select class="series-select">
               <option value="create">Create Series</option>

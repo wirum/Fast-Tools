@@ -666,18 +666,22 @@ const deleteGraphButton = document.querySelector(".delete-graph");
 
 //dropdowns
 
-const dropdowns = document.querySelectorAll(
-    ".datasets, .chart-types, .customization"
-);
+const dropdowns = document.querySelectorAll(".dropdown-header");
 
-dropdowns.forEach(dropdown => {
-    dropdown.addEventListener("click", (event) => {
+dropdowns.forEach(header => {
+    const dropdown = header.parentElement;
 
-        if (event.target.closest(".dropdown-content")) {
-            return;
+    header.addEventListener("click", () => {
+        const isActive = dropdown.classList.toggle("active");
+
+        header.setAttribute("aria-expanded", isActive);
+    })
+
+    dropdown.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            header.click();
         }
-
-        dropdown.classList.toggle("active");
     });
 });
 
