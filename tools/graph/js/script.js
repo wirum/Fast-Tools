@@ -677,7 +677,7 @@ dropdowns.forEach(header => {
         header.setAttribute("aria-expanded", isActive);
     })
 
-    dropdown.addEventListener("keydown", (event) => {
+    header.addEventListener("keydown", (event) => {
         if (event.key === "Enter" || event.key === " ") {
             event.preventDefault();
             header.click();
@@ -776,7 +776,12 @@ function renderDatasets() {
             dataset.id = crypto.randomUUID();
             updatedIds = true;
         }
-        const item = createElement("div", "dataset-item");
+        const item = createElement("button", "dataset-item");
+        item.type = "button";
+        item.addEventListener("keydown", event => {
+            if (event.key === "Enter" || event.key === " ") {
+            }
+        })
         item.dataset.id = dataset.id
         const name = document.createElement("span");
         item.addEventListener("click", () => {
@@ -829,7 +834,8 @@ function renderGraphs(dataset) {
     graphList.innerHTML = "";
 
     dataset.graphs.forEach(graph => {
-        const item = createElement("div", "graph-item");
+        const item = createElement("button", "graph-item");
+        item.type = "button";
 
         const name = document.createElement("span");
         name.textContent = graph.name;
