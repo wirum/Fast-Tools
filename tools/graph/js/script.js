@@ -607,9 +607,10 @@ nonCrashRetry.addEventListener("click", () => {
 const chartOptions = {
     chart: {
         type: "bar",
-        height: "100%",
+        height: "97%",
         width: "100%",
         foreColor: "#E3E2E6",
+        background: "#131721",
         fontFamily: "Google Sans Flex, sans-serif"
     },
     series: [],
