@@ -824,6 +824,20 @@ main {
     min-width: 0;
 }
 
+.series-selector .color-selector {
+    width: 40px;
+    height: 40px;
+    flex: 0 0 40px;
+    padding: 2px;
+
+    background-color: transparent;
+
+    border: transparent;
+    border-radius: 8px;
+
+    cursor: pointer;
+}
+
 .series-selector .btn-flat {
     width: 26px;
     height: 26px;

@@ -39,6 +39,8 @@ const chartTypeSelect = document.querySelector(".chart-type-select");
 const allowedChartTypes = ["bar", "line", "area"];
 
 const seriesSelect = document.querySelector(".series-select");
+const colorSelector = document.querySelector(".color-selector");
+
 const seriesCreateModal = document.querySelector(".series-create-modal");
 const seriesNameInput = document.querySelector(".series-name-input");
 const closeSeriesCreate = document.querySelector(".close-series-create");
@@ -103,6 +105,18 @@ try {
     if (!Array.isArray(datasets) || !datasets.every(validateDataset)) {
         throw new Error("Invalid datasets format");
     }
+
+    datasets.forEach(dataset => {
+        dataset.graphs.forEach(graph => {
+            graph.series.forEach(series => {
+                if (!series.color) {
+                    series.color = "#ffa726";
+                }
+            });
+        });
+    });
+
+    saveDatasets();
 }
 catch (error) {
     console.error("Error loading datasets:", error);
@@ -392,6 +406,7 @@ function renderSeriesSelect() {
 
     seriesSelect.appendChild(createOption);
     seriesSelect.value = selectedSeriesIndex;
+    colorSelector.value = selectedGraph.series[selectedSeriesIndex].color || "#ffa726"
 }
 
 function renderSeriesEditList() {
@@ -492,7 +507,8 @@ saveSeriesCreate.addEventListener("click", () => {
 
     const newSeries = {
         name: seriesName,
-        data: selectedGraph.categories.map(() => 0)
+        data: selectedGraph.categories.map(() => 0),
+        color: "#ffa726"
     };
 
     selectedGraph.series.push(newSeries);
@@ -672,6 +688,7 @@ function updateChart() {
         xaxis: {
             categories: selectedGraph.categories
         },
+        colors: selectedGraph.series.map(series => series.color || "#ffa726"),
         series: selectedGraph.series
     });
 }
@@ -781,7 +798,8 @@ datasetForm.addEventListener("submit", (event) => {
             categories: [],
             series: [{
                 name: "Series 1",
-                data: []
+                data: [],
+                color: "#ffa726"
             }]
         }],
     });
@@ -1171,7 +1189,8 @@ function renderCategories() {
     if (selectedGraph.series.length === 0) {
         selectedGraph.series.push({
             name: "Series 1",
-            data: selectedGraph.categories.map(() => 0)
+            data: selectedGraph.categories.map(() => 0),
+            color: "#ffa726"
         });
         saveDatasets();
     }
@@ -1272,7 +1291,8 @@ newGraph.addEventListener("click", () => {
         categories: [],
         series: [{
             name: "Series 1",
-            data: []
+            data: [],
+            color: "#ffa726"
         }]
     }
 
@@ -1338,6 +1358,17 @@ seriesSelect.addEventListener("change", () => {
     selectedSeriesIndex = Number(seriesSelect.value);
 
     renderCategories();
+});
+
+colorSelector.addEventListener("input", () => {
+    const selectedGraph = getSelectedGraph();
+
+    if (!selectedGraph) return;
+
+    selectedGraph.series[selectedSeriesIndex].color = colorSelector.value;
+
+    saveDatasets();
+    updateChart();
 });
 
 const mobileMenuButton = document.querySelector(".mobile-menu");
