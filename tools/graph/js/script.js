@@ -36,7 +36,7 @@ const nonCrashClose = document.querySelector(".noncrash-close");
 const nonCrashRetry = document.querySelector(".noncrash-retry");
 
 const chartTypeSelect = document.querySelector(".chart-type-select");
-const allowedChartTypes = ["bar", "line", "area"];
+const allowedChartTypes = ["bar", "line", "area", "pie", "donut"];
 
 const seriesSelect = document.querySelector(".series-select");
 const colorSelector = document.querySelector(".color-selector");
@@ -133,6 +133,7 @@ catch (error) {
     datasets = [];
 }
 
+
 function validateDataset(dataset) {
     if (!dataset || typeof dataset !== "object" || Array.isArray(dataset)) {
         return false;
@@ -153,10 +154,17 @@ function validateDataset(dataset) {
             Array.isArray(graph) ||
             typeof graph.id !== "string" ||
             typeof graph.name !== "string" ||
-            !allowedChartTypes.includes(graph.type) ||
-            !Array.isArray(graph.categories) ||
-            !graph.categories.every(category => typeof category === "string") ||
-            !Array.isArray(graph.series)
+            !allowedChartTypes.includes(graph.type)
+        ) {
+            return false;
+        }
+
+        if (!Array.isArray(graph.categories) || !Array.isArray(graph.series)) {
+            return false;
+        }
+
+        if (
+            !graph.categories.every(category => typeof category === "string")
         ) {
             return false;
         }
@@ -174,10 +182,28 @@ function validateDataset(dataset) {
                 return false;
             }
         }
+
+        if (graph.type === "pie" || graph.type === "donut") {
+            if (!Array.isArray(graph.slices) || graph.slices.length !== graph.categories.length) return false;
+
+            for (const slice of graph.slices) {
+                if (
+                    !slice ||
+                    typeof slice !== "object" ||
+                    Array.isArray(slice) ||
+                    typeof slice.value !== "number" ||
+                    !Number.isFinite(slice.value) ||
+                    typeof slice.color !== "string"
+                ) {
+                    return false;
+                }
+            }
+        }
     }
 
     return true;
 }
+
 
 function showStorageError() {
     configureStorageError();
@@ -678,6 +704,19 @@ function updateChart() {
         return;
     }
 
+    if (selectedGraph.type === "pie" || selectedGraph.type === "donut") {
+        chart.updateOptions({
+            chart: {
+                type: selectedGraph.type
+            },
+            labels: selectedGraph.categories,
+            colors: selectedGraph.slices.map(slice => slice.color),
+            series: selectedGraph.slices.map(slice => slice.value)
+        });
+
+        return;
+    }
+
     chart.updateOptions({
         chart: {
             type: selectedGraph.type
@@ -796,6 +835,7 @@ datasetForm.addEventListener("submit", (event) => {
             name: "Graph 1",
             type: "bar",
             categories: [],
+            slices: [],
             series: [{
                 name: "Series 1",
                 data: [],
@@ -1169,6 +1209,13 @@ addCategoryButton.addEventListener("click", () => {
 
     selectedGraph.categories.push(categoryName);
 
+    if (selectedGraph.type === "pie" || selectedGraph.type === "donut") {
+        selectedGraph.slices.push({
+            value: 0,
+            color: "#ffa726"
+        })
+    }
+
     selectedGraph.series.forEach(series => {
         series.data.push(0);
     });
@@ -1218,27 +1265,61 @@ function renderCategories() {
         edit.setAttribute("aria-label", `Edit category ${category}`);
         edit.innerHTML = '<i class="material-symbols-outlined" aria-hidden="true">edit</i>';
 
+        const isPieOrDonut = selectedGraph.type === "pie" || selectedGraph.type === "donut";
+
+        const color = document.createElement("input");
+        color.type = "color";
+
+        if (isPieOrDonut) {
+            color.value = selectedGraph.slices[categoryIndex].color;
+
+            color.setAttribute("aria-label", `Color for ${category}`);
+
+            color.addEventListener("input", () => {
+                selectedGraph.slices[categoryIndex].color = color.value;
+                updateChart();
+            });
+
+            color.addEventListener("change", () => {
+                saveDatasets();
+            });
+        }
+
         const value = document.createElement("input");
         value.type = "number";
         value.step = "any";
+
         const selectedSeries = selectedGraph.series[selectedSeriesIndex];
 
-        value.setAttribute("aria-label", `Value for ${category} in series ${selectedSeries?.name ?? "selected series"}`)
+        if (isPieOrDonut) {
+            value.setAttribute("aria-label", `Value for ${category}`);
 
-        if (selectedSeries) {
-            value.value = selectedSeries.data[categoryIndex];
+            if (selectedGraph.slices[categoryIndex]) {
+                value.value = selectedGraph.slices[categoryIndex].value;
+            } else {
+                value.value = 0;
+            }
         } else {
-            value.value = 0;
+            if (selectedSeries) {
+                value.setAttribute("aria-label", `Value for ${category} in series ${selectedSeries.name}`);
+                value.value = selectedSeries.data[categoryIndex];
+            } else {
+                value.setAttribute("aria-label", `Value for ${category} in selected series`);
+                value.value = 0;
+            }
         }
 
         value.addEventListener("input", () => {
-            const selectedSeries = selectedGraph.series[selectedSeriesIndex];
+            if (isPieOrDonut) {
+                selectedGraph.slices[categoryIndex].value = Number(value.value);
+            } else {
+                const selectedSeries = selectedGraph.series[selectedSeriesIndex];
 
-            if (!selectedSeries) return;
+                if (!selectedSeries) return;
 
-            selectedSeries.data[categoryIndex] = Number(value.value);
-
-            chart.updateSeries(selectedGraph.series);
+                selectedSeries.data[categoryIndex] = Number(value.value);
+            }
+            updateChart();
         })
 
         value.addEventListener("change", () => {
@@ -1259,14 +1340,21 @@ function renderCategories() {
                 series.data.splice(categoryIndex, 1);
             });
 
+            if (selectedGraph.type === "pie" || selectedGraph.type === "donut") {
+                selectedGraph.slices.splice(categoryIndex, 1);
+            }
+
             saveDatasets();
 
             renderCategories();
             updateChart();
         });
 
-        item.append(name, edit, value, remove);
-        categoryList.appendChild(item);
+        if (isPieOrDonut) {
+            item.append(name, edit, color, value, remove);
+        } else {
+            item.append(name, edit, value, remove);
+        }
     })
 }
 
@@ -1289,6 +1377,7 @@ newGraph.addEventListener("click", () => {
         name: getNextGraphName(selectedDataset),
         type: "bar",
         categories: [],
+        slices: [],
         series: [{
             name: "Series 1",
             data: [],
