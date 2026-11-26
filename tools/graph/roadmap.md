@@ -52,24 +52,12 @@ Falta:
 - [x] Rótulo nos campos de valor das categorias
 - [x] Criar `@media` para empilhar ou recolher a sidebar em telas estreitas
 - [x] Validar Tab, Enter/Espaço
-- [ ] Leitor de tela
+- [?] Leitor de tela (como vou testar)
 
 ## Item 15: estados e recursos auxiliares (restante)
 
 - [x] Remover o CSS órfão `.delete-graph-config-modal` (sem elemento no HTML)
 
-## Item 14: testes
-
-- [ ] Criar pasta de testes do Graph (copiar o padrão do Calcify)
-- [ ] Casos: criação, edição, persistência, JSON inválido, estrutura malformada, erro de storage
-- [ ] Casos: exclusão, nomes únicos, troca de tipo
-- [ ] Testes reais de navegador, teclado e viewport móvel
-
-## Adiado 
-
-- [ ] Item 4: recuperação automática de dados inválidos (V3, só se surgirem dados reais a preservar)
-
 ## Detalhes opcionais
 
 - [x] Renomear `ChartSelect()` para `syncChartSelect()` (padrão dos outros nomes de função)
-- [ ] Confirmar se import funciona com backup da OSOD
