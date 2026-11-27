@@ -23,7 +23,7 @@ Uses ApexCharts for chart rendering.
 
 ## How to use
 
-Open the direct tool link [Here!](https://wirum.github.io/Fast-Tools/tools/graph/index.html)
+Open the direct tool link [Here!](https://lukazzdev-temp.netlify.app/)
 
 To use, create a dataset, open graph 1 or create a new graph
 
