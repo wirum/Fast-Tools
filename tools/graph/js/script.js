@@ -36,7 +36,7 @@ const nonCrashClose = document.querySelector(".noncrash-close");
 const nonCrashRetry = document.querySelector(".noncrash-retry");
 
 const chartTypeSelect = document.querySelector(".chart-type-select");
-const allowedChartTypes = ["bar", "line", "area", "pie", "donut"];
+const allowedChartTypes = ["bar", "line", "area", "pie", "donut", "bar-stacked"];
 
 const seriesSelect = document.querySelector(".series-select");
 const colorSelector = document.querySelector(".color-selector");
@@ -725,10 +725,16 @@ function updateChart() {
 
     chart.updateOptions({
         chart: {
-            type: selectedGraph.type
+            type: selectedGraph.type === "bar-stacked" ? "bar" : selectedGraph.type,
+            stacked: selectedGraph.type === "bar-stacked"
         },
         stroke: {
-            width: selectedGraph.type === "bar" ? 0 : 3
+            width: selectedGraph.type === "bar" || selectedGraph.type === "bar-stacked" ? 0 : 3
+        },
+        plotOptions: {
+            bar: {
+                horizontal: false
+            }
         },
         xaxis: {
             categories: selectedGraph.categories
