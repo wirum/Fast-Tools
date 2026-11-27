@@ -161,12 +161,6 @@ localStorage.setItem("datasets", '[{"id":"1","name":"x","graphs":[{"id":"2","nam
 
 - OSOD Counter: 2
 
-## What's missing (for V3)
-
-- Screen reader accessibility testing
-- Auto-recovery for invalid data
-- Remembering the selected dataset and graph after reloading
-
 ## Screenshots
 
 ### Current
