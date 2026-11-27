@@ -1328,6 +1328,7 @@ function renderCategories() {
                 if (Number(value.value) < 0) {
                     value.setCustomValidity("Negative values are not allowed.");
                     value.reportValidity();
+                    value.value = selectedGraph.slices[categoryIndex].value;
                     return;
                 }
 
