@@ -51,6 +51,8 @@ const seriesEditModal = document.querySelector(".series-edit-modal");
 const seriesEditList = document.querySelector(".series-edit-list");
 const closeSeriesEdit = document.querySelector(".close-series-edit");
 
+const seriesSelector = document.querySelector(".series-selector");
+
 let datasets = [];
 let storageError = false;
 let storageErrorType = null;
@@ -413,6 +415,10 @@ function renderSeriesSelect() {
     const selectedGraph = getSelectedGraph();
 
     if (!selectedGraph) return;
+
+    if (selectedGraph.type === "pie" || selectedGraph.type === "donut") {
+        return;
+    }
 
     seriesSelect.innerHTML = "";
 
@@ -1244,6 +1250,10 @@ function renderCategories() {
 
     renderSeriesSelect();
 
+    const isPieOrDonut = selectedGraph.type === "pie" || selectedGraph.type === "donut"
+
+    seriesSelector.hidden = isPieOrDonut;
+
     selectedGraph.categories.forEach((category, categoryIndex) => {
         const item = createElement("div", "category-item");
 
@@ -1265,7 +1275,7 @@ function renderCategories() {
         edit.setAttribute("aria-label", `Edit category ${category}`);
         edit.innerHTML = '<i class="material-symbols-outlined" aria-hidden="true">edit</i>';
 
-        const isPieOrDonut = selectedGraph.type === "pie" || selectedGraph.type === "donut";
+
 
         const color = document.createElement("input");
         color.type = "color";
@@ -1355,6 +1365,7 @@ function renderCategories() {
         } else {
             item.append(name, edit, value, remove);
         }
+        categoryList.appendChild(item);
     })
 }
 
@@ -1426,7 +1437,21 @@ chartTypeSelect.addEventListener("change", () => {
 
     selectedGraph.type = chartTypeSelect.value;
 
+    if (selectedGraph.type === "pie" || selectedGraph.type === "donut") {
+        if (!Array.isArray(selectedGraph.slices)) {
+            selectedGraph.slices = [];
+        }
+
+        while (selectedGraph.slices.length < selectedGraph.categories.length) {
+            selectedGraph.slices.push({
+                value: 0,
+                color: "#ffa726"
+            });
+        }
+    }
+
     saveDatasets();
+    renderCategories();
     updateChart();
 });
 
