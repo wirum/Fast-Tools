@@ -36,7 +36,7 @@ const nonCrashClose = document.querySelector(".noncrash-close");
 const nonCrashRetry = document.querySelector(".noncrash-retry");
 
 const chartTypeSelect = document.querySelector(".chart-type-select");
-const allowedChartTypes = ["bar", "line", "area", "pie", "donut", "bar-stacked", "bar-horizontal", "bar-stacked-100"];
+const allowedChartTypes = ["bar", "line", "area", "pie", "donut", "bar-stacked", "bar-horizontal", "bar-stacked-100", "radial-bar"];
 
 const seriesSelect = document.querySelector(".series-select");
 const colorSelector = document.querySelector(".color-selector");
@@ -185,18 +185,11 @@ function validateDataset(dataset) {
             }
         }
 
-        if (graph.type === "pie" || graph.type === "donut") {
+        if (["pie", "donut", "radial-bar"].includes(graph.type)) {
             if (!Array.isArray(graph.slices) || graph.slices.length !== graph.categories.length) return false;
 
             for (const slice of graph.slices) {
-                if (
-                    !slice ||
-                    typeof slice !== "object" ||
-                    Array.isArray(slice) ||
-                    typeof slice.value !== "number" ||
-                    !Number.isFinite(slice.value) ||
-                    typeof slice.color !== "string"
-                ) {
+                if (!slice || typeof slice !== "object" || Array.isArray(slice) || typeof slice.value !== "number" || !Number.isFinite(slice.value) || (graph.type === "radial-bar" && (slice.value < 0 || slice.value > 100)) || typeof slice.color !== "string") {
                     return false;
                 }
             }
@@ -423,7 +416,7 @@ function renderSeriesSelect() {
 
     if (!selectedGraph) return;
 
-    if (selectedGraph.type === "pie" || selectedGraph.type === "donut") {
+    if (["pie", "donut", "radial-bar"].includes(selectedGraph.type)) {
         return;
     }
 
@@ -717,10 +710,23 @@ function updateChart() {
         return;
     }
 
-    if (selectedGraph.type === "pie" || selectedGraph.type === "donut") {
+    if (["pie", "donut"].includes(selectedGraph.type)) {
         chart.updateOptions({
             chart: {
                 type: selectedGraph.type
+            },
+            labels: selectedGraph.categories,
+            colors: selectedGraph.slices.map(slice => slice.color),
+            series: selectedGraph.slices.map(slice => slice.value)
+        });
+
+        return;
+    }
+
+    if (selectedGraph.type === "radial-bar") {
+        chart.updateOptions({
+            chart: {
+                type: "radialBar"
             },
             labels: selectedGraph.categories,
             colors: selectedGraph.slices.map(slice => slice.color),
@@ -742,6 +748,11 @@ function updateChart() {
         plotOptions: {
             bar: {
                 horizontal: selectedGraph.type === "bar-horizontal",
+            },
+            radialBar: {
+                track: {
+                    show: false
+                }
             }
         },
         xaxis: {
@@ -1231,12 +1242,12 @@ addCategoryButton.addEventListener("click", () => {
 
     selectedGraph.categories.push(categoryName);
 
-    if (selectedGraph.type === "pie" || selectedGraph.type === "donut") {
+    if (["pie", "donut", "radial-bar"].includes(selectedGraph.type)) {
         selectedGraph.slices.push({
             value: 0,
             color: "#ffa726"
         })
-    }
+    };
 
     selectedGraph.series.forEach(series => {
         series.data.push(0);
@@ -1266,9 +1277,9 @@ function renderCategories() {
 
     renderSeriesSelect();
 
-    const isPieOrDonut = selectedGraph.type === "pie" || selectedGraph.type === "donut"
+    const isSliceChart = ["pie", "donut", "radial-bar"].includes(selectedGraph.type);
 
-    seriesSelector.hidden = isPieOrDonut;
+    seriesSelector.hidden = isSliceChart;
 
     selectedGraph.categories.forEach((category, categoryIndex) => {
         const item = createElement("div", "category-item");
@@ -1296,7 +1307,7 @@ function renderCategories() {
         const color = document.createElement("input");
         color.type = "color";
 
-        if (isPieOrDonut) {
+        if (isSliceChart) {
             color.value = selectedGraph.slices[categoryIndex].color;
 
             color.setAttribute("aria-label", `Color for ${category}`);
@@ -1314,13 +1325,13 @@ function renderCategories() {
         const value = document.createElement("input");
         value.type = "number";
         value.step = "any";
-        if (isPieOrDonut) {
+        if (isSliceChart) {
             value.min = "0";
         }
 
         const selectedSeries = selectedGraph.series[selectedSeriesIndex];
 
-        if (isPieOrDonut) {
+        if (isSliceChart) {
             value.setAttribute("aria-label", `Value for ${category}`);
 
             if (selectedGraph.slices[categoryIndex]) {
@@ -1341,7 +1352,7 @@ function renderCategories() {
         value.addEventListener("input", () => {
             if (value.value.trim() === "") return;
 
-            if (isPieOrDonut) {
+            if (isSliceChart) {
 
                 if (Number(value.value) < 0) {
                     value.setCustomValidity("Negative values are not allowed.");
@@ -1367,7 +1378,7 @@ function renderCategories() {
             if (value.value.trim() === "") {
                 let previousValue;
 
-                if (isPieOrDonut) {
+                if (isSliceChart) {
                     previousValue = selectedGraph.slices[categoryIndex].value;
                 } else {
                     previousValue = selectedGraph.series[selectedSeriesIndex].data[categoryIndex];
@@ -1392,7 +1403,7 @@ function renderCategories() {
                 series.data.splice(categoryIndex, 1);
             });
 
-            if (selectedGraph.type === "pie" || selectedGraph.type === "donut") {
+            if (isSliceChart) {
                 selectedGraph.slices.splice(categoryIndex, 1);
             }
 
@@ -1402,7 +1413,7 @@ function renderCategories() {
             updateChart();
         });
 
-        if (isPieOrDonut) {
+        if (isSliceChart) {
             item.append(name, edit, color, value, remove);
         } else {
             item.append(name, edit, value, remove);
@@ -1479,7 +1490,7 @@ chartTypeSelect.addEventListener("change", () => {
 
     selectedGraph.type = chartTypeSelect.value;
 
-    if (selectedGraph.type === "pie" || selectedGraph.type === "donut") {
+    if (["pie", "donut", "radial-bar"].includes(selectedGraph.type)) {
         if (!Array.isArray(selectedGraph.slices)) {
             selectedGraph.slices = [];
         }
