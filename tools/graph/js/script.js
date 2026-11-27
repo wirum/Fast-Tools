@@ -1298,6 +1298,9 @@ function renderCategories() {
         const value = document.createElement("input");
         value.type = "number";
         value.step = "any";
+        if (isPieOrDonut) {
+            value.min = "0";
+        }
 
         const selectedSeries = selectedGraph.series[selectedSeriesIndex];
 
@@ -1321,7 +1324,16 @@ function renderCategories() {
 
         value.addEventListener("input", () => {
             if (isPieOrDonut) {
+
+                if (Number(value.value) < 0) {
+                    value.setCustomValidity("Negative values are not allowed.");
+                    value.reportValidity();
+                    return;
+                }
+
+                value.setCustomValidity("");
                 selectedGraph.slices[categoryIndex].value = Number(value.value);
+
             } else {
                 const selectedSeries = selectedGraph.series[selectedSeriesIndex];
 
