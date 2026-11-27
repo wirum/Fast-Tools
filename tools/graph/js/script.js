@@ -729,11 +729,11 @@ function updateChart() {
             stacked: selectedGraph.type === "bar-stacked"
         },
         stroke: {
-            width: selectedGraph.type === "bar" || selectedGraph.type === "bar-stacked" ? 0 : 3
+            width: 3
         },
         plotOptions: {
             bar: {
-                horizontal: selectedGraph.type = "bar-horizontal"
+                horizontal: selectedGraph.type === "bar-horizontal"
             }
         },
         xaxis: {
