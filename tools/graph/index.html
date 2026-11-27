@@ -60,12 +60,23 @@
           <label for="chart-type-select">Type</label>
           <div class="select-wrapper">
             <select id="chart-type-select" class="chart-type-select">
-              <option value="bar">Bar</option>
-              <option value="line">Line</option>
-              <option value="area">Area</option>
-              <option value="donut">Donut</option>
-              <option value="pie">Pie</option>
-              <option value="bar-stacked">Stacked Bar</option>
+
+              <optgroup label="Bar">
+                <option value="bar">Bar</option>
+                <option value="bar-stacked">Stacked Bar</option>
+                <option value="bar-horizontal">Horizontal Bar</option>
+              </optgroup>
+
+              <optgroup label="Round">
+                <option value="donut">Donut</option>
+                <option value="pie">Pie</option>
+              </optgroup>
+
+              <optgroup label="Lines">
+                <option value="line">Line</option>
+                <option value="area">Area</option>
+              </optgroup>
+
             </select>
             <span class="material-symbols-outlined select-icon" aria-hidden="true">expand_more</span>
           </div>
