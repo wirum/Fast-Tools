@@ -336,7 +336,7 @@ function resetSelection() {
 }
 
 function saveDatasets() {
-    if (storageError) return
+    if (storageError) return false;
 
     try {
         localStorage.setItem("datasets", JSON.stringify(datasets));
@@ -371,10 +371,17 @@ saveDatasetName.addEventListener("click", () => {
 
     const newName = renameDatasetInput.value.trim();
 
+    const previousName = selectedDataset.name;
+
     selectedDataset.name = newName;
+
+    if (!saveDatasets()) {
+        selectedDataset.name = previousName;
+        return;
+    }
+
     configDatasetName.textContent = newName;
     datasetTitle.textContent = newName;
-    saveDatasets();
     renderDatasets();
     configModal.close();
 });
@@ -949,6 +956,7 @@ function renderGraphs(dataset) {
 
         item.addEventListener("click", () => {
             selectedGraphId = graph.id;
+            selectedSeriesIndex = 0;
             graphTitle.textContent = graph.name;
             graphConfig.hidden = false;
             graphConfig.style.display = "flex";
@@ -988,6 +996,7 @@ importDatasetButton.addEventListener("click", () => {
 
 importDatasetInput.addEventListener("change", () => {
     const file = importDatasetInput.files[0];
+    importDatasetInput.value = "";
 
     if (!file) return;
 
@@ -1330,6 +1339,8 @@ function renderCategories() {
         }
 
         value.addEventListener("input", () => {
+            if (value.value.trim() === "") return;
+
             if (isPieOrDonut) {
 
                 if (Number(value.value) < 0) {
@@ -1353,6 +1364,17 @@ function renderCategories() {
         })
 
         value.addEventListener("change", () => {
+            if (value.value.trim() === "") {
+                let previousValue;
+
+                if (isPieOrDonut) {
+                    previousValue = selectedGraph.slices[categoryIndex].value;
+                } else {
+                    previousValue = selectedGraph.series[selectedSeriesIndex].data[categoryIndex];
+                }
+
+                value.value = previousValue;
+            }
             saveDatasets();
         })
 
