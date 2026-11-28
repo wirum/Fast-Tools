@@ -61,6 +61,9 @@ let downloadedData = false;
 
 let savedData = null;
 
+console.warn("With great power, Comes great responsibility.")
+console.warn("Careful with commands which may compromise your data.")
+
 
 //test area
 
@@ -329,7 +332,10 @@ function resetSelection() {
 }
 
 function saveDatasets() {
-    if (storageError) return false;
+    if (storageError) {
+        console.warn("‼ WARNING ‼, You are attempting to MODIFY data while storage is UNAVAILABLE. Further changes may compromise your data for good. Export before continuing.");
+        return false;
+    }
 
     try {
         localStorage.setItem("datasets", JSON.stringify(datasets));

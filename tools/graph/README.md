@@ -96,7 +96,7 @@ Pie and Donut charts use individual slices instead of regular data series.
 
 ### Chart types
 
-Graph currently supports **13 chart types**:
+Graph currently supports **12 chart types**:
 
 - **Bar:** Standard vertical bar chart.
 - **Horizontal Bar:** Bar chart with horizontal bars.
@@ -138,29 +138,27 @@ The saved data is checked every time the page loads. Old or unsupported formats 
 - **`localStorage` unavailable:** A message appears with a **Retry** button.
 - **ApexCharts doesn't load:** A "Chart unavailable" message appears with a **Retry** button. You can still edit your data, but charts won't be displayed.
 
-### Testing the Data Error Screen
+The application also displays console warnings when an operation attempts to save data while storage is unavailable. These warnings alert developers that further changes may put unsaved data at risk.
 
-To simulate corrupted localStorage data:
+### Testing Error Screens
 
-1. Open the Graph application.
-2. Open the browser developer console (`F12`).
-3. Execute the following command:
+Graph includes built-in testing triggers for its error screens.
 
-   ```js
-   localStorage.setItem("datasets", "not-json");
-   ```
+Open the browser developer console (`F12`) and use the following variables:
 
-4. Reload the page (`Ctrl + R`).
+- `forceDataError = true`: Triggers the Orange Screen of Death (OSOD).
+- `forceStorageUnavailable = true`: Triggers the Storage Unavailable screen.
+- `forceNonCrashError = true`: Triggers a test Non-Crash modal.
 
-The Orange Screen of Death should appear, allowing you to test the data recovery interface.
-
-For valid JSON with an invalid structure (a series with fewer values than categories), try this instead:
+After setting the desired variable to `true`, execute:
 
 ```js
-localStorage.setItem("datasets", '[{"id":"1","name":"x","graphs":[{"id":"2","name":"g","type":"bar","categories":["A","B"],"series":[{"name":"S","data":[1]}]}]}]');
+testOSOD();
 ```
 
-**IMPORTANT WARNING:** These commands overwrite the current `datasets` entry in localStorage. Use them only in a test environment.
+Each trigger resets itself to `false` after execution.
+
+**IMPORTANT:** These triggers are for testing purposes only. They do not overwrite or modify your saved datasets.
 
 ### OSOD Counter (mid-development)
 
