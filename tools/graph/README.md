@@ -7,7 +7,7 @@ Fast-Tools' data visualization tool!
 - Dataset management
 - Multiple graphs per dataset, each with its own data
 - Multiple editable series per graph
-- Bar, horizontal bar, stacked bar, pie, donut, line and area charts
+- Bar, horizontal bar, stacked bar, pie, donut, line, area, radar, radial bar, polar area, treemap and heatmap charts
 - Category management
 - Editable category names and values
 - Series management, including creation, renaming and removal
@@ -96,7 +96,7 @@ Pie and Donut charts use individual slices instead of regular data series.
 
 ### Chart types
 
-Graph currently supports seven chart types:
+Graph currently supports **13 chart types**:
 
 - **Bar:** Standard vertical bar chart.
 - **Horizontal Bar:** Bar chart with horizontal bars.
@@ -105,6 +105,11 @@ Graph currently supports seven chart types:
 - **Donut:** Similar to Pie, but with a hollow center.
 - **Line:** Displays data points connected by lines.
 - **Area:** Line chart with the area below it filled in.
+- **Radar:** Displays data across multiple axes in a radar-shaped visualization.
+- **Radial Bar:** Displays values using circular bars.
+- **Polar Area:** Displays values as sectors with varying radii.
+- **Treemap:** Displays hierarchical proportions using nested rectangles.
+- **Heatmap:** Uses color intensity to represent values across categories and series.
 
 You can switch between chart types without losing the graph's existing data.
 
@@ -159,7 +164,7 @@ localStorage.setItem("datasets", '[{"id":"1","name":"x","graphs":[{"id":"2","nam
 
 ### OSOD Counter (mid-development)
 
-- OSOD Counter: 2
+- OSOD Counter: 3
 
 ## Screenshots
 
