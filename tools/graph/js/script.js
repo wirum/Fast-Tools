@@ -36,7 +36,7 @@ const nonCrashClose = document.querySelector(".noncrash-close");
 const nonCrashRetry = document.querySelector(".noncrash-retry");
 
 const chartTypeSelect = document.querySelector(".chart-type-select");
-const allowedChartTypes = ["bar", "line", "area", "pie", "donut", "bar-stacked", "bar-horizontal", "bar-stacked-100", "radial-bar", "radar"];
+const allowedChartTypes = ["bar", "line", "area", "pie", "donut", "bar-stacked", "bar-horizontal", "bar-stacked-100", "radial-bar", "radar", "polar-area", "treemap"];
 
 const seriesSelect = document.querySelector(".series-select");
 const colorSelector = document.querySelector(".color-selector");
@@ -185,7 +185,7 @@ function validateDataset(dataset) {
             }
         }
 
-        if (["pie", "donut", "radial-bar"].includes(graph.type)) {
+        if (["pie", "donut", "radial-bar", "polar-area", "treemap"].includes(graph.type)) {
             if (!Array.isArray(graph.slices) || graph.slices.length !== graph.categories.length) return false;
 
             for (const slice of graph.slices) {
@@ -416,7 +416,7 @@ function renderSeriesSelect() {
 
     if (!selectedGraph) return;
 
-    if (["pie", "donut", "radial-bar"].includes(selectedGraph.type)) {
+    if (["pie", "donut", "radial-bar", "polar-area", "treemap"].includes(selectedGraph.type)) {
         return;
     }
 
@@ -710,10 +710,35 @@ function updateChart() {
         return;
     }
 
-    if (["pie", "donut"].includes(selectedGraph.type)) {
+    if (selectedGraph.type === "treemap") {
+
         chart.updateOptions({
             chart: {
-                type: selectedGraph.type
+                type: "treemap"
+            },
+            plotOptions: {
+                treemap: {
+                    distributed: true
+                }
+            },
+            stroke: {
+                width: 0
+            },
+            series: [{
+                data: selectedGraph.categories.map((category, index) => ({
+                    x: category,
+                    y: selectedGraph.slices[index]?.value || 0
+                }))
+            }],
+            colors: selectedGraph.slices.map(slice => slice.color)
+        })
+        return;
+    }
+
+    if (["pie", "donut", "polar-area"].includes(selectedGraph.type)) {
+        chart.updateOptions({
+            chart: {
+                type: selectedGraph.type === "polar-area" ? "polarArea" : selectedGraph.type
             },
             labels: selectedGraph.categories,
             colors: selectedGraph.slices.map(slice => slice.color),
@@ -1242,7 +1267,7 @@ addCategoryButton.addEventListener("click", () => {
 
     selectedGraph.categories.push(categoryName);
 
-    if (["pie", "donut", "radial-bar"].includes(selectedGraph.type)) {
+    if (["pie", "donut", "radial-bar", "polar-area", "treemap"].includes(selectedGraph.type)) {
         selectedGraph.slices.push({
             value: 0,
             color: "#ffa726"
@@ -1277,7 +1302,7 @@ function renderCategories() {
 
     renderSeriesSelect();
 
-    const isSliceChart = ["pie", "donut", "radial-bar"].includes(selectedGraph.type);
+    const isSliceChart = ["pie", "donut", "radial-bar", "polar-area", "treemap"].includes(selectedGraph.type);
 
     seriesSelector.hidden = isSliceChart;
 
@@ -1490,7 +1515,7 @@ chartTypeSelect.addEventListener("change", () => {
 
     selectedGraph.type = chartTypeSelect.value;
 
-    if (["pie", "donut", "radial-bar"].includes(selectedGraph.type)) {
+    if (["pie", "donut", "radial-bar", "polar-area", "treemap"].includes(selectedGraph.type)) {
         if (!Array.isArray(selectedGraph.slices)) {
             selectedGraph.slices = [];
         }
