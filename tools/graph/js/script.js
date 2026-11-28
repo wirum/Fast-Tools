@@ -36,7 +36,7 @@ const nonCrashClose = document.querySelector(".noncrash-close");
 const nonCrashRetry = document.querySelector(".noncrash-retry");
 
 const chartTypeSelect = document.querySelector(".chart-type-select");
-const allowedChartTypes = ["bar", "line", "area", "pie", "donut", "bar-stacked", "bar-horizontal", "bar-stacked-100", "radial-bar", "radar", "polar-area", "treemap"];
+const allowedChartTypes = ["bar", "line", "area", "pie", "donut", "bar-stacked", "bar-horizontal", "bar-stacked-100", "radial-bar", "radar", "polar-area", "treemap", "heatmap"];
 
 const seriesSelect = document.querySelector(".series-select");
 const colorSelector = document.querySelector(".color-selector");
@@ -732,6 +732,23 @@ function updateChart() {
             }],
             colors: selectedGraph.slices.map(slice => slice.color)
         })
+        return;
+    }
+
+    if (selectedGraph.type === "heatmap") {
+        chart.updateOptions({
+            chart: {
+                type: "heatmap"
+            },
+            series: selectedGraph.series.map(series => ({
+                name: series.name,
+                data: selectedGraph.categories.map((category, index) => ({
+                    x: category,
+                    y: series.data[index]
+                }))
+            }))
+        })
+
         return;
     }
 
